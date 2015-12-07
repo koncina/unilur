@@ -5,5 +5,5 @@ The **unilur** package contains a [R Markdown](http://rmarkdown.rstudio.com) tem
 Install the **unilur** package: 
 
 ```S
-devtools::install_git('https://git.framasoft.org/eko/unilur.git')
+devtools::install_git('https://github.com/koncina/unilur.git')
 ```
