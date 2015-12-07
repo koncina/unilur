@@ -1,0 +1,29 @@
+---
+title: "Title"
+knit: unilur::tutorial_knit
+author: "John Doe"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: pdf_document
+---
+
+You can write some text appearing in both pdf files using the standard [markup language](http://rmarkdown.rstudio.com).
+
+Use the `r` chunk to display some code in both files.
+
+```{r}
+head(cars)
+```
+
+Use the `r` chunk with ``echo=`solution`, eval = `solution` `` (surrounded by backticks) to display and evaluate the chunk only in the solution pdf.
+
+```{r, echo = `solution`, eval = `solution`}
+# Only visible and evaluated in the solution file...
+plot(cars)
+```
+
+You can also add some explanation text in latex in the customized solution engine (similar to the asis engine)
+
+```{solution}
+This is the text explaining how to obtain the solution and written in \LaTeX.
+```
+

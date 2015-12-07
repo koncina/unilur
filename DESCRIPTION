@@ -1,0 +1,10 @@
+Package: unilur
+Type: Package
+Title: rmarkdown template for tutorial pdf files
+Version: 0.1
+Date: 2015-12-06
+Author: Eric Koncina
+Maintainer: Eric Koncina <mail@koncina.eu>
+Description: Rmarkdown template which creates two pdf files for tutorials: A first without solutions and the second one with solutions.
+License: MIT
+LazyData: TRUE

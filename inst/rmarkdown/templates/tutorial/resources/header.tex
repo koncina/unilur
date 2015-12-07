@@ -1,0 +1,35 @@
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage{xcolor}         % Extended colors
+
+% Define a nice green color for the correction
+\definecolor{celadon}{rgb}{0.67, 0.88, 0.69}
+
+% http://tex.stackexchange.com/questions/8422/how-to-include-graphics-with-spaces-in-their-path
+% Necessary to compile the tex file with white spaces in graphic files
+\usepackage{graphicx}
+\usepackage[space]{grffile}
+
+% Defining the environment to draw a green block around its content
+\newenvironment{solution}
+{
+  \mdfdefinestyle{solution}{
+    frametitle={\tikz[baseline = (current bounding box.east), outer sep = 0pt]
+    \node[anchor = east, rounded corners = 3pt, rectangle, fill = celadon]{Solution};},
+    frametitleaboveskip = \dimexpr-\ht\strutbox\relax,%
+    leftmargin = 0cm,%
+    rightmargin = 0cm,%
+    innerleftmargin = 0.5cm,%
+    innerrightmargin = 0.5cm,%
+    roundcorner = 5pt,%
+    linecolor = celadon,%
+    linewidth = 2pt,%
+    backgroundcolor = celadon!30
+    }
+  \begin{mdframed}[style = solution]
+}
+{\end{mdframed}}
+
+% Defining a figure float environment to draw a green block around the float
+
+\newenvironment{solution.fig}{\figure\begin{solution}}
+                          {\end{solution}\endfigure}
