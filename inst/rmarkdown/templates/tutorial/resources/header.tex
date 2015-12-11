@@ -1,8 +1,24 @@
 \usepackage[framemethod=TikZ]{mdframed}
-\usepackage{xcolor}         % Extended colors
+\usepackage{xcolor}
 
-% Define a nice green color for the correction
-\definecolor{celadon}{rgb}{0.67, 0.88, 0.69}
+\usepackage{fancyvrb} % Fancy Verbatim: Used for the R code output
+\usepackage{caption}  % We will not place figures in floats: required if captions are needed
+
+\definecolor{celadon}{rgb}{0.67, 0.88, 0.69} % Define a nice green color for the correction
+
+% Used to format the R code when setting "only_asis" to FALSE (uses knitr:::hilight_source)
+\makeatletter
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}
+\makeatother
+
 
 % Disabling as it may cause an option clash
 % http://tex.stackexchange.com/questions/8422/how-to-include-graphics-with-spaces-in-their-path
@@ -10,10 +26,10 @@
 %\usepackage{graphicx}
 %\usepackage[space]{grffile}
 
-% Defining the environment to draw a green block around its content
-\newenvironment{solution}
-{
-  \mdfdefinestyle{solution}{
+
+
+
+\mdfdefinestyle{solution}{
     frametitle={\tikz[baseline = (current bounding box.east), outer sep = 0pt]
     \node[anchor = east, rounded corners = 3pt, rectangle, fill = celadon]{Solution};},
     frametitleaboveskip = \dimexpr-\ht\strutbox\relax,%
@@ -24,13 +40,22 @@
     roundcorner = 5pt,%
     linecolor = celadon,%
     linewidth = 2pt,%
-    backgroundcolor = celadon!30
+    backgroundcolor = celadon!30,
+    nobreak=false
     }
-  \begin{mdframed}[style = solution]
-}
-{\end{mdframed}}
 
-% Defining a figure float environment to draw a green block around the float
+\mdfdefinestyle{input}{
+	frametitle = {}, %
+    leftmargin = 0cm,%
+    rightmargin = 0cm,%
+    innerleftmargin = 0.2cm,%
+    innerrightmargin = 0.2cm,%
+    roundcorner = 2pt,%
+    linecolor = lightgray,%
+    linewidth = 1pt,%
+    backgroundcolor = lightgray!30
+    }
 
-\newenvironment{solution.fig}{\figure\begin{solution}}
-                          {\end{solution}\endfigure}
+% Defining the environment to draw a green block around its content
+\newenvironment{solution}{}{}
+\surroundwithmdframed[style = solution]{solution}
