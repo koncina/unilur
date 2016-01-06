@@ -25,7 +25,7 @@ extract_yaml = function(fileName) {
 # Depending on the variable "solution" in the yaml header it will render:
 #  "solution: yes" = Only the file with solution chunks
 #  "solution: no" = Only the file without solution chunks
-#  "solution: wow" = Both files (with and without) showing the first rendered without ()
+#  "solution: wow" = Both files (with and without) showing the first rendered without
 #  "solution: wwo" = Both files (with and without) showing the first rendered with
 # A suffix defined in the yaml header is added to the filename with solution chunks
 #  (suffix: "_solution" is the default)
@@ -83,19 +83,19 @@ tutorial <- function( keep_tex = TRUE,
 
   hook_chunk <- function(x, options) {
     if (isTRUE(options$solution) && !isTRUE(solution)) return("")
-    if (isTRUE(only_asis) && options$engine != 'asis') return(paste0(x, '\n', collapse = "\n"))
-    if (isTRUE(options$solution) && isTRUE(solution)) return(paste0(c('\\begin{solution}', x, '\\end{solution}\n'), collapse = "\n"))
+    if (isTRUE(only_asis) && options$engine != "asis") return(paste0(x, "\n", collapse = "\n"))
+    if (isTRUE(options$solution) && isTRUE(solution)) return(paste0(c("\\begin{solution}", x, "\\end{solution}\n"), collapse = "\n"))
     return(x)
   }
 
   hook_input <- function(x, options) {
-    paste0(c('\n\\begin{mdframed}[style = input]', '\\begin{Verbatim}[commandchars=\\\\\\{\\}]', knitr:::hilight_source(x, 'latex', options), '\\end{Verbatim}', '\\end{mdframed}\n'), collapse = "\n")
+    paste0(c("\n\\begin{mdframed}[style = input]", "\\begin{Verbatim}[commandchars=\\\\\\{\\}]", knitr:::hilight_source(x, "latex", options), "\\end{Verbatim}", "\\end{mdframed}\n"), collapse = "\n")
   }
 
   hook_output <- function(x, options) {
     # Using trimws to remove the last newline character
     # which is messing up page breaks in latex...
-    paste0(c('\n\\begin{Verbatim}[commandchars=\\\\\\{\\}]', trimws(x, which = "right"), '\\end{Verbatim}\n'), collapse = "\n")
+    paste0(c("\n\\begin{Verbatim}[commandchars=\\\\\\{\\}]", trimws(x, which = "right"), "\\end{Verbatim}\n"), collapse = "\n")
   }
 
   hook_plot <- function(x, options) {
@@ -105,7 +105,7 @@ tutorial <- function( keep_tex = TRUE,
                       "",
                       paste("\\captionof{figure}{", options$fig.cap, "}\n", sep = ""))
     # return the latex
-    paste(sprintf('\\includegraphics{%s}\n%s\n',gsub("\\\\", "/", x), caption))
+    paste(sprintf("\\includegraphics{%s}\n%s\n", gsub("\\\\", "/", x), caption))
   }
 
   if (!isTRUE(only_asis)) {
