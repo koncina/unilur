@@ -105,7 +105,7 @@ tutorial <- function( keep_tex = TRUE,
                       "",
                       paste("\\captionof{figure}{", options$fig.cap, "}\n", sep = ""))
     # return the latex
-    paste(sprintf('\\includegraphics{%s}\n%s\n',x, caption))
+    paste(sprintf('\\includegraphics{%s}\n%s\n',gsub("\\\\", "/", x), caption))
   }
 
   if (!isTRUE(only_asis)) {
