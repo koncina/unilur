@@ -92,7 +92,7 @@ tutorial <- function( keep_tex = TRUE,
       }
       x <- paste0(c(beginbox, x, "\\end{cbox}\n"), collapse = "\n")
     }
-    if (isTRUE(options$solution) && isTRUE(solution)) return(paste0(c("\\begin{solution}", x, "\\end{solution}\n"), collapse = "\n"))
+    if (isTRUE(options$solution) && isTRUE(solution)) return(paste0(c("\n\\begin{solution}", x, "\\end{solution}\n"), collapse = "\n"))
     return(x)
   }
 
