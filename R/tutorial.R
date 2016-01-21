@@ -84,6 +84,14 @@ tutorial <- function( keep_tex = TRUE,
   hook_chunk <- function(x, options) {
     if (isTRUE(options$solution) && !isTRUE(solution)) return("")
     if (isTRUE(only_asis) && options$engine != "asis") return(paste0(x, "\n", collapse = "\n"))
+    if (!is.null(options$box)) {
+      if (is.null(options$boxtitle)) {
+        beginbox <- paste0("\\begin{cbox}{", options$box, "}")
+      } else {
+        beginbox <- paste0("\\begin{cbox}[", options$boxtitle, "]{", options$box, "}")
+      }
+      x <- paste0(c(beginbox, x, "\\end{cbox}\n"), collapse = "\n")
+    }
     if (isTRUE(options$solution) && isTRUE(solution)) return(paste0(c("\\begin{solution}", x, "\\end{solution}\n"), collapse = "\n"))
     return(x)
   }

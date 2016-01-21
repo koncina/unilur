@@ -27,35 +27,48 @@
 %\usepackage[space]{grffile}
 
 
+% Defining the base style of the box as bbox
+\mdfdefinestyle{bbox}{
+	leftmargin = 0cm,%
+	rightmargin = 0cm,%
+	innerleftmargin = 0.5cm,%
+	innerrightmargin = 0.5cm,%
+	roundcorner = 5pt,%
+	linewidth = 2pt,%
+	nobreak=false,
+	}
 
+% Defining custom box environment (cbox) with 2 arguments:
+% The first optional (defaults to empty string) is the title of the box
+% The second (mandatory) defines the color of the box (linecolor and background is linecolor!30)
+\newenvironment{cbox}[2][]{
+\def\temp{#1}\ifx\temp\empty
+	\begin{mdframed}[style=bbox,%
+		linecolor = #2,%
+		backgroundcolor = #2!30,%
+		innertopmargin=0.5cm]
+\else
+	\begin{mdframed}[style=bbox,%
+		linecolor = #2,%
+		backgroundcolor = #2!30,%
+		frametitle={\tikz[baseline = (current bounding box.east), outer sep = 0pt]
+		\node[anchor = east, rounded corners = 3pt, rectangle, fill = #2]{#1};},%
+		frametitleaboveskip = \dimexpr-\ht\strutbox\relax]
+\fi
 
-\mdfdefinestyle{solution}{
-    frametitle={\tikz[baseline = (current bounding box.east), outer sep = 0pt]
-    \node[anchor = east, rounded corners = 3pt, rectangle, fill = celadon]{Solution};},
-    frametitleaboveskip = \dimexpr-\ht\strutbox\relax,%
-    leftmargin = 0cm,%
-    rightmargin = 0cm,%
-    innerleftmargin = 0.5cm,%
-    innerrightmargin = 0.5cm,%
-    roundcorner = 5pt,%
-    linecolor = celadon,%
-    linewidth = 2pt,%
-    backgroundcolor = celadon!30,
-    nobreak=false
-    }
+}{\end{mdframed}}
 
 \mdfdefinestyle{input}{
 	frametitle = {}, %
-    leftmargin = 0cm,%
-    rightmargin = 0cm,%
-    innerleftmargin = 0.2cm,%
-    innerrightmargin = 0.2cm,%
-    roundcorner = 2pt,%
-    linecolor = lightgray,%
-    linewidth = 1pt,%
-    backgroundcolor = lightgray!30
-    }
+  leftmargin = 0cm,%
+  rightmargin = 0cm,%
+  innerleftmargin = 0.2cm,%
+  innerrightmargin = 0.2cm,%
+  roundcorner = 2pt,%
+	linecolor = lightgray,%
+	linewidth = 1pt,%
+	backgroundcolor = lightgray!30
+	}
 
-% Defining the environment to draw a green block around its content
-\newenvironment{solution}{}{}
-\surroundwithmdframed[style = solution]{solution}
+% Defining the solution environment to draw a green block around its content
+\newenvironment{solution}{\begin{cbox}[Solution]{celadon}}{\end{cbox}}
