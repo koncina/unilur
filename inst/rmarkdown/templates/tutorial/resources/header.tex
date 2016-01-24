@@ -59,7 +59,7 @@
 }{\end{mdframed}}
 
 \mdfdefinestyle{input}{
-	frametitle = {}, %
+	frametitle = {},%
   leftmargin = 0cm,%
   rightmargin = 0cm,%
   innerleftmargin = 0.2cm,%
@@ -72,3 +72,53 @@
 
 % Defining the solution environment to draw a green block around its content
 \newenvironment{solution}{\begin{cbox}[Solution]{celadon}}{\end{cbox}}
+
+
+% Transforms itemize items into multiple choice questions
+% Taken and adapted from the following stackexchange post:
+% http://tex.stackexchange.com/questions/149101/inline-arrangement-using-enumitem
+
+\usepackage{environ, multido, calc}% http://ctan.org/pkg/{environ,multido,calc}
+\makeatletter
+% Taken from http://tex.stackexchange.com/a/128318/5764
+\newcounter{listcount}% Keep track of \item
+\newcounter{q}% Enumerate the different items
+\let\olditem\item% Store regular \item macro
+\NewEnviron{oneparchoices}[1][3]{%
+  \setcounter{listcount}{0}% Start with 0 \items
+  \g@addto@macro{\BODY}{\item\relax\item}% Used to delimit the items; last item identified by \item\relax\item
+  \def\item##1\item{% Redefine \item to capture contents
+    \def\optarg{##1}%
+    \expandafter\ifx\optarg\relax\else% Last item not reached
+      \stepcounter{listcount}% Next item being processed
+      \expandafter\gdef\csname inlineitem@\thelistcount\endcsname{##1}% Store item in control sequence
+      \expandafter\item% Recursively continue processing items
+    \fi
+  }%
+  \BODY% Process environment (save items)
+  \setlength{\@tempdima}{\linewidth/#1}% Set length of each \item \parbox; possibly corrent...
+  \ifnum\value{listcount}<#1\relax\setlength{\@tempdima}{\linewidth/\value{listcount}}\fi%... if needed
+  \par\noindent% Start new non-indented paragraph
+  \multido{\i=1+1}{\value{listcount}}{% Insert all items in a \parbox
+    \parbox[t]{\@tempdima}{\raggedright\hangindent=1.5em\hangafter=1% Paragraph formatting
+      \makebox[1.5em][r]{ \setcounter{q}{\i}
+\Alph{q})\space}\strut\csname inlineitem@\i\endcsname\strut}\hspace{0pt}}%
+}
+
+\let\olditemize\itemize
+\let\oldenditemize\enditemize
+
+\newcommand{\mcq}[1][on]{
+  \ifstrequal{#1}{on}{
+    % Switching itemize to MCQ mode
+    \let\itemize\oneparchoices
+    \let\enditemize\endoneparchoices
+    }{
+    % Switching itemize back to initial mode
+    \let\itemize\olditemize
+    \let\enditemize\oldenditemize
+    }
+
+}
+
+\makeatother
