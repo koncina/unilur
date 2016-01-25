@@ -125,3 +125,29 @@
 }
 
 \makeatother
+
+% fillwithdottedlines macro
+% Draws dotted lines to write a response
+% Taken from the exam class
+
+\makeatletter
+\newlength\dottedlinefillheight
+\setlength\dottedlinefillheight{.25in}
+
+\def\fillwithdottedlines#1{%
+  \begingroup
+  \ifhmode
+    \par
+  \fi
+  \hrule height \z@
+  \nobreak
+  \setbox0=\hbox to \hsize{\hskip \@totalleftmargin
+          \vrule height \dottedlinefillheight depth \z@ width \z@
+          \dotfill}%
+  % We use \cleaders (rather than \leaders) so that a given
+  % vertical space will always produce the same number of lines
+  % no matter where on the page it happens to start:
+  \cleaders \copy0 \vskip #1 \hbox{}%
+  \endgroup
+}% fillwithdottedlines
+\makeatother
