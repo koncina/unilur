@@ -82,8 +82,24 @@ tutorial <- function( keep_tex = TRUE,
                                     includes = includes)
 
   hook_chunk <- function(x, options) {
+    if ((isTRUE(options$mcq) && (isTRUE(any(options$solution, !is.null(options$box)))))) stop("mcq option cannot be used with another option...")
+    
+    
+    # If we are NOT rendering the solution pdf and the chunk is a solution one, we are
+    #  returning an empty string to hide the chunk
     if (isTRUE(options$solution) && !isTRUE(solution)) return("")
+    
+    # If "only_asis" is set, we are only modifying the chunk if it is an "asis" one...
     if (isTRUE(only_asis) && options$engine != "asis") return(paste0(x, "\n", collapse = "\n"))
+    
+    # If the "mcq" option is set we are overriding the itemize environment
+    # We are using return as surrounding "x" with a latex environment would break the further markdown interpretation
+    if (is.numeric(options$mcq.n)) mcq.n <- options$mcq.n
+    else mcq.n <- 3
+    beginmcq <- paste0("\n\\mcq[", mcq.n, "]{on}\n\n")
+    if (isTRUE(options$mcq)) return(paste0(beginmcq, x, "\n\n\\mcq{off}\n", collapse = "\n"))
+
+    # If "box" is set, we draw a frame around the chunk. 
     if (!is.null(options$box)) {
       if (is.null(options$boxtitle)) {
         beginbox <- paste0("\\begin{cbox}{", options$box, "}")
@@ -92,7 +108,11 @@ tutorial <- function( keep_tex = TRUE,
       }
       x <- paste0(c(beginbox, x, "\\end{cbox}\n"), collapse = "\n")
     }
+    
+    # If we are rendering the solution pdf and the chunk is a solution one, we are drawing a green box around the chunk.
     if (isTRUE(options$solution) && isTRUE(solution)) return(paste0(c("\n\\begin{solution}", x, "\\end{solution}\n"), collapse = "\n"))
+    
+    # If no condition has been met before, we are returning the chunk without changing it...
     return(x)
   }
 

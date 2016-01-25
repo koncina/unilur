@@ -84,7 +84,7 @@
 \newcounter{listcount}% Keep track of \item
 \newcounter{q}% Enumerate the different items
 \let\olditem\item% Store regular \item macro
-\NewEnviron{oneparchoices}[1][3]{%
+\NewEnviron{oneparchoices}[1][\perline]{%
   \setcounter{listcount}{0}% Start with 0 \items
   \g@addto@macro{\BODY}{\item\relax\item}% Used to delimit the items; last item identified by \item\relax\item
   \def\item##1\item{% Redefine \item to capture contents
@@ -108,8 +108,11 @@
 \let\olditemize\itemize
 \let\oldenditemize\enditemize
 
-\newcommand{\mcq}[1][on]{
-  \ifstrequal{#1}{on}{
+\newcommand{\perline}{3}
+
+\newcommand{\mcq}[2][3]{
+	\renewcommand{\perline}{#1}
+  \ifstrequal{#2}{on}{
     % Switching itemize to MCQ mode
     \let\itemize\oneparchoices
     \let\enditemize\endoneparchoices
