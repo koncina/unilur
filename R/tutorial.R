@@ -31,7 +31,7 @@ extract_yaml = function(fileName) {
 #  (suffix: "_solution" is the default)
 
 #' @export
-knit <- (function(inputFile, encoding, test = FALSE) {
+knit <- (function(inputFile, encoding) {
 
   # Maybe there is a cleaner way to pass variables to knit?
   yamlHeader <- extract_yaml(inputFile)
@@ -52,7 +52,7 @@ knit <- (function(inputFile, encoding, test = FALSE) {
                       output_format = "unilur::tutorial",
                       output_options=list(
                        solution = s
-                      )
+                      ), clean = FALSE
     )
   };
 })
@@ -68,49 +68,70 @@ tutorial <- function( keep_tex = TRUE,
                                            # yes, no, wwo, wow (wwo = with and without
                                            #                    wow = without and with
                                            #                    first is shown by RStudio)
-                      only_asis = FALSE,   # Restrict the solution rendering to the asis boxes
-                                           # to force the use of the original MD to latex engine
-                                           # Pandoc?
-                      suffix = "_solution" # Used in the knit function to add a suffix to the pdf name
+                      suffix = "_solution",# Used in the knit function to add a suffix to the pdf name
+                      exam = FALSE,
+                      mcq = "oneparchoices"
 ) {
   header <- system.file("rmarkdown", "templates", "tutorial", "resources", "header.tex",
                         package = "unilur")
 
   includes = list(in_header = header)
 
-  format <- rmarkdown::pdf_document(keep_tex = keep_tex,
-                                    includes = includes)
+  if (isTRUE(exam)) {
+    template <- system.file("rmarkdown", "templates", "tutorial", "resources", "template.tex",
+                            package = "unilur")
+    pandoc_args = c("--variable", "documentclass=exam", "--variable", "exam=TRUE")
+  } else {
+    template <- "default"
+    pandoc_args <- NULL #c("--variable", "geometry:margin=1in")
+  }
+  
+  format <- rmarkdown::pdf_document(template = template,
+                                    keep_tex = keep_tex,
+                                    includes = includes,
+                                    pandoc_args = pandoc_args)
 
   hook_chunk <- function(x, options) {
-    if ((isTRUE(options$mcq) && (isTRUE(any(options$solution, !is.null(options$box)))))) stop("mcq option cannot be used with another option...")
-    
-    
+
     # If we are NOT rendering the solution pdf and the chunk is a solution one, we are
     #  returning an empty string to hide the chunk
-    if (isTRUE(options$solution) && !isTRUE(solution)) return("")
+    if (isTRUE(options$solution) && !isTRUE(solution)) {
+      if (isTRUE(exam) && is.numeric(options$response.space)) return(paste0("\n\\fillwithdottedlines{", options$response.space, "in}\n"))
+      else return("")
+    } 
     
-    # If "only_asis" is set, we are only modifying the chunk if it is an "asis" one...
-    if (isTRUE(only_asis) && options$engine != "asis") return(paste0(x, "\n", collapse = "\n"))
-    
-    # If the "mcq" option is set we are overriding the itemize environment
-    # We are using return as surrounding "x" with a latex environment would break the further markdown interpretation
-    if (is.numeric(options$mcq.n)) mcq.n <- options$mcq.n
-    else mcq.n <- 3
-    beginmcq <- paste0("\n\\mcq[", mcq.n, "]{on}\n\n")
-    if (isTRUE(options$mcq)) return(paste0(beginmcq, x, "\n\n\\mcq{off}\n", collapse = "\n"))
+    # If the "mcq" option is set and "exam" is in the yaml header we override the itemize environment
+    if (is.numeric(options$mcq.n)) mcq.n <- paste0("[", options$mcq.n, "]")
+    else mcq.n <- "[3]"
 
+    # mcq.options contains a list of the yaml mcq options and the corresponding
+    # latex macros
+    mcq.options <- list(oneparchoices = c("opc", ""),
+                        oneparchoicesalt = c("opcalt", mcq.n),
+                        oneparcheckboxesalt = c("opcbalt", mcq.n),
+                        oneparcheckboxes = c("opcb", ""),
+                        checkboxes = c("cb", ""),
+                        choices = c("ch", ""))
+    
+    if (is.null(mcq.options[[mcq]])) stop("Unrecognized MCQ option in the yaml header...")
+    
+    mcq.start <- paste0("\n\\", mcq.options[[mcq]][1], mcq.options[[mcq]][2], "{on}\n")
+    mcq.end <- paste0("\n\\", mcq.options[[mcq]][1], "{off}\n")
+    
+    if (isTRUE(exam) && isTRUE(options$mcq)) return(paste(c(mcq.start, x, mcq.end), collapse = "\n"))
+    
     # If "box" is set, we draw a frame around the chunk. 
     if (!is.null(options$box)) {
       if (is.null(options$boxtitle)) {
-        beginbox <- paste0("\\begin{cbox}{", options$box, "}")
+        beginbox <- paste0("\n\\cboxs{", options$box, "}\n")
       } else {
-        beginbox <- paste0("\\begin{cbox}[", options$boxtitle, "]{", options$box, "}")
+        beginbox <- paste0("\n\\cboxs[", options$boxtitle, "]{", options$box, "}\n")
       }
-      x <- paste0(c(beginbox, x, "\\end{cbox}\n"), collapse = "\n")
+      x <- paste0(c(beginbox, x, "\n\\cboxe\n"), collapse = "\n")
     }
     
     # If we are rendering the solution pdf and the chunk is a solution one, we are drawing a green box around the chunk.
-    if (isTRUE(options$solution) && isTRUE(solution)) return(paste0(c("\n\\begin{solution}", x, "\\end{solution}\n"), collapse = "\n"))
+    if (isTRUE(options$solution) && isTRUE(solution)) return(paste0(c("\n\\solutions\n", x, "\n\\solutione\n"), collapse = "\n"))
     
     # If no condition has been met before, we are returning the chunk without changing it...
     return(x)
@@ -127,7 +148,6 @@ tutorial <- function( keep_tex = TRUE,
   }
 
   hook_plot <- function(x, options) {
-    if (isTRUE(only_asis)) return(x)
     # determine caption (if any)
     caption <- ifelse(is.null(options$fig.cap),
                       "",
@@ -136,11 +156,9 @@ tutorial <- function( keep_tex = TRUE,
     paste(sprintf("\\includegraphics{%s}\n%s\n", gsub("\\\\", "/", x), caption))
   }
 
-  if (!isTRUE(only_asis)) {
-    format$knitr$knit_hooks$source  <- hook_input
-    format$knitr$knit_hooks$output  <- hook_output
-    format$knitr$knit_hooks$plot <- hook_plot
-  }
+  format$knitr$knit_hooks$source  <- hook_input
+  format$knitr$knit_hooks$output  <- hook_output
+  format$knitr$knit_hooks$plot <- hook_plot
   format$knitr$knit_hooks$chunk  <- hook_chunk
   format
 }
