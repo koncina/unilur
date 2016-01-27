@@ -130,7 +130,9 @@ tutorial <- function( keep_tex = TRUE,
   hook_output <- function(x, options) {
     # Using trimws to remove the last newline character
     # which is messing up page breaks in latex...
-    paste0(c("\n\\begin{Verbatim}[commandchars=\\\\\\{\\}]", trimws(x, which = "right"), "\\end{Verbatim}\n"), collapse = "\n")
+    x <- paste0(c("\n\\begin{Verbatim}[commandchars=\\\\\\{\\}]", trimws(x, which = "right"), "\\end{Verbatim}\n"), collapse = "\n")
+    if (isTRUE(options$samepage)) paste0(c("\n\\begin{samepage}", x, "\\end{samepage}\n"), collapse = "\n")
+    else return(x)
   }
 
   hook_plot <- function(x, options) {
