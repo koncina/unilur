@@ -69,15 +69,19 @@ tutorial <- function( keep_tex = TRUE,
                                            #                    wow = without and with
                                            #                    first is shown by RStudio)
                       suffix = "_solution",# Used in the knit function to add a suffix to the pdf name
-                      exam = FALSE,
-                      mcq = "oneparchoices"
-) {
+                      exam = FALSE         # list(mcq = "oneparchoices") See options in the itemize2mcq function
+                      ) {
+  # exam can be either TRUE (yes) or a list to set some options
+  # We will use the exam class if isTRUE or is.list is met:
+  if (isTRUE(exam) || (is.list(exam))) examen <- TRUE
+  else examen <- FALSE
+
   header <- system.file("rmarkdown", "templates", "tutorial", "resources", "header.tex",
                         package = "unilur")
 
   includes = list(in_header = header)
 
-  if (isTRUE(exam)) {
+  if (isTRUE(examen)) {
     template <- system.file("rmarkdown", "templates", "tutorial", "resources", "template.tex",
                             package = "unilur")
     pandoc_args = c("--variable", "documentclass=exam", "--variable", "exam=TRUE")
@@ -92,34 +96,16 @@ tutorial <- function( keep_tex = TRUE,
                                     pandoc_args = pandoc_args)
 
   hook_chunk <- function(x, options) {
-
     # If we are NOT rendering the solution pdf and the chunk is a solution one, we are
     #  returning an empty string to hide the chunk
     if (isTRUE(options$solution) && !isTRUE(solution)) {
-      if (isTRUE(exam) && is.numeric(options$response.space)) return(paste0("\n\\fillwithdottedlines{", options$response.space, "in}\n"))
+      if (isTRUE(examen) && is.numeric(options$response.space)) return(paste0("\n\\fillwithdottedlines{", options$response.space, "in}\n"))
       else return("")
     } 
     
-    # If the "mcq" option is set and "exam" is in the yaml header we override the itemize environment
-    if (is.numeric(options$mcq.n)) mcq.n <- paste0("[", options$mcq.n, "]")
-    else mcq.n <- "[3]"
+    # If examen mode is enabled and the "mcq" option is set we override the itemize environment
+    if (isTRUE(examen) && isTRUE(options$mcq)) x <- itemize2mcq(x, mcq.option = as.list(exam)$mcq, ifelse(is.numeric(options$mcq.n), options$mcq.n, 3))
 
-    # mcq.options contains a list of the yaml mcq options and the corresponding
-    # latex macros
-    mcq.options <- list(oneparchoices = c("opc", ""),
-                        oneparchoicesalt = c("opcalt", mcq.n),
-                        oneparcheckboxesalt = c("opcbalt", mcq.n),
-                        oneparcheckboxes = c("opcb", ""),
-                        checkboxes = c("cb", ""),
-                        choices = c("ch", ""))
-    
-    if (is.null(mcq.options[[mcq]])) stop("Unrecognized MCQ option in the yaml header...")
-    
-    mcq.start <- paste0("\n\\", mcq.options[[mcq]][1], mcq.options[[mcq]][2], "{on}\n")
-    mcq.end <- paste0("\n\\", mcq.options[[mcq]][1], "{off}\n")
-    
-    if (isTRUE(exam) && isTRUE(options$mcq)) return(paste(c(mcq.start, x, mcq.end), collapse = "\n"))
-    
     # If "box" is set, we draw a frame around the chunk. 
     if (!is.null(options$box)) {
       if (is.null(options$boxtitle)) {
@@ -130,7 +116,7 @@ tutorial <- function( keep_tex = TRUE,
       x <- paste0(c(beginbox, x, "\n\\cboxe\n"), collapse = "\n")
     }
     
-    # If we are rendering the solution pdf and the chunk is a solution one, we are drawing a green box around the chunk.
+    # If the solution pdf is being rendered and the chunk is a solution, we are drawing a green box around it.
     if (isTRUE(options$solution) && isTRUE(solution)) return(paste0(c("\n\\solutions\n", x, "\n\\solutione\n"), collapse = "\n"))
     
     # If no condition has been met before, we are returning the chunk without changing it...
@@ -162,3 +148,27 @@ tutorial <- function( keep_tex = TRUE,
   format$knitr$knit_hooks$chunk  <- hook_chunk
   format
 }
+
+# "itemize2mcq" function
+# Called by hook_chunk if the mcq option is set
+# Wraps the chunk with a start and stop macro to enable/disable an alternative itemize environment
+
+itemize2mcq <- function(x, mcq.option = c("oneparchoices", "oneparchoicesalt", "oneparcheckboxesalt", "oneparcheckboxes"), per.line = 3) {
+  # mcq.options contains a list of the yaml mcq options and the corresponding
+  # latex macros
+  mcq.option <- match.arg(mcq.option)
+  
+  if (is.numeric(per.line)) MCQMacroOption <- paste0("[", per.line, "]")
+  
+  MCQMacros <- list(oneparchoices = c("opc", ""),
+                    oneparchoicesalt = c("opcalt", MCQMacroOption),
+                    oneparcheckboxesalt = c("opcbalt", MCQMacroOption),
+                    oneparcheckboxes = c("opcb", "")) #,
+                    #checkboxes = c("cb", ""), # Disabling the two last options as they generate latex errors...
+                    #choices = c("ch", ""))    # TODO: Fix it!
+
+  mcq.start <- paste0("\n\\", MCQMacros[[mcq.option]][1], MCQMacros[[mcq.option]][2], "{on}\n")
+  mcq.end <- paste0("\n\\", MCQMacros[[mcq.option]][1], "{off}\n")
+  return(paste(c(mcq.start, x, mcq.end), collapse = "\n"))
+}
+

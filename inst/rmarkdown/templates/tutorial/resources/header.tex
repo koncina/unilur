@@ -78,7 +78,60 @@
 % \newenvironment{solution}{\begin{cbox}[Solution]{celadon}}{\end{cbox}}
 
 
-% Transforms itemize items into multiple choice questions
+\makeatletter
+
+% Collection of macros calling the MCQ environments from
+%  the exam class instead of the itemize environment
+
+% Backing up item and the itemize environment.
+\let\origitem\item
+\let\origitemize\itemize
+\let\origenditemize\enditemize
+
+% Macro to restore the original itemize environment
+\newcommand{\restoreitemize}{
+	\let\itemize\origitemize
+	\let\enditemize\origenditemize
+	\let\item\origitem
+}
+
+\newcommand{\opc}[1]{
+	\ifstrequal{#1}{on}{
+		\let\itemize\oneparchoices
+		\let\enditemize\endoneparchoices
+		\def\item{\choice}
+	}{\restoreitemize}
+}
+
+\newcommand{\opcb}[1]{
+	\ifstrequal{#1}{on}{
+		\let\itemize\oneparcheckboxes
+		\let\enditemize\endoneparcheckboxes
+		\def\item{\choice}
+	}{\restoreitemize}
+}
+
+\newcommand{\cb}[1]{
+	\ifstrequal{#1}{on}{
+		\let\itemize\checkboxes
+		\let\enditemize\endcheckboxes
+		\def\item{\choice}
+	}{\restoreitemize}
+}
+
+\newcommand{\ch}[1]{
+	\ifstrequal{#1}{on}{
+		\let\itemize\choices
+		\let\enditemize\endchoices
+		\def\item{\choice}
+	}{\restoreitemize}
+}
+\makeatother
+
+% Alternative oneparchoices and oneparcheckboxes
+% with equally spaced horizontal items.
+% The number of items per line can be adjusted (defaults to 3)
+%
 % Taken and adapted from the following stackexchange post:
 % http://tex.stackexchange.com/questions/149101/inline-arrangement-using-enumitem
 
@@ -87,7 +140,7 @@
 % Taken from http://tex.stackexchange.com/a/128318/5764
 \newcounter{listcount}% Keep track of \item
 \newcounter{q}% Enumerate the different items
-\let\olditem\item% Store regular \item macro
+
 \NewEnviron{oneparchoicesalt}[1][\perline]{%
   \setcounter{listcount}{0}% Start with 0 \items
   \g@addto@macro{\BODY}{\item\relax\item}% Used to delimit the items; last item identified by \item\relax\item
@@ -109,91 +162,31 @@
 \opccounter\space}\strut\csname inlineitem@\i\endcsname\strut}\hspace{0pt}}%
 }
 
-\let\origitem\item
-\let\olditemize\itemize
-\let\oldenditemize\enditemize
 
 \newcommand{\perline}{3}
 \newcommand{\opccounter}{\Alph{q})}
 \newcommand{\opcalt}[2][3]{
+	% Passing variables with the help of macros
+	% and not arguments to homogenize the call.
 	\renewcommand{\perline}{#1}
 	\renewcommand{\opccounter}{\Alph{q})}
   \ifstrequal{#2}{on}{
     % Switching itemize to MCQ mode
     \let\itemize\oneparchoicesalt
     \let\enditemize\endoneparchoicesalt
-	}{
-		% Switching itemize back to initial mode
-    \let\itemize\olditemize
-    \let\enditemize\oldenditemize
-	}
+	}{\restoreitemize}
 }
 
 \newcommand{\opcbalt}[2][3]{
+	% Passing variables with the help of macros
+	% and not arguments to homogenize the call.
 	\renewcommand{\perline}{#1}
 	\renewcommand{\opccounter}{\checkbox@char}
   \ifstrequal{#2}{on}{
     % Switching itemize to MCQ mode
     \let\itemize\oneparchoicesalt
     \let\enditemize\endoneparchoicesalt
-	}{
-		% Switching itemize back to initial mode
-    \let\itemize\olditemize
-    \let\enditemize\oldenditemize
-	}
+	}{\restoreitemize}
 }
 
-\makeatother
-
-% Macros to call MCQ environments from the exam class
-%  instead of the itemize environment
-
-\makeatletter
-\newcommand{\opc}[1]{
-	\ifstrequal{#1}{on}{
-		\let\itemize\oneparchoices
-		\let\enditemize\endoneparchoices
-		\def\item{\choice}
-	}{
-		\let\itemize\olditemize
-		\let\enditemize\oldenditemize
-		\def\item{\origitem}
-	}
-}
-
-\newcommand{\opcb}[1]{
-	\ifstrequal{#1}{on}{
-		\let\itemize\oneparcheckboxes
-		\let\enditemize\endoneparcheckboxes
-		\def\item{\choice}
-	}{
-		\let\itemize\olditemize
-		\let\enditemize\oldenditemize
-		\def\item{\origitem}
-	}
-}
-
-\newcommand{\cb}[1]{
-	\ifstrequal{#1}{on}{
-		\let\itemize\checkboxes
-		\let\enditemize\endcheckboxes
-		\def\item{\choice}
-	}{
-		\let\itemize\olditemize
-		\let\enditemize\oldenditemize
-		\def\item{\origitem}
-	}
-}
-
-\newcommand{\ch}[1]{
-	\ifstrequal{#1}{on}{
-		\let\itemize\choices
-		\let\enditemize\endchoices
-		\def\item{\choice}
-	}{
-		\let\itemize\olditemize
-		\let\enditemize\oldenditemize
-		\def\item{\origitem}
-	}
-}
 \makeatother

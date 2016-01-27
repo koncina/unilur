@@ -192,13 +192,14 @@ $header-includes$
 $endfor$
 
 % Redefines (sub)paragraphs to behave more like sections
+% Eric Koncina 27/01/2016: Added \nopagebreak after paragraph/subparagraph title
 \ifx\paragraph\undefined\else
 \let\oldparagraph\paragraph
-\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}\nopagebreak}
 \fi
 \ifx\subparagraph\undefined\else
 \let\oldsubparagraph\subparagraph
-\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}\nopagebreak}
 \fi
 
 \begin{document}
@@ -210,12 +211,12 @@ $abstract$
 $endif$
 
 $if(exam)$
-\begin{mdframed}
+\begin{mdframed}[roundcorner = 2pt, linewidth = 1pt]
 \vspace{0.1in}
-\makebox[\textwidth]{\Large First Name:\enspace\hrulefill}
+\makebox[\textwidth]{{\fontfamily{phv}\selectfont \Large First name:}\enspace\hrulefill}
 \\[12pt]
 \vspace{0.2in}
-\makebox[\textwidth]{\Large Last Name:\enspace\hrulefill}
+\makebox[\textwidth]{{\fontfamily{phv}\selectfont \Large Last name:}\enspace\hrulefill}
 \end{mdframed}
 $endif$
 
