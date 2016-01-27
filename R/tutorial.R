@@ -84,7 +84,9 @@ tutorial <- function( keep_tex = TRUE,
   if (isTRUE(examen)) {
     template <- system.file("rmarkdown", "templates", "tutorial", "resources", "template.tex",
                             package = "unilur")
-    pandoc_args = c("--variable", "documentclass=exam", "--variable", "exam=TRUE")
+    pandoc_args = c()
+    if (isTRUE(as.list(exam)$id) || is.null(as.list(exam)$id)) pandoc_args = c(pandoc_args, "--variable", "idbox=TRUE")
+    pandoc_args = c(pandoc_args, "--variable", "documentclass=exam", "--variable", "exam=TRUE")
   } else {
     template <- "default"
     pandoc_args <- NULL #c("--variable", "geometry:margin=1in")
@@ -141,7 +143,7 @@ tutorial <- function( keep_tex = TRUE,
                       "",
                       paste("\\captionof{figure}{", options$fig.cap, "}\n", sep = ""))
     # return the latex
-    paste(sprintf("\\includegraphics{%s}\n%s\n", gsub("\\\\", "/", x), caption))
+    paste(c("\\begin{center}", sprintf("\\includegraphics[trim=0 0 0 -2mm]{%s}\n%s\n", gsub("\\\\", "/", x), caption), "\\end{center}"), collapse = "\n")
   }
 
   format$knitr$knit_hooks$source  <- hook_input

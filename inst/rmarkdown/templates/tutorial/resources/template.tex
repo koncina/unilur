@@ -202,6 +202,20 @@ $endfor$
 \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}\nopagebreak}
 \fi
 
+% Redefining the subparagraph section which is used to render
+% The exam questions.
+% https://tex.stackexchange.com/questions/31780/where-can-i-find-help-files-or-documentation-for-commands-like-startsection-fo
+% \@startsection{<name>}{<level>}{<indent>}{<beforeskip>}{<afterskip>}{<style>}*[<altheading>]{<heading>}
+% Default values can be found in the article class: using original subparagraph with afterskip from
+% subsection/subsubsection
+\makeatletter
+\renewcommand\subparagraph{
+	\@startsection{subparagraph}{5}{\parindent}%
+                {3.25ex \@plus1ex \@minus .2ex}%
+                {1.5ex \@plus .2ex}{\normalfont\normalsize\bfseries}}
+
+\makeatother
+
 \begin{document}
 \maketitle
 $if(abstract)$
@@ -210,7 +224,7 @@ $abstract$
 \end{abstract}
 $endif$
 
-$if(exam)$
+$if(idbox)$
 \begin{mdframed}[roundcorner = 2pt, linewidth = 1pt]
 \vspace{0.1in}
 \makebox[\textwidth]{{\fontfamily{phv}\selectfont \Large First name:}\enspace\hrulefill}
