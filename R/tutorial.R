@@ -84,18 +84,22 @@ tutorial <- function( keep_tex = TRUE,
   if (isTRUE(examen)) {
     template <- system.file("rmarkdown", "templates", "tutorial", "resources", "template.tex",
                             package = "unilur")
-    pandoc_args = c("--variable", "geometry:margin=1in")
-    if (isTRUE(as.list(exam)$id) || is.null(as.list(exam)$id)) pandoc_args = c(pandoc_args, "--variable", "idbox=TRUE")
-    pandoc_args = c(pandoc_args, "--variable", "documentclass=exam", "--variable", "exam=TRUE")
+    args <- c()
+    args <- c(args, "--variable", "geometry:margin=1in")  # Adjusts the margin
+    args <- c(args, "--variable", "graphics=yes")         # Enables rescaling of too big graphics
+    # Enables the rendering of the identification box (first and last name) 
+    if (isTRUE(as.list(exam)$id) || is.null(as.list(exam)$id)) args <- c(args, "--variable", "idbox=yes")
+    # Using the exam class and passing an additional exam variable to the pandoc template
+    args <- c(args, "--variable", "documentclass=exam", "--variable", "exam=yes")
   } else {
     template <- "default"
-    pandoc_args <- NULL #c("--variable", "geometry:margin=1in")
+    args <- NULL
   }
   
   format <- rmarkdown::pdf_document(template = template,
                                     keep_tex = keep_tex,
                                     includes = includes,
-                                    pandoc_args = pandoc_args)
+                                    pandoc_args = args)
 
   hook_chunk <- function(x, options) {
     # If we are NOT rendering the solution pdf and the chunk is a solution one, we are
