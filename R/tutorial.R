@@ -52,7 +52,7 @@ knit <- (function(inputFile, encoding) {
                       output_format = "unilur::tutorial",
                       output_options=list(
                        solution = s
-                      ), clean = FALSE
+                      ), clean = TRUE
     )
   };
 })
@@ -84,7 +84,7 @@ tutorial <- function( keep_tex = TRUE,
   if (isTRUE(examen)) {
     template <- system.file("rmarkdown", "templates", "tutorial", "resources", "template.tex",
                             package = "unilur")
-    pandoc_args = c()
+    pandoc_args = c("--variable", "geometry:margin=1in")
     if (isTRUE(as.list(exam)$id) || is.null(as.list(exam)$id)) pandoc_args = c(pandoc_args, "--variable", "idbox=TRUE")
     pandoc_args = c(pandoc_args, "--variable", "documentclass=exam", "--variable", "exam=TRUE")
   } else {
@@ -175,4 +175,3 @@ itemize2mcq <- function(x, mcq.option = c("oneparchoices", "oneparchoicesalt", "
   mcq.end <- paste0("\n\\", MCQMacros[[mcq.option]][1], "{off}\n")
   return(paste(c(mcq.start, x, mcq.end), collapse = "\n"))
 }
-
