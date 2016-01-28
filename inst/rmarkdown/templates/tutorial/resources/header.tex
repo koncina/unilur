@@ -35,7 +35,8 @@
 	innerrightmargin = 0.5cm,%
 	roundcorner = 5pt,%
 	linewidth = 2pt,%
-	nobreak=false,
+	nobreak=false%,
+	%needspace=1in % Trying to avoid a page break after the title but does not do the trick...
 	}
 
 % Defining custom box environment (cbox) with 2 arguments:
@@ -45,12 +46,13 @@
 \def\temp{#1}\ifx\temp\empty
 	\begin{mdframed}[style=bbox,%
 		linecolor = #2,%
-		backgroundcolor = #2!30,%
-		innertopmargin=0.5cm]
+		%innertopmargin = 0.3pt,
+		backgroundcolor = #2!30]%
 \else
 	\begin{mdframed}[style=bbox,%
 		linecolor = #2,%
 		backgroundcolor = #2!30,%
+		innertopmargin=0pt,%
 		frametitle={\tikz[baseline = (current bounding box.east), outer sep = 0pt]
 		\node[anchor = east, rounded corners = 3pt, rectangle, fill = #2]{#1};},%
 		frametitleaboveskip = \dimexpr-\ht\strutbox\relax]

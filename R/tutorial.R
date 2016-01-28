@@ -114,12 +114,8 @@ tutorial <- function( keep_tex = TRUE,
 
     # If "box" is set, we draw a frame around the chunk. 
     if (!is.null(options$box)) {
-      if (is.null(options$boxtitle)) {
-        beginbox <- paste0("\n\\cboxs{", options$box, "}\n")
-      } else {
-        beginbox <- paste0("\n\\cboxs[", options$boxtitle, "]{", options$box, "}\n")
-      }
-      x <- paste0(c(beginbox, x, "\n\\cboxe\n"), collapse = "\n")
+      BoxBegin <- sprintf("\n\\cboxs[%s]{%s}\n", ifelse(is.null(options$boxtitle), "", options$boxtitle), options$box)
+      x <- paste0(c(BoxBegin, x, "\n\\cboxe\n"), collapse = "\n")
     }
     
     # If the solution pdf is being rendered and the chunk is a solution, we are drawing a green box around it.
@@ -136,9 +132,10 @@ tutorial <- function( keep_tex = TRUE,
   hook_output <- function(x, options) {
     # Using trimws to remove the last newline character
     # which is messing up page breaks in latex...
-    x <- paste0(c("\n\\begin{Verbatim}[commandchars=\\\\\\{\\}]", trimws(x, which = "right"), "\\end{Verbatim}\n"), collapse = "\n")
-    if (isTRUE(options$samepage)) paste0(c("\n\\begin{samepage}", x, "\\end{samepage}\n"), collapse = "\n")
-    else return(x)
+    OutputBegin <- sprintf("\n\\begin{Verbatim}[%scommandchars=\\\\\\{\\}]", ifelse(isTRUE(options$samepage), "samepage, ", ""))
+    OutputEnd <- "\\end{Verbatim}\n"
+    x <- paste0(c(OutputBegin, trimws(x, which = "right"), OutputEnd), collapse = "\n")
+    return(x)
   }
 
   hook_plot <- function(x, options) {
