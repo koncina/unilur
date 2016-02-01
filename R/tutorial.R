@@ -36,6 +36,10 @@ knit <- (function(inputFile, encoding) {
   # Maybe there is a cleaner way to pass variables to knit?
   yamlHeader <- extract_yaml(inputFile)
 
+  # Rendering a "response" Rmarkdown file (Rmd) omitting the solution chunks
+  if (isTRUE(yamlHeader$answer)) answer.rmd(inputFile, paste0(gsub("(.*)(\\.[[:alnum:]]+$)", "\\1", inputFile), "_answer", ".Rmd"))
+  
+  # Rendering pdf output (with and/or without solution chunks)
   if (isTRUE(yamlHeader$solution)) tut_opt <- list(m = "file with", s = TRUE)
   else if (yamlHeader$solution == "wwo") tut_opt <- list(m = "files with and without", s = c(TRUE, FALSE))
   else if (yamlHeader$solution == "wow") tut_opt <- list(m = "files with and without", s = c(FALSE, TRUE))
@@ -175,4 +179,19 @@ itemize2mcq <- function(x, mcq.option = c("oneparchoices", "oneparchoicesalt", "
   mcq.start <- paste0("\n\\", MCQMacros[[mcq.option]][1], MCQMacros[[mcq.option]][2], "{on}\n")
   mcq.end <- paste0("\n\\", MCQMacros[[mcq.option]][1], "{off}\n")
   return(paste(c(mcq.start, x, mcq.end), collapse = "\n"))
+}
+
+# answer.rmd function
+# A simple function using a regular expression replacing the solution chunks by empty response chunks
+
+answer.rmd = function(inputFile, outputFile) {
+  input <- paste(readLines(inputFile), collapse = "\n")
+  # The regex pattern: searching for code chunks containing solution = TRUE (case insensitive)
+  pattern <- "\\n *``` *{.*(?i)solution(?-i) *= *(?i)true(?-i).*} *\\n[\\s\\S]*?\\n *``` *"
+  replacement <- "\n```{r, response = TRUE}\n\n\n```\n"
+  output <- gsub(pattern, replacement, input, perl = TRUE)
+  file.create(outputFile)
+  fileConn <- file(outputFile)
+  writeLines(output, fileConn)
+  close(fileConn)
 }
