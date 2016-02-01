@@ -73,7 +73,8 @@ tutorial <- function( keep_tex = TRUE,
                                            #                    wow = without and with
                                            #                    first is shown by RStudio)
                       suffix = "_solution",# Used in the knit function to add a suffix to the pdf name
-                      exam = FALSE         # list(mcq = "oneparchoices") See options in the itemize2mcq function
+                      exam = FALSE,        # list(mcq = "oneparchoices") See options in the itemize2mcq function
+                      answer = FALSE       # Generate answer Rmd (removing the solution chunks from the Rmd)
                       ) {
   # exam can be either TRUE (yes) or a list to set some options
   # We will use the exam class if isTRUE or is.list is met:
