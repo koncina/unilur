@@ -2,7 +2,21 @@
 \usepackage{xcolor}
 
 \usepackage{fancyvrb} % Fancy Verbatim: Used for the R code output
+\usepackage{fancyhdr}
 \usepackage{caption}  % We will not place figures in floats: required if captions are needed
+
+\makeatletter
+\let\runauthor\@author
+\let\runtitle\@title
+\makeatother
+
+\makeatletter
+\global\let\tikz@ensure@dollar@catcode=\relax
+\makeatother
+
+\pagestyle{fancy}
+\lhead{\runauthor}
+\rhead{\runtitle}
 
 \definecolor{celadon}{rgb}{0.67, 0.88, 0.69} % Define a nice green color for the correction
 
@@ -52,7 +66,7 @@
 	\begin{mdframed}[style=bbox,%
 		linecolor = #2,%
 		backgroundcolor = #2!30,%
-		innertopmargin=0pt,%
+		innertopmargin=3pt,%
 		frametitle={\tikz[baseline = (current bounding box.east), outer sep = 0pt]
 		\node[anchor = east, rounded corners = 3pt, rectangle, fill = #2]{#1};},%
 		frametitleaboveskip = \dimexpr-\ht\strutbox\relax]

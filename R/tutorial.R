@@ -69,7 +69,8 @@ tutorial <- function( keep_tex = TRUE,
                                            #                    wow = without and with
                                            #                    first is shown by RStudio)
                       suffix = "_solution",# Used in the knit function to add a suffix to the pdf name
-                      exam = FALSE         # list(mcq = "oneparchoices") See options in the itemize2mcq function
+                      exam = FALSE,        # list(mcq = "oneparchoices") See options in the itemize2mcq function
+                      credit = FALSE       # show a link to the unilur homepage
                       ) {
   # exam can be either TRUE (yes) or a list to set some options
   # We will use the exam class if isTRUE or is.list is met:
@@ -78,9 +79,12 @@ tutorial <- function( keep_tex = TRUE,
 
   header <- system.file("rmarkdown", "templates", "tutorial", "resources", "header.tex",
                         package = "unilur")
-
-  includes = list(in_header = header)
-
+  header_credit <- system.file("rmarkdown", "templates", "tutorial", "resources", "header_credit.tex",
+                        package = "unilur")
+  
+  if (isTRUE(credit)) includes = list(in_header = c(header, header_credit))
+  else includes = list(in_header = header)
+  
   if (isTRUE(examen)) {
     template <- system.file("rmarkdown", "templates", "tutorial", "resources", "template.tex",
                             package = "unilur")
