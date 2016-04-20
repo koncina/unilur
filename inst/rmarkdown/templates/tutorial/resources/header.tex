@@ -2,21 +2,22 @@
 \usepackage{xcolor}
 
 \usepackage{fancyvrb} % Fancy Verbatim: Used for the R code output
-\usepackage{fancyhdr}
 \usepackage{caption}  % We will not place figures in floats: required if captions are needed
 
 \makeatletter
-\let\runauthor\@author
-\let\runtitle\@title
+\@ifclassloaded{exam}
+  {
+    % Nothing to do: altering headers will collapse with the exam class
+  }{
+    \usepackage{fancyhdr}
+    \let\runauthor\@author
+    \let\runtitle\@title
+    \global\let\tikz@ensure@dollar@catcode=\relax
+    \pagestyle{fancy}
+    \lhead{\runauthor}
+    \rhead{\runtitle}
+  }%
 \makeatother
-
-\makeatletter
-\global\let\tikz@ensure@dollar@catcode=\relax
-\makeatother
-
-\pagestyle{fancy}
-\lhead{\runauthor}
-\rhead{\runtitle}
 
 \definecolor{celadon}{rgb}{0.67, 0.88, 0.69} % Define a nice green color for the correction
 
