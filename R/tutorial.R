@@ -32,11 +32,14 @@ extract_yaml = function(fileName) {
 
 #' @export
 knit <- (function(inputFile, encoding) {
-
   # Maybe there is a cleaner way to pass variables to knit?
   yamlHeader <- extract_yaml(inputFile)
 
-  if (isTRUE(yamlHeader$solution)) tut_opt <- list(m = "file with", s = TRUE)
+  # Rendering a "response" Rmarkdown file (Rmd) omitting the solution chunks
+  if (isTRUE(yamlHeader$answer)) answer.rmd(inputFile, paste0(gsub("(.*)(\\.[[:alnum:]]+$)", "\\1", inputFile), "_answer", ".Rmd"))
+  
+  # Rendering pdf output (with and/or without solution chunks)
+  if (is.null(yamlHeader$solution) || isTRUE(yamlHeader$solution)) tut_opt <- list(m = "file with", s = TRUE)
   else if (yamlHeader$solution == "wwo") tut_opt <- list(m = "files with and without", s = c(TRUE, FALSE))
   else if (yamlHeader$solution == "wow") tut_opt <- list(m = "files with and without", s = c(FALSE, TRUE))
   else tut_opt <- list(m = "file without", s = FALSE)
@@ -70,7 +73,8 @@ tutorial <- function( keep_tex = TRUE,
                                            #                    first is shown by RStudio)
                       suffix = "_solution",# Used in the knit function to add a suffix to the pdf name
                       exam = FALSE,        # list(mcq = "oneparchoices") See options in the itemize2mcq function
-                      credit = FALSE       # show a link to the unilur homepage
+                      credit = FALSE,      # show a link to the unilur homepage
+                      answer = FALSE       # Generate answer Rmd (removing the solution chunks from the Rmd)
                       ) {
   # exam can be either TRUE (yes) or a list to set some options
   # We will use the exam class if isTRUE or is.list is met:
@@ -124,6 +128,9 @@ tutorial <- function( keep_tex = TRUE,
     
     # If the solution pdf is being rendered and the chunk is a solution, we are drawing a green box around it.
     if (isTRUE(options$solution) && isTRUE(solution)) return(paste0(c("\n\\solutions\n", x, "\n\\solutione\n"), collapse = "\n"))
+
+        # If the solution pdf is being rendered and the chunk is a solution, we are drawing a green box around it.
+    if (isTRUE(options$answer)) return(paste0(c("\n\\answers\n", x, "\n\\answere\n"), collapse = "\n"))
     
     # If no condition has been met before, we are returning the chunk without changing it...
     return(x)
@@ -179,4 +186,34 @@ itemize2mcq <- function(x, mcq.option = c("oneparchoices", "oneparchoicesalt", "
   mcq.start <- paste0("\n\\", MCQMacros[[mcq.option]][1], MCQMacros[[mcq.option]][2], "{on}\n")
   mcq.end <- paste0("\n\\", MCQMacros[[mcq.option]][1], "{off}\n")
   return(paste(c(mcq.start, x, mcq.end), collapse = "\n"))
+}
+
+# answer.rmd function
+# A simple function using a regular expression replacing the solution chunks by empty response chunks
+
+answer.rmd = function(inputFile, outputFile) {
+  input <- paste(readLines(inputFile), collapse = "\n")
+  # The regex pattern: searching for code chunks containing solution = TRUE (case insensitive)
+  pattern <- "\\n *``` *{.*(?i)solution(?-i) *= *(?i)true(?-i).*} *\\n[\\s\\S]*?\\n *``` *"
+  replacement <- "\n```{r, answer = TRUE}\n# Write your answer here\n```\n"
+  # the pattern and replacement below reuses the original chunk type (r, asis etc). But the comment in r would result in a markdown header
+  # and should be adjusted too...
+  #pattern <- "\\n *``` *{ *([[:alpha:]]+) *,.*(?i)solution(?-i) *= *(?i)true(?-i).*} *\\n[\\s\\S]*?\\n *``` *"
+  #replacement <- "\n```{\\1, answer = TRUE}\n# Write your answer here\n```\n"
+  
+  output <- gsub(pattern, replacement, input, perl = TRUE)
+  # Removing the chunks with either echo or eval set to FALSE
+  pattern <- "\\n *``` *{.*(?i)(eval|echo|include)(?-i) *= *(?i)false(?-i).*} *\\n[\\s\\S]*?\\n *``` *"
+  replacement <- ""
+  output <- gsub(pattern, replacement, output, perl = TRUE)
+  # Replacing the original header by a custom one...
+  pattern <- "^--- *\\n[\\s\\S]*?\\n *--- *"
+  #header <- "---\ntitle: \"My answers\"\nauthor: \"My name\"\nknit: unilur::knit\ndate: `r format(Sys.time(), \"%d %B, %Y\")`\noutput:\n\tunilur::tutorial:\n\t\tanswer: yes\n---"
+  # Tab character seems not accepted by the custom yaml parser... Try to use the rmarkdown parser?
+  header <- "---\ntitle: \"My answers\"\nauthor: \"My name\"\nknit: unilur::knit\ndate: '`r format(Sys.time(), \"%d %B, %Y\")`'\noutput: unilur::tutorial\n---"
+  output <- gsub(pattern, header, output, perl = TRUE)
+  file.create(outputFile)
+  fileConn <- file(outputFile)
+  writeLines(output, fileConn)
+  close(fileConn)
 }

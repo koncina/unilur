@@ -1,5 +1,6 @@
+% Using xcolors with dvipsnames before mdframed to avoid option clash
+\usepackage[dvipsnames]{xcolor}
 \usepackage[framemethod=TikZ]{mdframed}
-\usepackage{xcolor}
 
 \usepackage{fancyvrb} % Fancy Verbatim: Used for the R code output
 \usepackage{caption}  % We will not place figures in floats: required if captions are needed
@@ -61,7 +62,7 @@
 \def\temp{#1}\ifx\temp\empty
 	\begin{mdframed}[style=bbox,%
 		linecolor = #2,%
-		%innertopmargin = 0.3pt,
+		innertopmargin = 10pt,%
 		backgroundcolor = #2!30]%
 \else
 	\begin{mdframed}[style=bbox,%
@@ -76,24 +77,27 @@
 }{\end{mdframed}}
 
 \mdfdefinestyle{input}{
-	frametitle = {},%
+  frametitle = {},%
   leftmargin = 0cm,%
   rightmargin = 0cm,%
   innerleftmargin = 0.2cm,%
   innerrightmargin = 0.2cm,%
+  innertopmargin=0.5em,%
   roundcorner = 2pt,%
-	linecolor = lightgray,%
-	linewidth = 1pt,%
-	backgroundcolor = lightgray!30
-	}
+  linecolor = lightgray,%
+  linewidth = 1pt,%
+  backgroundcolor = lightgray!30
+  }
+
+% Defining the cbox, solution and answer environments to draw a colored block
+% around the content
 
 \newcommand{\cboxs}[2][]{\begin{cbox}[#1]{#2}}
 \newcommand{\cboxe}{\end{cbox}}
 \newcommand{\solutions}{\begin{cbox}[Solution]{celadon}}
 \newcommand{\solutione}{\end{cbox}}
-% Defining the solution environment to draw a green block around its content
-% \newenvironment{solution}{\begin{cbox}[Solution]{celadon}}{\end{cbox}}
-
+\newcommand{\answers}{\begin{cbox}[Answer]{Dandelion}}
+\newcommand{\answere}{\end{cbox}}
 
 \makeatletter
 
