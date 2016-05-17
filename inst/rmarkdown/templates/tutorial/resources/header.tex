@@ -5,21 +5,6 @@
 \usepackage{fancyvrb} % Fancy Verbatim: Used for the R code output
 \usepackage{caption}  % We will not place figures in floats: required if captions are needed
 
-\makeatletter
-\@ifclassloaded{exam}
-  {
-    % Nothing to do: altering headers will collapse with the exam class
-  }{
-    \usepackage{fancyhdr}
-    \let\runauthor\@author
-    \let\runtitle\@title
-    \global\let\tikz@ensure@dollar@catcode=\relax
-    \pagestyle{fancy}
-    \lhead{\runauthor}
-    \rhead{\runtitle}
-  }%
-\makeatother
-
 \definecolor{celadon}{rgb}{0.67, 0.88, 0.69} % Define a nice green color for the correction
 
 % Used to format the R code when setting "only_asis" to FALSE (uses knitr:::hilight_source)

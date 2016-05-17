@@ -86,7 +86,9 @@ tutorial <- function( keep_tex = TRUE,
   header_credit <- system.file("rmarkdown", "templates", "tutorial", "resources", "header_credit.tex",
                         package = "unilur")
   
-  if (isTRUE(credit)) includes = list(in_header = c(header, header_credit))
+  # Disabling credit when exam is used:
+  # credit would interfere with the exam class which already uses fancyhdr
+  if (isTRUE(credit) && !isTRUE(examen)) includes = list(in_header = c(header, header_credit))
   else includes = list(in_header = header)
   
   if (isTRUE(examen)) {
