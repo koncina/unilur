@@ -64,7 +64,8 @@ knit <- (function(inputFile, encoding) {
 #' @export
 tutorial_html <- function( solution = TRUE,
                            includes = NULL,
-                           credit = FALSE
+                           credit = FALSE,
+                           ...
 ) {
   css <- system.file("rmarkdown", "templates", "tutorial", "resources", "style.css",
                      package = "unilur")
@@ -74,7 +75,8 @@ tutorial_html <- function( solution = TRUE,
   if (isTRUE(credit)) includes = list(after_body = credit.footer)
   
   format <- rmarkdown::html_document(css = css,
-                                     includes = includes)
+                                     includes = includes,
+                                     ...)
   hook_chunk <- function(x, options) {
     # If we are NOT rendering the solution html and the chunk is a solution one, we are
     #  returning an empty string to hide the chunk
