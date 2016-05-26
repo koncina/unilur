@@ -1,0 +1,38 @@
+.box {
+  border:2px solid gray;
+  border-radius: 4px;
+  padding: 0px;
+  margin: 10px 0 10px 0;
+}
+
+.box h2 {
+  color: white;
+  padding: 0 0 0 10px;
+  margin-top: 0px;
+}
+
+.box-content {
+  padding: 10px;
+}
+
+.solution {
+  border:2px solid rgb(172, 225, 175);
+  background-color:rgba(172, 225, 175 , 0.3);
+}
+
+.solution h2 {
+  background-color:rgba(172, 225, 175, 1);
+}
+
+.credit {
+  text-align: center;
+  color: gray;
+  border-top: 2px solid gray;
+  font-style: italic;
+  padding: 5px;
+}
+
+.credit a {
+  color: gray;
+  font-style: normal;
+}

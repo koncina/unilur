@@ -34,7 +34,7 @@ extract_yaml = function(fileName) {
 knit <- (function(inputFile, encoding) {
   # Maybe there is a cleaner way to pass variables to knit?
   yamlHeader <- extract_yaml(inputFile)
-
+  
   # Rendering a "response" Rmarkdown file (Rmd) omitting the solution chunks
   if (isTRUE(yamlHeader$answer)) answer.rmd(inputFile, paste0(gsub("(.*)(\\.[[:alnum:]]+$)", "\\1", inputFile), "_answer", ".Rmd"))
   
@@ -43,22 +43,72 @@ knit <- (function(inputFile, encoding) {
   else if (yamlHeader$solution == "wwo") tut_opt <- list(m = "files with and without", s = c(TRUE, FALSE))
   else if (yamlHeader$solution == "wow") tut_opt <- list(m = "files with and without", s = c(FALSE, TRUE))
   else tut_opt <- list(m = "file without", s = FALSE)
-
+  
   message(paste("Rendering", tut_opt$m, "solutions"))
-
+  
   if (!is.null(yamlHeader$suffix)) tut_opt$suffix <- yamlHeader$suffix
   else tut_opt$suffix <- "_solution"
-
+  
   for (s in tut_opt$s) {
     rmarkdown::render(inputFile, encoding = encoding,
                       output_file = paste0(gsub("(.*)(\\.[[:alnum:]]+$)", "\\1", inputFile), ifelse(s, tut_opt$suffix, ""), ".pdf"),
                       output_format = "unilur::tutorial",
                       output_options=list(
-                       solution = s
+                        solution = s
                       ), clean = TRUE
     )
   };
 })
+
+
+#' @export
+tutorial_html <- function( solution = TRUE,
+                           includes = NULL,
+                           credit = FALSE
+) {
+  css <- system.file("rmarkdown", "templates", "tutorial", "resources", "style.css",
+                     package = "unilur")
+  credit.footer <- system.file("rmarkdown", "templates", "tutorial", "resources", "credit.html",
+                               package = "unilur")
+  
+  if (isTRUE(credit)) includes = list(after_body = credit.footer)
+  
+  format <- rmarkdown::html_document(css = css,
+                                     includes = includes)
+  hook_chunk <- function(x, options) {
+    # If we are NOT rendering the solution html and the chunk is a solution one, we are
+    #  returning an empty string to hide the chunk
+    if (isTRUE(options$solution) && !isTRUE(solution)) {
+      return("")
+    }
+    
+    # If the solution html is being rendered and the chunk is a solution, we are drawing a green box around it.
+    if (isTRUE(options$solution) && isTRUE(solution)) {
+      BoxContent <- sprintf("\n<div class=\"box-content\">\n%s\n</div>", paste0(x, collapse = "\n"))
+      return(sprintf("\n<div class=\"box solution\">\n<h2>Solution</h2>\n%s\n</div>\n", BoxContent))
+    }
+    
+    # If "box" is set, we draw a frame around the chunk. 
+    if (!is.null(options$box)) {
+      # Setting the color (Only colors listed by colors() are supported: Caution with documents for pdf using dvipsnames latex colors!)
+      c <- col2rgb(options$box)
+      BoxColor <-  sprintf("rgba(%s, %s, %s, 0.3)", c[1], c[2], c[3])
+      BoxTitleColor <- sprintf("rgba(%s, %s, %s, 1)", c[1], c[2], c[3])
+      
+      BoxContent <- sprintf("\n<div class=\"box-content\">\n%s\n</div>", paste0(x, collapse = "\n"))
+      if (!is.null(options$boxtitle)) {
+        BoxContent <- sprintf("\n<h2 style=\"background-color:%s;\">%s</h2>\n%s\n", BoxTitleColor, options$boxtitle, BoxContent)
+      } 
+      x <- sprintf("\n<div class=\"box\" style=\"background-color:%s;border:2px solid %s;\">\n%s\n</div>\n", BoxColor, BoxTitleColor, BoxContent)
+    }
+    
+    # If no condition has been met before, we are returning the chunk without changing it...
+    return(x)
+  }
+  
+  format$knitr$knit_hooks$chunk  <- hook_chunk
+  format
+}
 
 #' @export
 tutorial <- function( keep_tex = TRUE,
@@ -67,24 +117,24 @@ tutorial <- function( keep_tex = TRUE,
                       fig_height = 4,
                       fig_crop = TRUE,
                       solution = TRUE,     # Turn ON or OFF the rendering of solution chunks
-                                           # Values in the yaml header are:
-                                           # yes, no, wwo, wow (wwo = with and without
-                                           #                    wow = without and with
-                                           #                    first is shown by RStudio)
+                      # Values in the yaml header are:
+                      # yes, no, wwo, wow (wwo = with and without
+                      #                    wow = without and with
+                      #                    first is shown by RStudio)
                       suffix = "_solution",# Used in the knit function to add a suffix to the pdf name
                       exam = FALSE,        # list(mcq = "oneparchoices") See options in the itemize2mcq function
                       credit = FALSE,      # show a link to the unilur homepage
                       answer = FALSE       # Generate answer Rmd (removing the solution chunks from the Rmd)
-                      ) {
+) {
   # exam can be either TRUE (yes) or a list to set some options
   # We will use the exam class if isTRUE or is.list is met:
   if (isTRUE(exam) || (is.list(exam))) examen <- TRUE
   else examen <- FALSE
-
+  
   header <- system.file("rmarkdown", "templates", "tutorial", "resources", "header.tex",
                         package = "unilur")
   header_credit <- system.file("rmarkdown", "templates", "tutorial", "resources", "header_credit.tex",
-                        package = "unilur")
+                               package = "unilur")
   
   # Disabling credit when exam is used:
   # credit would interfere with the exam class which already uses fancyhdr
@@ -110,7 +160,7 @@ tutorial <- function( keep_tex = TRUE,
                                     keep_tex = keep_tex,
                                     includes = includes,
                                     pandoc_args = args)
-
+  
   hook_chunk <- function(x, options) {
     # If we are NOT rendering the solution pdf and the chunk is a solution one, we are
     #  returning an empty string to hide the chunk
@@ -121,7 +171,7 @@ tutorial <- function( keep_tex = TRUE,
     
     # If examen mode is enabled and the "mcq" option is set we override the itemize environment
     if (isTRUE(examen) && isTRUE(options$mcq)) x <- itemize2mcq(x, mcq.option = as.list(exam)$mcq, ifelse(is.numeric(options$mcq.n), options$mcq.n, 3))
-
+    
     # If "box" is set, we draw a frame around the chunk. 
     if (!is.null(options$box)) {
       BoxBegin <- sprintf("\n\\cboxs[%s]{%s}\n", ifelse(is.null(options$boxtitle), "", options$boxtitle), options$box)
@@ -130,18 +180,18 @@ tutorial <- function( keep_tex = TRUE,
     
     # If the solution pdf is being rendered and the chunk is a solution, we are drawing a green box around it.
     if (isTRUE(options$solution) && isTRUE(solution)) return(paste0(c("\n\\solutions\n", x, "\n\\solutione\n"), collapse = "\n"))
-
-        # If the solution pdf is being rendered and the chunk is a solution, we are drawing a green box around it.
+    
+    # If the solution pdf is being rendered and the chunk is a solution, we are drawing a green box around it.
     if (isTRUE(options$answer)) return(paste0(c("\n\\answers\n", x, "\n\\answere\n"), collapse = "\n"))
     
     # If no condition has been met before, we are returning the chunk without changing it...
     return(x)
   }
-
+  
   hook_input <- function(x, options) {
     paste0(c("\n\\begin{mdframed}[style = input]", "\\begin{Verbatim}[commandchars=\\\\\\{\\}]", knitr:::hilight_source(x, "latex", options), "\\end{Verbatim}", "\\end{mdframed}\n"), collapse = "\n")
   }
-
+  
   hook_output <- function(x, options) {
     # Using trimws to remove the last newline character
     # which is messing up page breaks in latex...
@@ -150,7 +200,7 @@ tutorial <- function( keep_tex = TRUE,
     x <- paste0(c(OutputBegin, trimws(x, which = "right"), OutputEnd), collapse = "\n")
     return(x)
   }
-
+  
   hook_plot <- function(x, options) {
     # determine caption (if any)
     caption <- ifelse(is.null(options$fig.cap),
@@ -159,7 +209,7 @@ tutorial <- function( keep_tex = TRUE,
     # return the latex
     paste(c("\\begin{center}", sprintf("\\includegraphics[trim=0 0 0 -2mm]{%s}\n%s\n", gsub("\\\\", "/", x), caption), "\\end{center}"), collapse = "\n")
   }
-
+  
   format$knitr$knit_hooks$source  <- hook_input
   format$knitr$knit_hooks$output  <- hook_output
   format$knitr$knit_hooks$plot <- hook_plot
@@ -182,9 +232,9 @@ itemize2mcq <- function(x, mcq.option = c("oneparchoices", "oneparchoicesalt", "
                     oneparchoicesalt = c("opcalt", MCQMacroOption),
                     oneparcheckboxesalt = c("opcbalt", MCQMacroOption),
                     oneparcheckboxes = c("opcb", "")) #,
-                    #checkboxes = c("cb", ""), # Disabling the two last options as they generate latex errors...
-                    #choices = c("ch", ""))    # TODO: Fix it!
-
+  #checkboxes = c("cb", ""), # Disabling the two last options as they generate latex errors...
+  #choices = c("ch", ""))    # TODO: Fix it!
+  
   mcq.start <- paste0("\n\\", MCQMacros[[mcq.option]][1], MCQMacros[[mcq.option]][2], "{on}\n")
   mcq.end <- paste0("\n\\", MCQMacros[[mcq.option]][1], "{off}\n")
   return(paste(c(mcq.start, x, mcq.end), collapse = "\n"))
