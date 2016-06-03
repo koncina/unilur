@@ -1,0 +1,4 @@
+name: Examen (Pdf)
+description: >
+ Template for creating examen files (based on the latex exam class).
+create_dir: false
