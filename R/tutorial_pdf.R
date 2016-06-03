@@ -27,8 +27,10 @@ tutorial_pdf_base <- function( solution = FALSE,               # Turn ON or OFF 
     
     # If "box" is set, we draw a frame around the chunk. 
     if (!is.null(options$box)) {
-      BoxBegin <- sprintf("\n\\cboxs[%s]{%s}\n", ifelse(is.null(options$boxtitle), "", options$boxtitle), options$box)
-      x <- paste0(c(BoxBegin, x, "\n\\cboxe\n"), collapse = "\n")
+      c <- col2rgb(options$box)
+      ColorDef <- sprintf("\n\\definecolor{color-%s}{RGB}{%s}\n", options$label, paste(c, collapse = ", ")) 
+      BoxBegin <- sprintf("\n\\cboxs[%s]{color-%s}\n", ifelse(is.null(options$boxtitle), "", options$boxtitle), options$label)
+      x <- paste0(c(ColorDef, BoxBegin, x, "\n\\cboxe\n"), collapse = "\n")
     }
     
     # If the solution pdf is being rendered and the chunk is a solution, we are drawing a green box around it.

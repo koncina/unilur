@@ -24,6 +24,7 @@ tutorial_html <- function( solution = FALSE,
                            question_suffix = "_question",
                            answer = FALSE,                 # Generate answer Rmd (removing solution chunks from the Rmd)
                            credit = FALSE,                 # Show a link to the unilur homepage
+                           includes = NULL,
                            ...
 ) {
   css <- system.file("rmarkdown", "templates", "tutorial", "resources", "style.css",
