@@ -17,10 +17,14 @@ examen_pdf <- function(
   # Using the exam class and passing an additional exam variable to the pandoc template
   args <- c(args, "--variable", "documentclass=exam", "--variable", "exam=yes")
   
+  header_examen <- system.file("rmarkdown", "templates", "tutorial", "resources", "header_examen.tex",
+                               package = "unilur")
+  
   format <- tutorial_pdf_base(solution = solution,
                               credit = FALSE,
                               template = template,
                               pandoc_args = args,
+                              includes = list(in_header = header_examen),
                               ...)
   
   hook_chunk <- function(x, options) {
