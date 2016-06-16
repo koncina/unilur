@@ -17,7 +17,9 @@ examen_pdf <- function(
   # Using the exam class and passing an additional exam variable to the pandoc template
   args <- c(args, "--variable", "documentclass=exam", "--variable", "exam=yes")
   
-  format <- tutorial_pdf_base(template = template,
+  format <- tutorial_pdf_base(solution = solution,
+                              credit = FALSE,
+                              template = template,
                               pandoc_args = args,
                               ...)
   

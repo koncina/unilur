@@ -1,14 +1,42 @@
 
 tutorial_pdf_base <- function( solution = FALSE,               # Turn ON or OFF the rendering of solution chunks
-                          solution_suffix = "_solution",
-                          question_suffix = "_question",
-                          answer = FALSE,                 # Generate answer Rmd (removing solution chunks from the Rmd)
-                          credit = FALSE,                 # Show a link to the unilur homepage
-                          ...
+                               solution_suffix = "_solution",
+                               question_suffix = "_question",
+                               answer = FALSE,                 # Generate answer Rmd (removing solution chunks from the Rmd)
+                               credit = FALSE,                 # Show a link to the unilur homepage
+                               ...
 ) {
-  
+  Check <- ArgumentCheck::newArgCheck()
+  if (solution %in% c("wow", "wwo"))
+    ArgumentCheck::addWarning(
+      msg = "wow or wwo values for solution have been deprecated!",
+      argcheck = Check
+    )
+  if (!is.logical(solution)) 
+    ArgumentCheck::addError(
+      msg = "solution must be either yes (TRUE) or no (FALSE)",
+      argcheck = Check
+    )
   if (nchar(solution_suffix) == 0 || nchar(question_suffix) == 0 || solution_suffix == question_suffix)
-    stop("solution_suffix and question_suffix must be different and contain at least a character")
+    ArgumentCheck::addError(
+      msg = "solution_suffix and question_suffix must be different and contain at least a character",
+      argcheck = Check
+    )
+  if (!is.logical(answer)) 
+    ArgumentCheck::addError(
+      msg = "answer must be either yes (TRUE) or no (FALSE)",
+      argcheck = Check
+    )
+  if (!is.logical(credit)) 
+    ArgumentCheck::addError(
+      msg = "credit must be either yes (TRUE) or no (FALSE)",
+      argcheck = Check
+    )
+  ArgumentCheck::finishArgCheck(Check)
+  
+  
+  
+  
   
   header <- system.file("rmarkdown", "templates", "tutorial", "resources", "header.tex",
                         package = "unilur")
@@ -70,12 +98,8 @@ tutorial_pdf_base <- function( solution = FALSE,               # Turn ON or OFF 
   
   
   format$post_processor <- function(metadata, input_file, output_file, clean, verbose) {
-    print(metadata)
-    print(input_file)
-    print(output_file)
-    print(clean)
-    print(verbose)
-    new_name = paste0(gsub("(.*)(\\.[[:alnum:]]+$)", "\\1", output_file), ifelse(solution, solution_suffix, question_suffix), ".pdf")
+    new_name = paste0(gsub("(.*)(\\.[[:alnum:]]+$)", "\\1", output_file), ifelse(isTRUE(solution), solution_suffix, question_suffix), ".pdf")
+    print(new_name)
     # Creating the Rmd to be filled by the students (solutions were removed and replaced by empty answer chunks)
     # Not very clean: input_file is an intermediate already knitted file. I will use output_file and replace pdf with Rmd again (might not be reliable...)
     if (isTRUE(answer)) answer.rmd(paste0(gsub("(.*)(\\.[[:alnum:]]+$)", "\\1", output_file), ".Rmd"), paste0(gsub("(.*)(\\.[[:alnum:]]+$)", "\\1", output_file), "_answer", ".Rmd"))
