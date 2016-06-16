@@ -7,33 +7,8 @@ tutorial_pdf_base <- function( solution = FALSE,               # Turn ON or OFF 
                                includes = NULL,
                                ...
 ) {
-  Check <- ArgumentCheck::newArgCheck()
   if (solution %in% c("wow", "wwo"))
-    ArgumentCheck::addWarning(
-      msg = "wow or wwo values for solution have been deprecated!",
-      argcheck = Check
-    )
-  if (!is.logical(solution)) 
-    ArgumentCheck::addError(
-      msg = "solution must be either yes (TRUE) or no (FALSE)",
-      argcheck = Check
-    )
-  if (nchar(solution_suffix) == 0 || nchar(question_suffix) == 0 || solution_suffix == question_suffix)
-    ArgumentCheck::addError(
-      msg = "solution_suffix and question_suffix must be different and contain at least a character",
-      argcheck = Check
-    )
-  if (!is.logical(answer)) 
-    ArgumentCheck::addError(
-      msg = "answer must be either yes (TRUE) or no (FALSE)",
-      argcheck = Check
-    )
-  if (!is.logical(credit)) 
-    ArgumentCheck::addError(
-      msg = "credit must be either yes (TRUE) or no (FALSE)",
-      argcheck = Check
-    )
-  ArgumentCheck::finishArgCheck(Check)
+    warning("wow or wwo values have been deprecated. Use yes (TRUE) or no (FALSE) instead.")
   
   header <- system.file("rmarkdown", "templates", "tutorial", "resources", "header.tex",
                         package = "unilur")
@@ -43,15 +18,7 @@ tutorial_pdf_base <- function( solution = FALSE,               # Turn ON or OFF 
   if (isTRUE(credit)) includes_pdf = list(in_header = c(header, header_credit))
   else includes_pdf = list(in_header = header)
   
-  # Combining already defined includes with the ones we just defined
-  # From: http://stackoverflow.com/a/9519907
-  if (is.null(includes) || !is.list(includes)) {
-    includes <- includes_pdf
-  } else {
-    includes <- Map(c, includes_pdf, includes)
-  }
-  
-  format <- rmarkdown::pdf_document(includes = includes, ...)
+  format <- rmarkdown::pdf_document(includes = merge.list(includes, includes_pdf), ...)
   
   hook_chunk <- function(x, options) {
     # If we are NOT rendering the solution pdf and the chunk is a solution one, we are

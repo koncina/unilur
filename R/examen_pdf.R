@@ -3,6 +3,7 @@ examen_pdf <- function(
   solution = FALSE,
   id = FALSE,
   mcq = "oneparchoices",
+  includes = NULL,
   ...
 ) {
   template <- system.file("rmarkdown", "templates", "tutorial", "resources", "template.tex",
@@ -24,7 +25,7 @@ examen_pdf <- function(
                               credit = FALSE,
                               template = template,
                               pandoc_args = args,
-                              includes = list(in_header = header_examen),
+                              includes = merge.list(includes, list(in_header = header_examen)),
                               ...)
   
   hook_chunk <- function(x, options) {
