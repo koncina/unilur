@@ -4,6 +4,7 @@ tutorial_pdf_base <- function( solution = FALSE,               # Turn ON or OFF 
                                question_suffix = "_question",
                                answer = FALSE,                 # Generate answer Rmd (removing solution chunks from the Rmd)
                                credit = FALSE,                 # Show a link to the unilur homepage
+                               includes = NULL,
                                ...
 ) {
   Check <- ArgumentCheck::newArgCheck()
@@ -39,8 +40,16 @@ tutorial_pdf_base <- function( solution = FALSE,               # Turn ON or OFF 
   header_credit <- system.file("rmarkdown", "templates", "tutorial", "resources", "header_credit.tex",
                                package = "unilur")
   
-  if (isTRUE(credit)) includes = list(in_header = c(header, header_credit))
-  else includes = list(in_header = header)
+  if (isTRUE(credit)) includes_pdf = list(in_header = c(header, header_credit))
+  else includes_pdf = list(in_header = header)
+  
+  # Combining already defined includes with the ones we just defined
+  # From: http://stackoverflow.com/a/9519907
+  if (is.null(includes) || !is.list(includes)) {
+    includes <- includes_pdf
+  } else {
+    includes <- Map(c, includes_pdf, includes)
+  }
   
   format <- rmarkdown::pdf_document(includes = includes, ...)
   
