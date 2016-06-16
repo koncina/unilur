@@ -41,9 +41,9 @@ tutorial_pdf_base <- function( solution = FALSE,               # Turn ON or OFF 
   }
   
   hook_input <- function(x, options) {
-    InputBegin <- sprintf("\\begin{Verbatim}[%scommandchars=\\\\\\{\\}]", ifelse(isTRUE(options$samepage), "samepage, ", ""))
-    paste0(c("\n\\begin{mdframed}[style = input]",
-             InputBegin,
+    InputBegin <- sprintf("\n\\begin{mdframed}[style = input%s]", ifelse(isTRUE(options$samepage), ", nobreak = true", ""))
+    paste0(c(InputBegin,
+             "\\begin{Verbatim}[commandchars=\\\\\\{\\}]",
              knitr:::hilight_source(x, "latex", options),
              "\\end{Verbatim}",
              "\\end{mdframed}\n"),
