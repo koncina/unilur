@@ -8,6 +8,8 @@ Maintainer: Eric Koncina <mail@koncina.eu>
 Description: Rmarkdown template which creates tutorial files with the possibility to include/exclude the solutions.
 Depends:
     knitr (>= 1.12)
+Imports:
+    ArgumentCheck
 License: MIT
 LazyData: TRUE
 RoxygenNote: 5.0.1

@@ -34,10 +34,6 @@ tutorial_pdf_base <- function( solution = FALSE,               # Turn ON or OFF 
     )
   ArgumentCheck::finishArgCheck(Check)
   
-  
-  
-  
-  
   header <- system.file("rmarkdown", "templates", "tutorial", "resources", "header.tex",
                         package = "unilur")
   header_credit <- system.file("rmarkdown", "templates", "tutorial", "resources", "header_credit.tex",
