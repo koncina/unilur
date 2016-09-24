@@ -7,7 +7,9 @@ Author: Eric Koncina
 Maintainer: Eric Koncina <mail@koncina.eu>
 Description: Rmarkdown template which creates tutorial files with the possibility to include/exclude the solutions.
 Depends:
-    knitr (>= 1.12)
+  knitr (>= 1.12)
 License: MIT
+  file LICENSE
 LazyData: TRUE
 RoxygenNote: 5.0.1
+Suggests: testthat

@@ -1,3 +1,4 @@
+#' @importFrom grDevices col2rgb
 
 tutorial_pdf_base <- function( solution = FALSE,               # Turn ON or OFF the rendering of solution chunks
                                solution_suffix = "_solution",
@@ -110,7 +111,6 @@ tutorial_pdf_base <- function( solution = FALSE,               # Turn ON or OFF 
 tutorial_pdf <- function(...) {
   tutorial_pdf_base(...)
 }
-
 
 #' @export
 tutorial_solution_pdf <- function(...) {

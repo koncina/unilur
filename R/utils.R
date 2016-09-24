@@ -1,3 +1,5 @@
+#' @importFrom stats setNames
+
 # Merges two lists without creating duplicate elements
 # Used to merge arguments such as includes
 merge.list <- function(l1, l2) {

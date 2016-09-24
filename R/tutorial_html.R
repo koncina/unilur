@@ -1,4 +1,4 @@
-#' Convert to a tutorial PDF document
+#' Convert to a tutorial HTML document
 #'
 #' Format for converting from R Markdown to a tutorial HTML document.
 #' 
@@ -27,16 +27,24 @@ tutorial_html <- function( solution = FALSE,
                            includes = NULL,
                            ...
 ) {
-  css <- system.file("rmarkdown", "templates", "tutorial", "resources", "style.css",
+  css_tuto_file <- system.file("rmarkdown", "templates", "tutorial", "resources", "style.css",
                      package = "unilur")
+  
+  css_tuto <- paste(c("<style type='text/css'>", readLines(css_tuto_file), "</style>"), collapse = "\n")
+  
+  css_inc_file <- tempfile(pattern = "tuto_style", tmpdir = tempdir(), fileext = ".htm")
+  
+  writeLines(css_tuto, fc <- file(css_inc_file))
+  close(fc)
   
   credit.footer <- system.file("rmarkdown", "templates", "tutorial", "resources", "credit.html",
                                package = "unilur")
   
-  if (isTRUE(credit)) includes = list(after_body = credit.footer)
+  if (isTRUE(credit)) includes = merge.list(includes, list(after_body = credit.footer))
   
-  format <- rmarkdown::html_document(css = css,
-                                     includes = includes,
+  includes = merge.list(includes, list(in_header = css_inc_file))
+  
+  format <- rmarkdown::html_document(includes = includes,
                                      ...)
   hook_chunk <- function(x, options) {
     # If we are NOT rendering the solution html and the chunk is a solution one, we are
@@ -78,4 +86,9 @@ tutorial_html <- function( solution = FALSE,
   
   format$knitr$knit_hooks$chunk  <- hook_chunk
   format
+}
+
+#' @export
+tutorial_html_solution <- function(...) {
+  tutorial_html(solution = TRUE, ...)
 }
