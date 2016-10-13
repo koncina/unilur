@@ -48,12 +48,14 @@
 	\begin{mdframed}[style=bbox,%
 		linecolor = #2,%
 		innertopmargin = 10pt,%
+		skipabove = 10pt,%
 		backgroundcolor = #2!30]%
 \else
 	\begin{mdframed}[style=bbox,%
 		linecolor = #2,%
 		backgroundcolor = #2!30,%
-		innertopmargin=3pt,%
+		innertopmargin = 3pt,%
+		skipabove = 10pt,%
 		frametitle={\tikz[baseline = (current bounding box.east), outer sep = 0pt]
 		\node[anchor = east, rounded corners = 3pt, rectangle, fill = #2]{#1};},%
 		frametitleaboveskip = \dimexpr-\ht\strutbox\relax]
