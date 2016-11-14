@@ -4,7 +4,8 @@ author: 'John Doe'
 date: '`r format(Sys.time(), "%d %B, %Y")`'
 output:
   unilur::examen_pdf:
-    solution: no
+    id: yes
+  unilur::examen_pdf_solution:
     id: yes
 ---
 

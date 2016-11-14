@@ -1,0 +1,4 @@
+name: Tutorial
+description: >
+ Template for creating two Pdf or Html tutorial files (with and without exercise solutions).
+create_dir: false
