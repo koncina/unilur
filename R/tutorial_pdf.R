@@ -111,6 +111,6 @@ tutorial_pdf <- function(...) {
 }
 
 #' @export
-tutorial_solution_pdf <- function(...) {
+tutorial_pdf_solution <- function(...) {
   tutorial_pdf_base(solution = TRUE, ...)
 }

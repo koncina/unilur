@@ -77,6 +77,6 @@ itemize2mcq <- function(x, mcq.option = c("oneparchoices", "oneparchoicesalt", "
 }
 
 #' @export
-examen_solution_pdf <- function(...) {
+examen_pdf_solution <- function(...) {
   examen_pdf(solution = TRUE, ...)
 }
