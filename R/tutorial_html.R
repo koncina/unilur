@@ -27,24 +27,16 @@ tutorial_html <- function( solution = FALSE,
                            includes = NULL,
                            ...
 ) {
-  css_tuto_file <- system.file("rmarkdown", "templates", "tutorial", "resources", "style.css",
+  css <- system.file("rmarkdown", "templates", "tutorial", "resources", "style.css",
                      package = "unilur")
-  
-  css_tuto <- paste(c("<style type='text/css'>", readLines(css_tuto_file), "</style>"), collapse = "\n")
-  
-  css_inc_file <- tempfile(pattern = "tuto_style", tmpdir = tempdir(), fileext = ".htm")
-  
-  writeLines(css_tuto, fc <- file(css_inc_file))
-  close(fc)
   
   credit.footer <- system.file("rmarkdown", "templates", "tutorial", "resources", "credit.html",
                                package = "unilur")
   
-  if (isTRUE(credit)) includes = merge.list(includes, list(after_body = credit.footer))
+  if (isTRUE(credit)) includes = list(after_body = credit.footer)
   
-  includes = merge.list(includes, list(in_header = css_inc_file))
-  
-  format <- rmarkdown::html_document(includes = includes,
+  format <- rmarkdown::html_document(css = css,
+                                     includes = includes,
                                      ...)
   hook_chunk <- function(x, options) {
     # If we are NOT rendering the solution html and the chunk is a solution one, we are
