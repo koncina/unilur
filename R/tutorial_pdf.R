@@ -1,25 +1,23 @@
 #' @importFrom grDevices col2rgb
 
-tutorial_pdf_base <- function( solution = FALSE,               # Turn ON or OFF the rendering of solution chunks
-                               solution_suffix = "_solution",
-                               question_suffix = "_question",
-                               answer = FALSE,                 # Generate answer Rmd (removing solution chunks from the Rmd)
-                               credit = FALSE,                 # Show a link to the unilur homepage
-                               includes = NULL,
-                               ...
+tutorial_pdf_base <- function(solution = FALSE,               # Turn ON or OFF the rendering of solution chunks
+                              solution_suffix = "_solution",
+                              question_suffix = "_question",
+                              answer = FALSE,                 # Generate answer Rmd (removing solution chunks from the Rmd)
+                              credit = FALSE,                 # Show a link to the unilur homepage
+                              latex_class = "article",
+                              pandoc_args = NULL,
+                              ...
 ) {
-  if (solution %in% c("wow", "wwo"))
-    warning("wow or wwo values have been deprecated. Use yes (TRUE) or no (FALSE) instead.")
+
+  template <- system.file("rmarkdown", "templates", "tutorial", "resources", "template.tex",
+                          package = "unilur")
+  pandoc_args <- c(pandoc_args, "--variable", "geometry:margin=1in")  # Adjusts the margin
+  pandoc_args <- c(pandoc_args, "--variable", "graphics=yes")         # Enables rescaling of too big graphics
+  pandoc_args <- c(pandoc_args, "--variable", paste0("documentclass=", latex_class))
+  if (isTRUE(credit)) pandoc_args <- c(pandoc_args, "--variable", "credit=yes")
   
-  header <- system.file("rmarkdown", "templates", "tutorial", "resources", "header.tex",
-                        package = "unilur")
-  header_credit <- system.file("rmarkdown", "templates", "tutorial", "resources", "header_credit.tex",
-                               package = "unilur")
-  
-  if (isTRUE(credit)) includes_pdf = list(in_header = c(header, header_credit))
-  else includes_pdf = list(in_header = header)
-  
-  format <- rmarkdown::pdf_document(includes = merge.list(includes, includes_pdf), ...)
+  format <- rmarkdown::pdf_document(pandoc_args = pandoc_args, template = template, ...)
   
   hook_chunk <- function(x, options) {
     # If we are NOT rendering the solution pdf and the chunk is a solution one, we are

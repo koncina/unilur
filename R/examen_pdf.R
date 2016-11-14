@@ -4,27 +4,25 @@ examen_pdf <- function(
   id = FALSE,
   mcq = "oneparchoices",
   includes = NULL,
+  pandoc_args = NULL,
   ...
 ) {
   template <- system.file("rmarkdown", "templates", "tutorial", "resources", "template.tex",
                           package = "unilur")
-  args <- c()
-  args <- c(args, "--variable", "geometry:margin=1in")  # Adjusts the margin
-  args <- c(args, "--variable", "graphics=yes")         # Enables rescaling of too big graphics
-  
-  # Enables the rendering of the identification box (first and last name) 
-  if (isTRUE(id)) args <- c(args, "--variable", "idbox=yes")
+
+  # Enables the rendering of the identification box (first and last name)
+  if (isTRUE(id)) pandoc_args <- c(pandoc_args, "--variable", "idbox=yes")
   
   # Using the exam class and passing an additional exam variable to the pandoc template
-  args <- c(args, "--variable", "documentclass=exam", "--variable", "exam=yes")
+  pandoc_args <- c(pandoc_args, "--variable", "exam=yes")
   
   header_examen <- system.file("rmarkdown", "templates", "tutorial", "resources", "header_examen.tex",
                                package = "unilur")
   
   format <- tutorial_pdf_base(solution = solution,
                               credit = FALSE,
-                              template = template,
-                              pandoc_args = args,
+                              pandoc_args = pandoc_args,
+                              latex_class = "exam",
                               includes = merge.list(includes, list(in_header = header_examen)),
                               ...)
   
