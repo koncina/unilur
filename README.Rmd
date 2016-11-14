@@ -15,13 +15,13 @@ knitr::opts_chunk$set(echo = FALSE, fig.align = "center")
 - The main file containing the exercises or questions **without solutions**
 - The second one **including the expected answers** to the questions/exercises
 
-This template introduces additional tools such as the:
+These templates introduce additional possibilities such as the:
 
 - Creation of colored boxes to highlight some markdown or _R_ content.
-- Generate a *rmarkdown* file without solutions to allow students to fill in their answers
-- An *examen* mode allowing:
+- An *examen* template allowing:
     - to create multiple choice questions.
     - to draw a box asking students for their name during an examen.
+    - to draw dotted lines to fill in answers
 
 # Installation
 
@@ -31,21 +31,26 @@ The source code is hosted on [github](https://github.com/koncina/unilur). To ins
 devtools::install_git('https://github.com/koncina/unilur.git')
 ```
 
-The library contains example templates illustrating some of the different possibilities.
+The library contains example templates illustrating some of the possibilities.
 
-# Using the template
+# The tutorial template
 
 To use the tutorial template, adjust the `output` format in the document header as follows:
 
 ```
 output:
   unilur::tutorial_html: default
-  unilur::tutorial_html_solution: default
   unilur::tutorial_pdf: default
+  unilur::tutorial_html_solution: default
   unilur::tutorial_pdf_solution: default
 ```
 
-## Parameters
+Use the Rstudio knit button and knit to the wanted output format. Keep in mind that the output file will end with a suffix (which can be adjusted in the YAML header):
+
+- **`_question`** for `unilur::tutorial_html` and `unilur::tutorial_pdf`
+- **`_solution`** for `unilur::tutorial_html_solution` and `unilur::tutorial_pdf_solution`
+
+### Yaml header arguments
 
 Additional parameters of the unilur format can adjusted in the YAML front-matter. The table below summaries the different settings (default values are **bold**):
 
@@ -64,7 +69,7 @@ Answers or solutions are written within a [code chunk](http://rmarkdown.rstudio.
     plot(cars)
     ```r ''``
 
-You can also use markdown by writing it within an _asis_ chunk instead of an _r_ one:  
+You can also write markdown formatted text by using _asis_ chunks:  
     
     ```r ''``{asis, solution = TRUE}
     # This is a title
@@ -78,7 +83,7 @@ You can also use markdown by writing it within an _asis_ chunk instead of an _r_
     ```r ''``
     
 ```{r}
-knitr::include_graphics("http://eric.koncina.eu/unilur/img/solution.jpg")
+knitr::include_graphics("http://eric.koncina.eu/pics/r/unilur/solution.jpg")
 ```
 
 ## Colored boxes
@@ -99,12 +104,18 @@ To highlight some content and wrap it within a colored box, specify the `box = "
     ```r ''``
 
 ```{r}
-knitr::include_graphics("http://eric.koncina.eu/unilur/img/colorbox.jpg")
+knitr::include_graphics("http://eric.koncina.eu/pics/r/unilur/colorbox.jpg")
 ```
 
-## Examen
+## The examen template
 
-The examen mode (which relies on the latex [exam class](https://www.ctan.org/pkg/exam)) can be enabled in the YAML front-matter by defining the `exam` argument to `yes` or with additional arguments such as:
+The `unilur::examen_pdf` and `unilur::examen_pdf_solution` templates (relying on the latex [exam class](https://www.ctan.org/pkg/exam)) extend the possibilities of the tutorial template:
+
+- include an **identification box** to ask for the student's name
+- leave **space with dotted lines** between questions to write in the answers
+- generate **multiple choice questions**
+
+### Yaml header arguments
 
 | argument | value                                                                           |  description                                   |
 |----------|---------------------------------------------------------------------------------|:-----------------------------------------------|
@@ -139,8 +150,8 @@ Questions are defined as fifth-level 5 headings (`##### question`). It is possib
     ```r ''``
 
 ```{r}
-knitr::include_graphics("http://eric.koncina.eu/unilur/img/exam_questions.jpg")
-knitr::include_graphics("http://eric.koncina.eu/unilur/img/exam_solution.jpg")
+knitr::include_graphics("http://eric.koncina.eu/pics/r/unilur/exam_questions.jpg")
+knitr::include_graphics("http://eric.koncina.eu/pics/r/unilur/exam_solution.jpg")
 ```
 
 
@@ -168,9 +179,9 @@ The snapshots below show how the different `<mcq theme>` values look like:
 
 |     mcq theme          |  result                                                            |
 |:----------------------:|:------------------------------------------------------------------:|
-| `oneparchoices`        | ![](http://eric.koncina.eu/unilur/img/mcq_oneparchoices.jpg)       |
-| `oneparchoicesalt`     | ![](http://eric.koncina.eu/unilur/img/mcq_oneparchoicesalt.jpg)    |
-| `oneparcheckboxes`     | ![](http://eric.koncina.eu/unilur/img/mcq_oneparcheckboxes.jpg)    |
-| `oneparcheckboxesalt`  | ![](http://eric.koncina.eu/unilur/img/mcq_oneparcheckboxesalt.jpg) |
+| `oneparchoices`        | ![](http://eric.koncina.eu/pics/r/unilur/mcq_oneparchoices.jpg)       |
+| `oneparchoicesalt`     | ![](http://eric.koncina.eu/pics/r/unilur/mcq_oneparchoicesalt.jpg)    |
+| `oneparcheckboxes`     | ![](http://eric.koncina.eu/pics/r/unilur/mcq_oneparcheckboxes.jpg)    |
+| `oneparcheckboxesalt`  | ![](http://eric.koncina.eu/pics/r/unilur/mcq_oneparcheckboxesalt.jpg) |
 
 For the `oneparchoicesalt` and `oneparcheckboxesalt` options, it is possible to specify the number of items per line with the `mcq.n` chunk option (default is 3).
