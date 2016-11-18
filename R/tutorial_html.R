@@ -25,9 +25,10 @@ tutorial_html <- function( solution = FALSE,
                            answer = FALSE,                 # Generate answer Rmd (removing solution chunks from the Rmd)
                            credit = FALSE,                 # Show a link to the unilur homepage
                            includes = NULL,
+                           css = NULL,
                            ...
 ) {
-  css <- system.file("rmarkdown", "templates", "tutorial", "resources", "style.css",
+  css_tutorial <- system.file("rmarkdown", "templates", "tutorial", "resources", "style.css",
                      package = "unilur")
   
   credit.footer <- system.file("rmarkdown", "templates", "tutorial", "resources", "credit.html",
@@ -35,7 +36,7 @@ tutorial_html <- function( solution = FALSE,
   
   if (isTRUE(credit)) includes = list(after_body = credit.footer)
   
-  format <- rmarkdown::html_document(css = css,
+  format <- rmarkdown::html_document(css = c(css, css_tutorial),
                                      includes = includes,
                                      ...)
   hook_chunk <- function(x, options) {
