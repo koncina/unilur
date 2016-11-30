@@ -26,18 +26,23 @@ tutorial_html <- function( solution = FALSE,
                            credit = FALSE,                 # Show a link to the unilur homepage
                            includes = NULL,
                            css = NULL,
+                           extra_dependencies = NULL,
                            ...
 ) {
-  css_tutorial <- system.file("rmarkdown", "templates", "tutorial", "resources", "style.css",
-                     package = "unilur")
+  #css_tutorial <- system.file("rmarkdown", "templates", "tutorial", "resources", "style.css",
+  #                   package = "unilur")
   
   credit.footer <- system.file("rmarkdown", "templates", "tutorial", "resources", "credit.html",
                                package = "unilur")
   
   if (isTRUE(credit)) includes = list(after_body = credit.footer)
   
-  format <- rmarkdown::html_document(css = c(css, css_tutorial),
+  extra_dependencies <- append(extra_dependencies,
+                               list(html_dependency_tutorial()))
+  
+  format <- rmarkdown::html_document(css = css,
                                      includes = includes,
+                                     extra_dependencies = extra_dependencies,
                                      ...)
   hook_chunk <- function(x, options) {
     # If we are NOT rendering the solution html and the chunk is a solution one, we are
@@ -84,4 +89,15 @@ tutorial_html <- function( solution = FALSE,
 #' @export
 tutorial_html_solution <- function(...) {
   tutorial_html(solution = TRUE, ...)
+}
+
+html_dependency_tutorial <- function() {
+  htmltools::htmlDependency(
+    name = "tutorial",
+    version = "0.1",
+    src = system.file("rmarkdown", "templates", "tutorial", "resources", package = "unilur"),
+    stylesheet = c(
+      "css/style.css"
+    )
+  )
 }
