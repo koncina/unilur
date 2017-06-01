@@ -11,8 +11,8 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -59,7 +59,12 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/koncina/unilur">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -88,23 +93,11 @@
       <tbody>
         <tr>
           <th colspan="2">
-            <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-            <p class="section-desc"></p>
+            <h2 id="section-tutorials" class="hasAnchor"><a href="#section-tutorials" class="anchor"></a>Tutorials</h2>
+            <p class="section-desc"><p>Generate tutorial PDF or HTML files.</p></p>
           </th>
         </tr>
         <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="answer_rmd.html">answer_rmd</a></code> </p>
-          </td>
-          <td><p>Convert to a tutorial answer Rmarkdown file</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="examen_pdf.html">examen_pdf</a></code> <code><a href="examen_pdf.html">examen_pdf_solution</a></code> </p>
-          </td>
-          <td><p>Convert to an examen PDF document</p></td>
-        </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="tutorial_html.html">tutorial_html</a></code> <code><a href="tutorial_html.html">tutorial_html_solution</a></code> </p>
@@ -117,6 +110,34 @@
           </td>
           <td><p>Convert to a tutorial PDF document</p></td>
         </tr>
+      </tbody><tbody>
+        <tr>
+          <th colspan="2">
+            <h2 id="section-examen" class="hasAnchor"><a href="#section-examen" class="anchor"></a>Examen</h2>
+            <p class="section-desc"><p>PDF template to generate examen files.</p></p>
+          </th>
+        </tr>
+        <tr>
+          <!--  -->
+          <td>
+            <p><code><a href="examen_pdf.html">examen_pdf</a></code> <code><a href="examen_pdf.html">examen_pdf_solution</a></code> </p>
+          </td>
+          <td><p>Convert to an examen PDF document</p></td>
+        </tr>
+      </tbody><tbody>
+        <tr>
+          <th colspan="2">
+            <h2 id="section-answer" class="hasAnchor"><a href="#section-answer" class="anchor"></a>Answer</h2>
+            <p class="section-desc"><p>Generate a Rmarkdown file to fill in answers</p></p>
+          </th>
+        </tr>
+        <tr>
+          <!--  -->
+          <td>
+            <p><code><a href="answer_rmd.html">answer_rmd</a></code> </p>
+          </td>
+          <td><p>Convert to a tutorial answer Rmarkdown file</p></td>
+        </tr>
       </tbody>
       </table>
     </div>
@@ -125,7 +146,9 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#section-tutorials">Tutorials</a></li>
+      <li><a href="#section-examen">Examen</a></li>
+      <li><a href="#section-answer">Answer</a></li>
     </ul>
   </div>
 </div>
