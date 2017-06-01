@@ -1,3 +1,23 @@
+#' Convert to an examen PDF document
+#'
+#' Format for converting from R Markdown to an examen PDF document.
+#' 
+#' @inheritParams rmarkdown::pdf_document
+#' 
+#' @details See the inherited `rmarkdown::pdf_document` help page for additional arguments.
+#' 
+#' @param solution Turn ON or OFF the rendering of solution chunks (default is \code{FALSE})
+#' 
+#' @param solution_suffix Suffix which is added to the filename when \code{solution = TRUE} (default is '_solution')
+#' 
+#' @param question_suffix Suffix which is added to the filename when \code{solution = FALSE} (default is '_question')
+#' 
+#' @param id Draw a student identification box
+#' 
+#' @param mcq Theme for the multiple choice questions (\code{oneparchoices}, \code{oneparchoicesalt}, \code{oneparcheckboxesalt} or \code{oneparcheckboxes})
+#' 
+#' @return R Markdown output format to pass to \code{\link{render}}
+#' 
 #' @export
 examen_pdf <- function(
   solution = FALSE,
@@ -76,6 +96,8 @@ itemize2mcq <- function(x, mcq.option = c("oneparchoices", "oneparchoicesalt", "
   return(paste(c(mcq.start, x, mcq.end), collapse = "\n"))
 }
 
+#' @rdname examen_pdf
+#' 
 #' @export
 examen_pdf_solution <- function(...) {
   examen_pdf(solution = TRUE, ...)

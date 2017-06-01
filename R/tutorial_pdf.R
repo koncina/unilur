@@ -109,6 +109,7 @@ tutorial_pdf <- function(...) {
   tutorial_pdf_base(...)
 }
 
+#' @rdname tutorial_pdf
 #' @export
 tutorial_pdf_solution <- function(...) {
   tutorial_pdf_base(solution = TRUE, ...)

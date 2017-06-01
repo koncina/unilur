@@ -91,6 +91,8 @@ tutorial_html <- function( solution = FALSE,
 }
 
 #' @export
+#' 
+#' @rdname tutorial_html
 tutorial_html_solution <- function(...) {
   tutorial_html(solution = TRUE, ...)
 }
