@@ -1,6 +1,9 @@
-# Release Notes
+# Unilur 0.3.0
 
-## Version 0.2
+- Added `unilur::answer_rmd` to create a Rmd file with solutions being removed. This file can be used by students to fill in their answers.
+- Improved knitting of files with `solution = FALSE` by disabling the evaluation of these chunks.
+
+# Unilur 0.2.0
 
 - `unilur::tutorial` was replaced by `unilur::tutorial_pdf` and `unilur::tutorial_html`
 - Removed `unilur::knit`:

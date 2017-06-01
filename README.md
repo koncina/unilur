@@ -58,23 +58,7 @@ Additional parameters of the unilur format can adjusted in the YAML front-matter
 
 Answers or solutions are written within a [code chunk](http://rmarkdown.rstudio.com/authoring_rcodechunks.html) with the `solution = TRUE` option. The content of these chunks will be wrapped within a green box.
 
-    ```{r, solution = TRUE}
-    # Only visible and evaluated in the solution file...
-    plot(cars)
-    ```
 
-You can also write markdown formatted text by using _asis_ chunks:  
-    
-    ```{asis, solution = TRUE}
-    # This is a title
-
-    And the text can be formatted as **bold** or *italic*
-
-    You can also list some items:
-
-    - item 1
-    - item 2
-    ```
     
 <img src="http://eric.koncina.eu/pics/r/unilur/solution.jpg" style="display: block; margin: auto;" />
 
