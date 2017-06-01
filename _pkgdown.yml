@@ -1,0 +1,17 @@
+template:
+  params:
+    bootswatch: cerulean
+
+reference:
+  - title: Tutorials
+    desc:  Generate tutorial PDF or HTML files.
+    contents:
+    - starts_with("tutorial_")
+  - title: Examen
+    desc:  PDF template to generate examen files.
+    contents:
+    - starts_with("examen_")
+  - title: Answer
+    desc: Generate a Rmarkdown file to fill in answers
+    contents:
+    - answer_rmd
