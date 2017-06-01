@@ -3,7 +3,6 @@
 tutorial_pdf_base <- function(solution = FALSE,               # Turn ON or OFF the rendering of solution chunks
                               solution_suffix = "_solution",
                               question_suffix = "_question",
-                              answer = FALSE,                 # Generate answer Rmd (removing solution chunks from the Rmd)
                               credit = FALSE,                 # Show a link to the unilur homepage
                               latex_class = "article",
                               pandoc_args = NULL,
@@ -69,10 +68,6 @@ tutorial_pdf_base <- function(solution = FALSE,               # Turn ON or OFF t
   
   format$post_processor <- function(metadata, input_file, output_file, clean, verbose) {
     new_name = paste0(gsub("(.*)(\\.[[:alnum:]]+$)", "\\1", output_file), ifelse(isTRUE(solution), solution_suffix, question_suffix), ".pdf")
-    print(new_name)
-    # Creating the Rmd to be filled by the students (solutions were removed and replaced by empty answer chunks)
-    # Not very clean: input_file is an intermediate already knitted file. I will use output_file and replace pdf with Rmd again (might not be reliable...)
-    if (isTRUE(answer)) answer.rmd(paste0(gsub("(.*)(\\.[[:alnum:]]+$)", "\\1", output_file), ".Rmd"), paste0(gsub("(.*)(\\.[[:alnum:]]+$)", "\\1", output_file), "_answer", ".Rmd"))
     file.rename(output_file, new_name)
     return(new_name)
   }
@@ -104,8 +99,6 @@ tutorial_pdf_base <- function(solution = FALSE,               # Turn ON or OFF t
 #' @param solution_suffix Suffix which is added to the filename when \code{solution = TRUE} (default is '_solution')
 #' 
 #' @param question_suffix Suffix which is added to the filename when \code{solution = FALSE} (default is '_question')
-#' 
-#' @param answer Turn ON or OFF the rendering of a Rmarkdown file (Rmd) without the solutions (default is \code{FALSE}). It will create a <filename>_answer.Rmd file.
 #' 
 #' @param credit Turn ON or OFF the footer showing a link to the unilur homepage (default is \code{FALSE})
 #' 

@@ -12,8 +12,6 @@
 #' 
 #' @param question_suffix Suffix which is added to the filename when \code{solution = FALSE} (default is '_question')
 #' 
-#' @param answer Turn ON or OFF the rendering of a Rmarkdown file (Rmd) without the solutions (default is \code{FALSE}). It will create a <filename>_answer.Rmd file.
-#' 
 #' @param credit Turn ON or OFF the footer showing a link to the unilur homepage (default is \code{FALSE})
 #' 
 #' @return R Markdown output format to pass to \code{\link{render}}
@@ -22,7 +20,6 @@
 tutorial_html <- function( solution = FALSE,
                            solution_suffix = "_solution",
                            question_suffix = "_question",
-                           answer = FALSE,                 # Generate answer Rmd (removing solution chunks from the Rmd)
                            credit = FALSE,                 # Show a link to the unilur homepage
                            includes = NULL,
                            css = NULL,
