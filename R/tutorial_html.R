@@ -82,6 +82,13 @@ tutorial_html <- function( solution = FALSE,
      return(new_name)
   }
   
+  format$pre_knit <-  function(input, ...) {
+    knitr::opts_hooks$set(solution = function(options) {
+      if (!isTRUE(solution)) options$eval <- FALSE
+      options
+    })
+  }
+  
   format$knitr$knit_hooks$chunk  <- hook_chunk
   format
 }

@@ -67,7 +67,6 @@ tutorial_pdf_base <- function(solution = FALSE,               # Turn ON or OFF t
     paste(c("\\begin{center}", sprintf("\\includegraphics[trim=0 0 0 -2mm]{%s}\n%s\n", gsub("\\\\", "/", x), caption), "\\end{center}"), collapse = "\n")
   }
   
-  
   format$post_processor <- function(metadata, input_file, output_file, clean, verbose) {
     new_name = paste0(gsub("(.*)(\\.[[:alnum:]]+$)", "\\1", output_file), ifelse(isTRUE(solution), solution_suffix, question_suffix), ".pdf")
     print(new_name)
@@ -76,6 +75,13 @@ tutorial_pdf_base <- function(solution = FALSE,               # Turn ON or OFF t
     if (isTRUE(answer)) answer.rmd(paste0(gsub("(.*)(\\.[[:alnum:]]+$)", "\\1", output_file), ".Rmd"), paste0(gsub("(.*)(\\.[[:alnum:]]+$)", "\\1", output_file), "_answer", ".Rmd"))
     file.rename(output_file, new_name)
     return(new_name)
+  }
+  
+  format$pre_knit <-  function(input, ...) {
+    knitr::opts_hooks$set(solution = function(options) {
+      if (!isTRUE(solution)) options$eval <- FALSE
+      options
+    })
   }
   
   format$knitr$knit_hooks$source  <- hook_input
