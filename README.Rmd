@@ -24,7 +24,7 @@ In addition, you will be able to:
     + multiple choice questions
     + a candidate identification form
     + dotted lines placeholders to fill in answers
-- Create a new Rmarkdown file without the solutions allowing the 
+- Create a new Rmarkdown file with solution chunks replaced by empty ones.
 
 ### Installation
 
