@@ -58,39 +58,45 @@
     
     
 <div class="contents">
-<p><strong>Unilur</strong> is a <a href="http://rmarkdown.rstudio.com/">rmarkdown</a> template usefull to create documents for tutorials, practicals or examens. It allows the rendering of two distinct pdf/html files from a single rmarkdown file:</p>
+<div id="overview" class="section level3">
+<h3 class="hasAnchor">
+<a href="#overview" class="anchor"></a>Overview</h3>
+<p><strong><code>unilur</code></strong> is a R package to help writing tutorials, practicals or examination papers with <a href="http://rmarkdown.rstudio.com/">rmarkdown</a>.</p>
+<p>With <code>unilur</code> you can render the following outputs from a single rmarkdown file:</p>
 <ul>
-<li>The main file containing the exercises or questions <strong>without solutions</strong>
+<li>the exam or tutorial questions (answers remaining hidden) as a PDF or HTML file.</li>
+<li>the exam or tutorial questions with sample answers as a PDF or HTML file.</li>
+</ul>
+<p>In addition, you will be able to:</p>
+<ul>
+<li>Create coloured boxes to highlight some markdown or <em>R</em> content.</li>
+<li>Create examination papers with
+<ul>
+<li>multiple choice questions</li>
+<li>a candidate identification form</li>
+<li>dotted lines placeholders to fill in answers</li>
+</ul>
 </li>
-<li>The second one <strong>including the expected answers</strong> to the questions/exercises</li>
+<li>Create a new Rmarkdown file without the solutions allowing the</li>
 </ul>
-<p>These templates introduce additional possibilities such as the:</p>
-<ul>
-<li>Creation of colored boxes to highlight some markdown or <em>R</em> content.</li>
-<li>An <em>examen</em> template allowing:
-<ul>
-<li>to create multiple choice questions.</li>
-<li>to draw a box asking students for their name during an examen.</li>
-<li>to draw dotted lines to fill in answers</li>
-</ul>
-</li>
-</ul>
-<div id="installation" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h1></div>
-<p>The source code is hosted on <a href="https://github.com/koncina/unilur">github</a>. To install the <em>R</em> library, run the following code:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw">install_git</span>(<span class="st">'https://github.com/koncina/unilur.git'</span>)</code></pre></div>
-<p>The library contains example templates illustrating some of the possibilities.</p>
 </div>
-<div id="the-tutorial-template" class="section level1">
-<h1 class="hasAnchor">
-<a href="#the-tutorial-template" class="anchor"></a>The tutorial template</h1>
-<p>To use the tutorial template, adjust the <code>output</code> format in the document header as follows:</p>
+<div id="installation" class="section level3">
+<h3 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h3>
+<p>The source code is hosted on <a href="https://github.com/koncina/unilur">github</a>. To install the <em>R</em> package, run the following code:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"koncina/unilur"</span>)</code></pre></div>
+<p>The package contains example templates illustrating some of the possibilities.</p>
+</div>
+<div id="writing-tutorials" class="section level3">
+<h3 class="hasAnchor">
+<a href="#writing-tutorials" class="anchor"></a>Writing tutorials</h3>
+<p>To create tutorials, adjust the <code>output</code> format in the document header as follows:</p>
 <pre><code>output:
   unilur::tutorial_html: default
   unilur::tutorial_pdf: default
   unilur::tutorial_html_solution: default
-  unilur::tutorial_pdf_solution: default</code></pre>
+  unilur::tutorial_pdf_solution: default
+  unilur::answer_rmd: default</code></pre>
 <p>Use the Rstudio knit button and knit to the wanted output format. Keep in mind that the output file will end with a suffix (which can be adjusted in the YAML header):</p>
 <ul>
 <li>
@@ -99,11 +105,14 @@
 <li>
 <strong><code>_solution</code></strong> for <code>unilur::tutorial_html_solution</code> and <code>unilur::tutorial_pdf_solution</code>
 </li>
+<li>
+<strong><code>_answer</code></strong> for <code>unilur::answer_rmd</code>
+</li>
 </ul>
-<div id="yaml-header-arguments" class="section level3">
-<h3 class="hasAnchor">
-<a href="#yaml-header-arguments" class="anchor"></a>Yaml header arguments</h3>
-<p>Additional parameters of the unilur format can adjusted in the YAML front-matter. The table below summaries the different settings (default values are <strong>bold</strong>):</p>
+<div id="yaml-header-arguments" class="section level4">
+<h4 class="hasAnchor">
+<a href="#yaml-header-arguments" class="anchor"></a>Yaml header arguments</h4>
+<p>Adjust additional parameters of the <code>unilur</code> format in the YAML front-matter. The table below summarises the different settings (default values are <strong>bold</strong>):</p>
 <table class="table">
 <thead><tr class="header">
 <th>parameter</th>
@@ -124,6 +133,12 @@
 <td align="left">suffix appended to the solution pdf/html</td>
 </tr>
 <tr class="odd">
+<td>answer_suffix</td>
+<td>
+<em>text</em> (<strong>_answer</strong>)</td>
+<td align="left">suffix appended to the answer Rmd</td>
+</tr>
+<tr class="even">
 <td>credit</td>
 <td>
 <code>yes</code>/<strong><code>no</code></strong>
@@ -133,16 +148,16 @@
 </tbody>
 </table>
 </div>
-<div id="solutions" class="section level2">
-<h2 class="hasAnchor">
-<a href="#solutions" class="anchor"></a>Solutions</h2>
+<div id="solutions" class="section level4">
+<h4 class="hasAnchor">
+<a href="#solutions" class="anchor"></a>Solutions</h4>
 <p>Answers or solutions are written within a <a href="http://rmarkdown.rstudio.com/authoring_rcodechunks.html">code chunk</a> with the <code>solution = TRUE</code> option. The content of these chunks will be wrapped within a green box.</p>
 <p><img src="http://eric.koncina.eu/pics/r/unilur/solution.jpg" style="display: block; margin: auto;"></p>
 </div>
-<div id="colored-boxes" class="section level2">
-<h2 class="hasAnchor">
-<a href="#colored-boxes" class="anchor"></a>Colored boxes</h2>
-<p>To highlight some content and wrap it within a colored box, specify the <code>box = "&lt;color&gt;"</code> and eventually <code>boxtitle = "&lt;title&gt;"</code> arguments in the chunk (use the colors defined by <code>colors()</code> or define your own).</p>
+<div id="coloured-boxes" class="section level4">
+<h4 class="hasAnchor">
+<a href="#coloured-boxes" class="anchor"></a>Coloured boxes</h4>
+<p>To highlight some content and wrap it within a coloured box, use the <code>box = "&lt;colour&gt;"</code> chunk option. Use the colours defined by <code>colors()</code> or define your own (using the <code>rgb()</code> function or a hexadecimal colour code). You can adjust the box title using the <code>boxtitle = "&lt;title&gt;"</code> chunk option.</p>
 <pre><code>```{asis, box = "red", boxtitle = "My red box"}
 This is a **red** box and titled *My red box*
 ```
@@ -156,19 +171,20 @@ It is also possible to use **custom colors** defined as hexadecimal color codes 
 ```</code></pre>
 <p><img src="http://eric.koncina.eu/pics/r/unilur/colorbox.jpg" style="display: block; margin: auto;"></p>
 </div>
-<div id="the-examen-template" class="section level2">
-<h2 class="hasAnchor">
-<a href="#the-examen-template" class="anchor"></a>The examen template</h2>
+</div>
+<div id="writing-examination-papers" class="section level3">
+<h3 class="hasAnchor">
+<a href="#writing-examination-papers" class="anchor"></a>Writing examination papers</h3>
 <p>The <code>unilur::examen_pdf</code> and <code>unilur::examen_pdf_solution</code> templates (relying on the latex <a href="https://www.ctan.org/pkg/exam">exam class</a>) extend the possibilities of the tutorial template:</p>
 <ul>
-<li>include an <strong>identification box</strong> to ask for the student’s name</li>
-<li>leave <strong>space with dotted lines</strong> between questions to write in the answers</li>
+<li>include an <strong>identification box</strong> to be filled in by the candidate</li>
+<li>insert <strong>placeholders with dotted lines</strong> between questions to write in the answers</li>
 <li>generate <strong>multiple choice questions</strong>
 </li>
 </ul>
-<div id="yaml-header-arguments-1" class="section level3">
-<h3 class="hasAnchor">
-<a href="#yaml-header-arguments-1" class="anchor"></a>Yaml header arguments</h3>
+<div id="yaml-header-arguments-1" class="section level4">
+<h4 class="hasAnchor">
+<a href="#yaml-header-arguments-1" class="anchor"></a>Yaml header arguments</h4>
 <table class="table">
 <colgroup>
 <col width="7%">
@@ -186,7 +202,7 @@ It is also possible to use **custom colors** defined as hexadecimal color codes 
 <td>
 <strong><code>yes</code></strong>/<code>no</code>
 </td>
-<td align="left">draws a box to ask students for their name</td>
+<td align="left">draws a candidate identification form</td>
 </tr>
 <tr class="even">
 <td>mcq</td>
@@ -198,9 +214,9 @@ It is also possible to use **custom colors** defined as hexadecimal color codes 
 </tbody>
 </table>
 </div>
-<div id="questions" class="section level3">
-<h3 class="hasAnchor">
-<a href="#questions" class="anchor"></a>Questions</h3>
+<div id="questions" class="section level4">
+<h4 class="hasAnchor">
+<a href="#questions" class="anchor"></a>Questions</h4>
 <p>Questions are defined as fifth-level 5 headings (<code>##### question</code>). It is possible to leave some space with lines in the main pdf file allowing the students to write down their answers. Just set the <code>response.space = &lt;s&gt;</code> chunk argument (in inches) together with <code>solution = TRUE</code>.</p>
 <pre><code>---
 title: "Examen demo"
@@ -226,9 +242,9 @@ This would be the expected answer to the question
 ```</code></pre>
 <p><img src="http://eric.koncina.eu/pics/r/unilur/exam_questions.jpg" style="display: block; margin: auto;"><img src="http://eric.koncina.eu/pics/r/unilur/exam_solution.jpg" style="display: block; margin: auto;"></p>
 </div>
-<div id="multiple-choice-questions" class="section level3">
-<h3 class="hasAnchor">
-<a href="#multiple-choice-questions" class="anchor"></a>Multiple choice questions</h3>
+<div id="multiple-choice-questions" class="section level4">
+<h4 class="hasAnchor">
+<a href="#multiple-choice-questions" class="anchor"></a>Multiple choice questions</h4>
 <p>Lists can be rendered as multiple choice questions. Write the list within an <code>asis</code> chunk and set the option <code>mcq = TRUE</code> like in the example below:</p>
 <pre><code>```{asis, mcq = TRUE}
 - Item 1
@@ -269,6 +285,16 @@ This would be the expected answer to the question
 <p>For the <code>oneparchoicesalt</code> and <code>oneparcheckboxesalt</code> options, it is possible to specify the number of items per line with the <code>mcq.n</code> chunk option (default is 3).</p>
 </div>
 </div>
+<div id="generate-a-rmarkdown-file-without-solution-chunks" class="section level3">
+<h3 class="hasAnchor">
+<a href="#generate-a-rmarkdown-file-without-solution-chunks" class="anchor"></a>Generate a Rmarkdown file without solution chunks</h3>
+<p>Use the <code>unilur::answer_rmd</code> output format to generate a Rmarkdown document containing all the instructions but without the solution chunks which are replaced by empty ones. The Yaml header is also changed and you can adjust the title, author or output:</p>
+<pre><code>output:
+  unilur::answer_rmd:
+    yaml:
+      title: "My answers"
+      author: "My name"
+      output: html_document</code></pre>
 </div>
 </div>
   </div>
