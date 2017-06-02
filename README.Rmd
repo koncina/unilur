@@ -106,7 +106,7 @@ The `unilur::examen_pdf` and `unilur::examen_pdf_solution` templates (relying on
 
 | argument | value                                                                           |  description                                   |
 |----------|---------------------------------------------------------------------------------|:-----------------------------------------------|
-|  id      | **`yes`**/`no`                                                                  |  draws candidate identification form           |
+|  id      | **`yes`**/`no`                                                                  |  draws a candidate identification form         |
 |  mcq     | `oneparchoices`, `oneparchoicesalt`, `oneparcheckboxesalt`, `oneparcheckboxes`  |  theme for the multiple choice questions       |
 
 #### Questions

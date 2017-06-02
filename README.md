@@ -109,7 +109,7 @@ The `unilur::examen_pdf` and `unilur::examen_pdf_solution` templates (relying on
 <tr class="odd">
 <td>id</td>
 <td><strong><code>yes</code></strong>/<code>no</code></td>
-<td align="left">draws candidate identification form</td>
+<td align="left">draws a candidate identification form</td>
 </tr>
 <tr class="even">
 <td>mcq</td>
