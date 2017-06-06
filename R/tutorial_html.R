@@ -8,6 +8,8 @@
 #' 
 #' @param solution Turn ON or OFF the rendering of solution chunks (default is \code{FALSE})
 #' 
+#' @param collapsed Turn ON or OFF the rendering with collapsed solution chunks (default is \code{FALSE})
+#' 
 #' @param solution_suffix Suffix which is added to the filename when \code{solution = TRUE} (default is '_solution')
 #' 
 #' @param question_suffix Suffix which is added to the filename when \code{solution = FALSE} (default is '_question')
@@ -17,18 +19,17 @@
 #' @return R Markdown output format to pass to \code{\link{render}}
 #' 
 #' @export
-tutorial_html <- function( solution = FALSE,
-                           solution_suffix = "_solution",
-                           question_suffix = "_question",
-                           credit = FALSE,                 # Show a link to the unilur homepage
-                           includes = NULL,
-                           css = NULL,
-                           extra_dependencies = NULL,
-                           ...
+tutorial_html <- function(solution = FALSE,
+                          collapsed = FALSE,
+                          solution_suffix = "_solution",
+                          question_suffix = "_question",
+                          credit = FALSE,                 # Show a link to the unilur homepage
+                          includes = NULL,
+                          css = NULL,
+                          extra_dependencies = NULL,
+                          ...
 ) {
-  #css_tutorial <- system.file("rmarkdown", "templates", "tutorial", "resources", "style.css",
-  #                   package = "unilur")
-  
+
   credit.footer <- system.file("rmarkdown", "templates", "tutorial", "resources", "credit.html",
                                package = "unilur")
   
@@ -47,33 +48,34 @@ tutorial_html <- function( solution = FALSE,
     if (isTRUE(options$solution) && !isTRUE(solution)) {
       return("")
     }
+
+    panel_header <- ""
+    panel_body <- sprintf("<div class=\"panel-body\">%s</div>", paste0(x, collapse = "\n"))
+    panel_class <- ""
     
     # If the solution html is being rendered and the chunk is a solution, we are drawing a green box around it.
     if (isTRUE(options$solution) && isTRUE(solution)) {
-      BoxContent <- sprintf("\n<div class=\"box-content\">\n%s\n</div>", paste0(x, collapse = "\n"))
-      return(sprintf("\n<div class=\"box solution\">\n<h2>Solution</h2>\n%s\n</div>\n", BoxContent))
-    }
-    
-    # If "box" is set, we draw a frame around the chunk. 
-    if (!is.null(options$box)) {
-      # Setting the color (Only colors listed by colors() are supported: Caution with documents for pdf using dvipsnames latex colors!)
+      panel_header <-  sprintf("<div class=\"panel-heading\"><h4 class=\"panel-title\"><a class = \"%s\" data-toggle=\"collapse\" href=\"#%s\">Solution</a></h4></div>", ifelse(collapsed, "collapsed", ""), options$label)
+      panel_body <- sprintf("<div id=\"%s\" class=\"panel-collapse collapse%s\">%s</div>", options$label, ifelse(collapsed, "", " in"), panel_body)
+      panel_class <- "class = \"panel solution\""
+    } else if (!is.null(options$box)) { # If "box" is set, we draw a frame around the chunk. 
+      # Setting the colour (Only colours listed by colors() are supported: Caution with documents for pdf using dvipsnames latex colours!)
       c <- col2rgb(options$box)
-      BoxColor <-  sprintf("rgba(%s, %s, %s, 0.3)", c[1], c[2], c[3])
-      BoxTitleColor <- sprintf("rgba(%s, %s, %s, 1)", c[1], c[2], c[3])
-      
-      BoxContent <- sprintf("\n<div class=\"box-content\">\n%s\n</div>", paste0(x, collapse = "\n"))
+      panel_colour <-  sprintf("rgba(%s, %s, %s, 0.3)", c[1], c[2], c[3])
+      header_colour <- sprintf("rgba(%s, %s, %s, 1)", c[1], c[2], c[3])
+      panel_class <- sprintf("class = \"panel\" style = \"background-color:%s; border:2px solid %s;\"", panel_colour, header_colour)
       if (!is.null(options$boxtitle)) {
-        BoxContent <- sprintf("\n<h2 style=\"background-color:%s;\">%s</h2>\n%s\n", BoxTitleColor, options$boxtitle, BoxContent)
+        panel_header <- sprintf("<div class=\"panel-heading\" style=\"background-color:%s;\"><h4 class=\"panel-title\">%s</h4></div>", header_colour, options$boxtitle)
       } 
-      x <- sprintf("\n<div class=\"box\" style=\"background-color:%s;border:2px solid %s;\">\n%s\n</div>\n", BoxColor, BoxTitleColor, BoxContent)
+    } else {
+      # If no condition has been met before, we are returning the chunk without changing it...
+      return(x)
     }
     
-    # If no condition has been met before, we are returning the chunk without changing it...
-    return(x)
+    box_content <-  sprintf("\n\n<div class=\"panel-group\"><div %s>%s%s</div></div>\n\n", panel_class, panel_header, panel_body)
   }
   
    format$post_processor <- function(metadata, input_file, output_file, clean, verbose) {
-     #output_file <- rmarkdown::html_document$post_processor(metadata, input_file, output_file, clean, verbose)
      new_name = paste0(gsub("(.*)(\\.[[:alnum:]]+$)", "\\1", output_file), ifelse(solution, solution_suffix, question_suffix), ".html")
      file.rename(output_file, new_name)
      return(new_name)

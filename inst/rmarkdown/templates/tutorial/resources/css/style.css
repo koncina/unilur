@@ -1,27 +1,35 @@
-.box {
-  border:2px solid gray;
-  border-radius: 4px;
-  padding: 0px;
-  margin: 10px 0 10px 0;
+.panel-heading {
+  border-top-left-radius: unset;
+  border-top-right-radius: unset;
 }
 
-.box h2 {
-  color: white;
-  padding: 0 0 0 10px;
-  margin-top: 0px;
+.panel-heading h4 {
+  font-weight: bold;
 }
 
-.box-content {
-  padding: 10px;
+.solution h4 {
+  color: darkgreen;
 }
 
-.solution {
-  border:2px solid rgb(172, 225, 175);
-  background-color:rgba(172, 225, 175 , 0.3);
-}
-
-.solution h2 {
+.solution .panel-heading {
   background-color:rgba(172, 225, 175, 1);
+}
+
+.solution.panel {
+  background-color:rgba(172, 225, 175 , 0.3);
+  border:2px solid rgb(172, 225, 175);
+}
+
+/* adapted from https://stackoverflow.com/a/18568997 */
+.panel-heading a:after {
+    font-family: 'Glyphicons Halflings';
+    content: "\e114";
+    float: right;
+    color: darkgreen;
+}
+
+.panel-heading a.collapsed:after {
+    content: "\e080";
 }
 
 .credit {
