@@ -8,7 +8,7 @@
 #' 
 #' @param solution Turn ON or OFF the rendering of solution chunks (default is \code{FALSE})
 #' 
-#' @param collapsed Turn ON or OFF the rendering with collapsed solution chunks (default is \code{FALSE})
+#' @param collapse Turn ON or OFF the rendering with collapsed solution chunks (default is \code{FALSE})
 #' 
 #' @param solution_suffix Suffix which is added to the filename when \code{solution = TRUE} (default is '_solution')
 #' 
@@ -20,7 +20,7 @@
 #' 
 #' @export
 tutorial_html <- function(solution = FALSE,
-                          collapsed = FALSE,
+                          collapse = FALSE,
                           solution_suffix = "_solution",
                           question_suffix = "_question",
                           credit = FALSE,                 # Show a link to the unilur homepage
@@ -55,8 +55,8 @@ tutorial_html <- function(solution = FALSE,
     
     # If the solution html is being rendered and the chunk is a solution, we are drawing a green box around it.
     if (isTRUE(options$solution) && isTRUE(solution)) {
-      panel_header <-  sprintf("<div class=\"panel-heading\"><h4 class=\"panel-title\"><a class = \"%s\" data-toggle=\"collapse\" href=\"#%s\">Solution</a></h4></div>", ifelse(collapsed, "collapsed", ""), options$label)
-      panel_body <- sprintf("<div id=\"%s\" class=\"panel-collapse collapse%s\">%s</div>", options$label, ifelse(collapsed, "", " in"), panel_body)
+      panel_header <-  sprintf("<div class=\"panel-heading\"><h4 class=\"panel-title\"><a class = \"%s\" data-toggle=\"collapse\" href=\"#%s\">Solution</a></h4></div>", ifelse(collapse, "collapsed", ""), options$label)
+      panel_body <- sprintf("<div id=\"%s\" class=\"panel-collapse collapse%s\">%s</div>", options$label, ifelse(collapse, "", " in"), panel_body)
       panel_class <- "class = \"panel solution\""
     } else if (!is.null(options$box)) { # If "box" is set, we draw a frame around the chunk. 
       # Setting the colour (Only colours listed by colors() are supported: Caution with documents for pdf using dvipsnames latex colours!)
