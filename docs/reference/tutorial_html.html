@@ -83,9 +83,10 @@
     <p>Format for converting from R Markdown to a tutorial HTML document.</p>
     
 
-    <pre class="usage"><span class='fu'>tutorial_html</span>(<span class='kw'>solution</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>solution_suffix</span> <span class='kw'>=</span> <span class='st'>"_solution"</span>,
-  <span class='kw'>question_suffix</span> <span class='kw'>=</span> <span class='st'>"_question"</span>, <span class='kw'>credit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>includes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>css</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>extra_dependencies</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>tutorial_html</span>(<span class='kw'>solution</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>collapse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>solution_suffix</span> <span class='kw'>=</span> <span class='st'>"_solution"</span>, <span class='kw'>question_suffix</span> <span class='kw'>=</span> <span class='st'>"_question"</span>,
+  <span class='kw'>credit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>includes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>css</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>extra_dependencies</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
 <span class='fu'>tutorial_html_solution</span>(<span class='no'>...</span>)</pre>
     
@@ -95,6 +96,10 @@
     <tr>
       <th>solution</th>
       <td><p>Turn ON or OFF the rendering of solution chunks (default is <code>FALSE</code>)</p></td>
+    </tr>
+    <tr>
+      <th>collapse</th>
+      <td><p>Turn ON or OFF the rendering with collapsed solution chunks (default is <code>FALSE</code>)</p></td>
     </tr>
     <tr>
       <th>solution_suffix</th>
