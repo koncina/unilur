@@ -43,7 +43,7 @@ examen_pdf <- function(
                               credit = FALSE,
                               pandoc_args = pandoc_args,
                               latex_class = "exam",
-                              includes = merge.list(includes, list(in_header = header_examen)),
+                              includes = merge.list(list(in_header = header_examen), includes),
                               ...)
   
   hook_chunk <- function(x, options) {
