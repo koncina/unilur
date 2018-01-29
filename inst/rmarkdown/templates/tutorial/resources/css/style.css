@@ -7,25 +7,11 @@
   font-weight: bold;
 }
 
-.solution h4 {
-  color: darkgreen;
-}
-
-.solution .panel-heading {
-  background-color:rgba(172, 225, 175, 1);
-}
-
-.solution.panel {
-  background-color:rgba(172, 225, 175 , 0.3);
-  border:2px solid rgb(172, 225, 175);
-}
-
 /* adapted from https://stackoverflow.com/a/18568997 */
 .panel-heading a:after {
     font-family: 'Glyphicons Halflings';
     content: "\e114";
     float: right;
-    color: darkgreen;
 }
 
 .panel-heading a.collapsed:after {
