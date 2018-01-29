@@ -1,3 +1,10 @@
+# Unilur 0.3.0.9000
+
+## Changes
+
+- All boxes in `tutorial_html` are now collapsible. Adjust the chunk option `box.collapse` to `TRUE` (collpased) or `FALSE` (collapsible but uncollapsed). `NULL` renders a non collapsible box.
+- Removed the collapse setting from the yaml header: The option should be adjusted for each chunk (use `knitr::opts_chunk$set(collapse = TRUE)` to define the default setting).
+
 # Unilur 0.3.0
 
 - `unilur::tutorial_html` and `unilur::tutorial_html_solution` now renders solution and coloured boxes as [bootstrap panels](https://www.w3schools.com/bootstrap/bootstrap_panels.asp). In addition, solution boxes can be collapsed and expanded. The initial state can be adjusted using the `collapse` yaml option.
