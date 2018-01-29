@@ -111,7 +111,7 @@ tutorial_html_solution <- function(...) {
 html_dependency_tutorial <- function() {
   htmltools::htmlDependency(
     name = "tutorial",
-    version = "0.1",
+    version = packageVersion("unilur"),
     src = system.file("rmarkdown", "templates", "tutorial", "resources", package = "unilur"),
     stylesheet = c(
       "css/style.css"
