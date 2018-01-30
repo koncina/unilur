@@ -8,8 +8,6 @@
 #' 
 #' @param solution Turn ON or OFF the rendering of solution chunks (default is \code{FALSE})
 #' 
-#' @param collapse Turn ON or OFF the rendering with collapsed solution chunks (default is \code{FALSE})
-#' 
 #' @param solution_suffix Suffix which is added to the filename when \code{solution = TRUE} (default is '_solution')
 #' 
 #' @param question_suffix Suffix which is added to the filename when \code{solution = FALSE} (default is '_question')
@@ -45,24 +43,14 @@ tutorial_html <- function(solution = FALSE,
   hook_chunk <- function(x, options) {
     # If we are NOT rendering the solution html and the chunk is a solution one, we are
     #  returning an empty string to hide the chunk
-    if (isTRUE(options$solution) && !isTRUE(solution)) {
-      return("")
-    }
+    if (isTRUE(options$solution) && !isTRUE(solution)) return("")
     
-    if (!(isTRUE(options$solution) || !is.null(options$box))) { 
-      # Not a box: return the chunk without changing it...
-      return(x)
-    }
-    
-    # We need to draw a box: solution or custom
-    if (isTRUE(options$solution)) {
-      # If it's a solution, draw a green box around it.
-      colour <- c(172, 225, 175)
-      box_title <- "Solution"
-    } else {
-      colour <- col2rgb(options$box)
-      box_title <- options$boxtitle
-    }
+    if (!is_box(options)) return(x) # Not a box: return the chunk without changing it...
+
+    if (isTRUE(options$solution)) box_title <- "Solution"
+    else box_title <- options$box.title
+
+    colour <- box_colour(options)
     
     panel_colour <-  do.call(sprintf, as.list(c("rgba(%s, %s, %s, 0.3)", colour)))
     header_colour <- do.call(sprintf, as.list(c("rgba(%s, %s, %s, 1)", colour)))
@@ -77,9 +65,9 @@ tutorial_html <- function(solution = FALSE,
       box_title = sprintf("<a class = \"%s\" style=\"color: %s;\" data-toggle=\"collapse\" href=\"#%s\">%s</a>", ifelse(isTRUE(options$box.collapse), "collapsed", ""), title_colour, options$label, box_title)
     }
     
-    panel_header <- sprintf("<div class=\"panel-heading\" style=\"background-color:%s; color:%s!important;\"><h4 class=\"panel-title\">%s</h4></div>",
-                            header_colour, title_colour, box_title)
-    
+    if (is.null(box_title)) panel_header <- ""
+    else panel_header <- sprintf("<div class=\"panel-heading\" style=\"background-color:%s; color:%s!important;\"><h4 class=\"panel-title\">%s</h4></div>",
+                                 header_colour, title_colour, box_title)
     
     box_content <-  sprintf("\n\n<div class=\"panel-group\"><div %s>%s%s</div></div>\n\n", panel_class, panel_header, panel_body)
   }

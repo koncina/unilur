@@ -52,22 +52,20 @@ examen_pdf <- function(
     if (isTRUE(options$solution) && !isTRUE(solution)) {
       if (is.numeric(options$response.space)) return(paste0("\n\\fillwithdottedlines{", options$response.space, "in}\n"))
       else return("")
-    } 
-    
-    # If examen mode is enabled and the "mcq" option is set we override the itemize environment
-    if (isTRUE(options$mcq)) x <- itemize2mcq(x, mcq.option = mcq, ifelse(is.numeric(options$mcq.n), options$mcq.n, 3))
-    
-    # If "box" is set, we draw a frame around the chunk. 
-    if (!is.null(options$box)) {
-      BoxBegin <- sprintf("\n\\cboxs[%s]{%s}\n", ifelse(is.null(options$boxtitle), "", options$boxtitle), options$box)
-      x <- paste0(c(BoxBegin, x, "\n\\cboxe\n"), collapse = "\n")
     }
     
+    # If the "mcq" option is set we override the itemize environment
+    if (isTRUE(options$mcq)) x <- itemize2mcq(x, mcq.option = mcq, ifelse(is.numeric(options$mcq.n), options$mcq.n, 3))
+    
+    if (!is_box(options)) return(x) # Not a box: return the chunk without changing it...
+
     # If the solution pdf is being rendered and the chunk is a solution, we are drawing a green box around it.
     if (isTRUE(options$solution) && isTRUE(solution)) return(paste0(c("\n\\solutions\n", x, "\n\\solutione\n"), collapse = "\n"))
     
-    # If no condition has been met before, we are returning the chunk without changing it...
-    return(x)
+    colour_def <- sprintf("\n\\definecolor{color-%s}{RGB}{%s}\n", options$label, paste(box_colour(options), collapse = ", "))
+    
+    box_begin <- sprintf("\n\\cboxs[%s]{color-%s}\n", ifelse(is.null(options$box.title), "", options$box.title), options$label)
+    paste0(c(colour_def, box_begin, x, "\n\\cboxe\n"), collapse = "\n")
   }
   
   format$knitr$knit_hooks$chunk  <- hook_chunk

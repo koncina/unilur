@@ -23,19 +23,15 @@ tutorial_pdf_base <- function(solution = FALSE,               # Turn ON or OFF t
     #  returning an empty string to hide the chunk
     if (isTRUE(options$solution) && !isTRUE(solution)) return("")
     
-    # If "box" is set, we draw a frame around the chunk. 
-    if (!is.null(options$box)) {
-      c <- col2rgb(options$box)
-      ColorDef <- sprintf("\n\\definecolor{color-%s}{RGB}{%s}\n", options$label, paste(c, collapse = ", ")) 
-      BoxBegin <- sprintf("\n\\cboxs[%s]{color-%s}\n", ifelse(is.null(options$boxtitle), "", options$boxtitle), options$label)
-      x <- paste0(c(ColorDef, BoxBegin, x, "\n\\cboxe\n"), collapse = "\n")
-    }
-    
+    if (!is_box(options)) return(x) # Not a box: return the chunk without changing it...
+
     # If the solution pdf is being rendered and the chunk is a solution, we are drawing a green box around it.
     if (isTRUE(options$solution) && isTRUE(solution)) return(paste0(c("\n\\solutions\n", x, "\n\\solutione\n"), collapse = "\n"))
     
-    # If no condition has been met before, we are returning the chunk without changing it...
-    return(x)
+    colour_def <- sprintf("\n\\definecolor{color-%s}{RGB}{%s}\n", options$label, paste(box_colour(options), collapse = ", "))
+    
+    box_begin <- sprintf("\n\\cboxs[%s]{color-%s}\n", ifelse(is.null(options$box.title), "", options$box.title), options$label)
+    paste0(c(colour_def, box_begin, x, "\n\\cboxe\n"), collapse = "\n")
   }
   
   hook_input <- function(x, options) {
