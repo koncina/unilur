@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -51,6 +52,12 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
@@ -83,10 +90,9 @@
     <p>Format for converting from R Markdown to a tutorial HTML document.</p>
     
 
-    <pre class="usage"><span class='fu'>tutorial_html</span>(<span class='kw'>solution</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>collapse</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>solution_suffix</span> <span class='kw'>=</span> <span class='st'>"_solution"</span>, <span class='kw'>question_suffix</span> <span class='kw'>=</span> <span class='st'>"_question"</span>,
-  <span class='kw'>credit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>includes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>css</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>extra_dependencies</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>tutorial_html</span>(<span class='kw'>solution</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>solution_suffix</span> <span class='kw'>=</span> <span class='st'>"_solution"</span>,
+  <span class='kw'>question_suffix</span> <span class='kw'>=</span> <span class='st'>"_question"</span>, <span class='kw'>credit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>includes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>css</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>extra_dependencies</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
 <span class='fu'>tutorial_html_solution</span>(<span class='no'>...</span>)</pre>
     
@@ -96,10 +102,6 @@
     <tr>
       <th>solution</th>
       <td><p>Turn ON or OFF the rendering of solution chunks (default is <code>FALSE</code>)</p></td>
-    </tr>
-    <tr>
-      <th>collapse</th>
-      <td><p>Turn ON or OFF the rendering with collapsed solution chunks (default is <code>FALSE</code>)</p></td>
     </tr>
     <tr>
       <th>solution_suffix</th>
@@ -163,7 +165,7 @@ base R Markdown HTML output formatter <code>html_document_base</code></p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

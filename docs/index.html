@@ -29,6 +29,12 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
+  <a href="index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li>
@@ -84,7 +90,7 @@
 <h3 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h3>
 <p>The source code is hosted on <a href="https://github.com/koncina/unilur">github</a>. To install the <em>R</em> package, run the following code:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"koncina/unilur"</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"koncina/unilur"</span>)</code></pre></div>
 <p>The package contains example templates illustrating some of the possibilities.</p>
 </div>
 <div id="writing-tutorials" class="section level3">
@@ -100,13 +106,13 @@
 <p>Use the Rstudio knit button and knit to the wanted output format. Keep in mind that the output file will end with a suffix (which can be adjusted in the YAML header):</p>
 <ul>
 <li>
-<strong><code>_question</code></strong> for <code>unilur::tutorial_html</code> and <code>unilur::tutorial_pdf</code>
+<strong><code>_question</code></strong> for <code><a href="http://www.rdocumentation.org/packages/unilur/topics/tutorial_html">unilur::tutorial_html</a></code> and <code><a href="http://www.rdocumentation.org/packages/unilur/topics/tutorial_pdf">unilur::tutorial_pdf</a></code>
 </li>
 <li>
-<strong><code>_solution</code></strong> for <code>unilur::tutorial_html_solution</code> and <code>unilur::tutorial_pdf_solution</code>
+<strong><code>_solution</code></strong> for <code><a href="http://www.rdocumentation.org/packages/unilur/topics/tutorial_html">unilur::tutorial_html_solution</a></code> and <code><a href="http://www.rdocumentation.org/packages/unilur/topics/tutorial_pdf">unilur::tutorial_pdf_solution</a></code>
 </li>
 <li>
-<strong><code>_answer</code></strong> for <code>unilur::answer_rmd</code>
+<strong><code>_answer</code></strong> for <code><a href="http://www.rdocumentation.org/packages/unilur/topics/answer_rmd">unilur::answer_rmd</a></code>
 </li>
 </ul>
 <div id="yaml-header-arguments" class="section level4">
@@ -157,17 +163,17 @@
 <div id="coloured-boxes" class="section level4">
 <h4 class="hasAnchor">
 <a href="#coloured-boxes" class="anchor"></a>Coloured boxes</h4>
-<p>To highlight some content and wrap it within a coloured box, use the <code>box = "&lt;colour&gt;"</code> chunk option. Use the colours defined by <code>colors()</code> or define your own (using the <code>rgb()</code> function or a hexadecimal colour code). You can adjust the box title using the <code>boxtitle = "&lt;title&gt;"</code> chunk option.</p>
-<pre><code>```{asis, box = "red", boxtitle = "My red box"}
+<p>To highlight some content and wrap it within a coloured box, use the <code>box.colour = "&lt;colour&gt;"</code> chunk option. Use the colours defined by <code>colors()</code> or define your own (using the <code>rgb()</code> function or a hexadecimal colour code). You can adjust the box title using the <code>box.title = "&lt;title&gt;"</code> chunk option.</p>
+<pre><code>```{asis, box = "red", box.title = "My red box"}
 This is a **red** box and titled *My red box*
 ```
 
-```{asis, box = "green"}
+```{asis, box.colour = "green"}
 This is a **green** box without title
 ```
 
-```{asis, box = rgb(159, 129, 247, maxColorValue = 255), boxtitle = "Custom color"}
-It is also possible to use **custom colors** defined as hexadecimal color codes or using the `rgb()` function. 
+```{asis, box.colour = rgb(159, 129, 247, maxColorValue = 255), box.title = "Custom color"}
+It is also possible to use **custom colours** defined as hexadecimal colour codes or using the `rgb()` function. 
 ```</code></pre>
 <p><img src="http://eric.koncina.eu/pics/r/unilur/colorbox.jpg" style="display: block; margin: auto;"></p>
 </div>
@@ -175,7 +181,7 @@ It is also possible to use **custom colors** defined as hexadecimal color codes 
 <div id="writing-examination-papers" class="section level3">
 <h3 class="hasAnchor">
 <a href="#writing-examination-papers" class="anchor"></a>Writing examination papers</h3>
-<p>The <code>unilur::examen_pdf</code> and <code>unilur::examen_pdf_solution</code> templates (relying on the latex <a href="https://www.ctan.org/pkg/exam">exam class</a>) extend the possibilities of the tutorial template:</p>
+<p>The <code><a href="http://www.rdocumentation.org/packages/unilur/topics/examen_pdf">unilur::examen_pdf</a></code> and <code><a href="http://www.rdocumentation.org/packages/unilur/topics/examen_pdf">unilur::examen_pdf_solution</a></code> templates (relying on the latex <a href="https://www.ctan.org/pkg/exam">exam class</a>) extend the possibilities of the tutorial template:</p>
 <ul>
 <li>include an <strong>identification box</strong> to be filled in by the candidate</li>
 <li>insert <strong>placeholders with dotted lines</strong> between questions to write in the answers</li>
@@ -288,7 +294,7 @@ This would be the expected answer to the question
 <div id="generate-a-rmarkdown-file-without-solution-chunks" class="section level3">
 <h3 class="hasAnchor">
 <a href="#generate-a-rmarkdown-file-without-solution-chunks" class="anchor"></a>Generate a Rmarkdown file without solution chunks</h3>
-<p>Use the <code>unilur::answer_rmd</code> output format to generate a Rmarkdown document containing all the instructions but without the solution chunks which are replaced by empty ones. The Yaml header is also changed and you can adjust the title, author or output:</p>
+<p>Use the <code><a href="http://www.rdocumentation.org/packages/unilur/topics/answer_rmd">unilur::answer_rmd</a></code> output format to generate a Rmarkdown document containing all the instructions but without the solution chunks which are replaced by empty ones. The Yaml header is also changed and you can adjust the title, author or output:</p>
 <pre><code>output:
   unilur::answer_rmd:
     yaml:
@@ -300,7 +306,8 @@ This would be the expected answer to the question
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Links</h2>
+    <h2 class="hasAnchor">
+<a href="#sidebar" class="anchor"></a>Links</h2>
 <ul class="list-unstyled">
 <li>Browse source code at <br><a href="https://github.com/koncina/unilur">https://​github.com/​koncina/​unilur</a>
 </li>
@@ -309,7 +316,7 @@ This would be the expected answer to the question
 </ul>
 <h2>License</h2>
 <p><a href="https://opensource.org/licenses/mit-license.php">MIT</a>
-  file <a href="LICENSE">LICENSE</a></p>
+  file <a href="LICENSE.html">LICENSE</a></p>
 <h2>Developers</h2>
 <ul class="list-unstyled">
 <li>Eric Koncina <br><small class="roles"> Author, maintainer </small> </li>
@@ -324,7 +331,7 @@ This would be the expected answer to the question
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

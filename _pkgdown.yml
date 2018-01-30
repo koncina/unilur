@@ -14,4 +14,4 @@ reference:
   - title: Answer
     desc: Generate a Rmarkdown file to fill in answers
     contents:
-    - answer_rmd
+    - starts_with("answer")

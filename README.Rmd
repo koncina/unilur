@@ -1,6 +1,5 @@
 ---
 title: "Unilur"
-author: "Eric Koncina"
 output: github_document
 ---
 
@@ -76,18 +75,18 @@ knitr::include_graphics("http://eric.koncina.eu/pics/r/unilur/solution.jpg")
 
 #### Coloured boxes
 
-To highlight some content and wrap it within a coloured box, use the `box = "<colour>"` chunk option. Use the colours defined by `colors()` or define your own (using the `rgb()` function or a hexadecimal colour code). You can adjust the box title using the `boxtitle = "<title>"` chunk option.
+To highlight some content and wrap it within a coloured box, use the `box.colour = "<colour>"` chunk option. Use the colours defined by `colors()` or define your own (using the `rgb()` function or a hexadecimal colour code). You can adjust the box title using the `box.title = "<title>"` chunk option.
 
-    ```r ''``{asis, box = "red", boxtitle = "My red box"}
+    ```r ''``{asis, box = "red", box.title = "My red box"}
     This is a **red** box and titled *My red box*
     ```r ''``
     
-    ```r ''``{asis, box = "green"}
+    ```r ''``{asis, box.colour = "green"}
     This is a **green** box without title
     ```r ''``
 
-    ```r ''``{asis, box = rgb(159, 129, 247, maxColorValue = 255), boxtitle = "Custom color"}
-    It is also possible to use **custom colors** defined as hexadecimal color codes or using the `rgb()` function. 
+    ```r ''``{asis, box.colour = rgb(159, 129, 247, maxColorValue = 255), box.title = "Custom color"}
+    It is also possible to use **custom colours** defined as hexadecimal colour codes or using the `rgb()` function. 
     ```r ''``
 
 ```{r}

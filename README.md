@@ -1,6 +1,5 @@
 Unilur
 ================
-Eric Koncina
 
 ### Overview
 
@@ -66,18 +65,18 @@ Answers or solutions are written within a [code chunk](http://rmarkdown.rstudio.
 
 #### Coloured boxes
 
-To highlight some content and wrap it within a coloured box, use the `box = "<colour>"` chunk option. Use the colours defined by `colors()` or define your own (using the `rgb()` function or a hexadecimal colour code). You can adjust the box title using the `boxtitle = "<title>"` chunk option.
+To highlight some content and wrap it within a coloured box, use the `box.colour = "<colour>"` chunk option. Use the colours defined by `colors()` or define your own (using the `rgb()` function or a hexadecimal colour code). You can adjust the box title using the `box.title = "<title>"` chunk option.
 
-    ```{asis, box = "red", boxtitle = "My red box"}
+    ```{asis, box = "red", box.title = "My red box"}
     This is a **red** box and titled *My red box*
     ```
 
-    ```{asis, box = "green"}
+    ```{asis, box.colour = "green"}
     This is a **green** box without title
     ```
 
-    ```{asis, box = rgb(159, 129, 247, maxColorValue = 255), boxtitle = "Custom color"}
-    It is also possible to use **custom colors** defined as hexadecimal color codes or using the `rgb()` function. 
+    ```{asis, box.colour = rgb(159, 129, 247, maxColorValue = 255), box.title = "Custom color"}
+    It is also possible to use **custom colours** defined as hexadecimal colour codes or using the `rgb()` function. 
     ```
 
 <img src="http://eric.koncina.eu/pics/r/unilur/colorbox.jpg" style="display: block; margin: auto;" />

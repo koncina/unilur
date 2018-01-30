@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -51,6 +52,12 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
@@ -81,13 +88,28 @@
     </div>
 
     <div class="contents">
+    <div id="unilur-0-3-0-9000" class="section level1">
+<h1 class="hasAnchor">
+<a href="#unilur-0-3-0-9000" class="anchor"></a>Unilur 0.3.0.9000</h1>
+<div id="changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#changes" class="anchor"></a>Changes</h2>
+<ul>
+<li>All boxes in <code>tutorial_html</code> are now collapsible. Adjust the chunk option <code>box.collapse</code> to <code>TRUE</code> (collapsed), <code>FALSE</code> (collapsible but uncollapsed) or <code>NULL</code> (non collapsible box).</li>
+<li>
+<strong>breaking change:</strong> Removed the collapse setting from the yaml header: The option should be adjusted for each chunk (use <code>knitr::opts_chunk$set(collapse = TRUE)</code> to define the default setting).</li>
+<li>
+<strong>breaking change:</strong> Changed chunk options to adjust a custom box colour and title: use <code>box.colour</code> and <code>box.title</code> (instead of <code>box</code> and <code>boxtitle</code>)</li>
+</ul>
+</div>
+</div>
     <div id="unilur-0-3-0" class="section level1">
 <h1 class="hasAnchor">
 <a href="#unilur-0-3-0" class="anchor"></a>Unilur 0.3.0</h1>
 <ul>
 <li>
-<code>unilur::tutorial_html</code> and <code>unilur::tutorial_html_solution</code> now renders solution and coloured boxes as <a href="https://www.w3schools.com/bootstrap/bootstrap_panels.asp">bootstrap panels</a>. In addition, solution boxes can be collapsed and expanded. The initial state can be adjusted using the <code>collapse</code> yaml option.</li>
-<li>Added <code>unilur::answer_rmd</code> to create a Rmd file with solutions being removed. This file can be used by students to fill in their answers.</li>
+<code><a href="http://www.rdocumentation.org/packages/unilur/topics/tutorial_html">unilur::tutorial_html</a></code> and <code><a href="http://www.rdocumentation.org/packages/unilur/topics/tutorial_html">unilur::tutorial_html_solution</a></code> now renders solution and coloured boxes as <a href="https://www.w3schools.com/bootstrap/bootstrap_panels.asp">bootstrap panels</a>. In addition, solution boxes can be collapsed and expanded. The initial state can be adjusted using the <code>collapse</code> yaml option.</li>
+<li>Added <code><a href="http://www.rdocumentation.org/packages/unilur/topics/answer_rmd">unilur::answer_rmd</a></code> to create a Rmd file with solutions being removed. This file can be used by students to fill in their answers.</li>
 <li>Improved knitting of files with <code>solution = FALSE</code> by disabling the evaluation of these chunks.</li>
 </ul>
 </div>
@@ -96,15 +118,15 @@
 <a href="#unilur-0-2-0" class="anchor"></a>Unilur 0.2.0</h1>
 <ul>
 <li>
-<code>unilur::tutorial</code> was replaced by <code>unilur::tutorial_pdf</code> and <code>unilur::tutorial_html</code>
+<code>unilur::tutorial</code> was replaced by <code><a href="http://www.rdocumentation.org/packages/unilur/topics/tutorial_pdf">unilur::tutorial_pdf</a></code> and <code><a href="http://www.rdocumentation.org/packages/unilur/topics/tutorial_html">unilur::tutorial_html</a></code>
 </li>
 <li>Removed <code>unilur::knit</code>:
 <ul>
-<li>Output filename is defined in the <code>unilur::tutorial_pdf</code> or <code>unilur::tutorial_html</code> format (<code>&lt;basename&gt;_question.&lt;ext&gt;</code> or <code>&lt;basename&gt;_solution.&lt;ext&gt;</code>).</li>
+<li>Output filename is defined in the <code><a href="http://www.rdocumentation.org/packages/unilur/topics/tutorial_pdf">unilur::tutorial_pdf</a></code> or <code><a href="http://www.rdocumentation.org/packages/unilur/topics/tutorial_html">unilur::tutorial_html</a></code> format (<code>&lt;basename&gt;_question.&lt;ext&gt;</code> or <code>&lt;basename&gt;_solution.&lt;ext&gt;</code>).</li>
 <li>Allows to use the interactive <code>knit</code> menu in Rstudio in particular with custom formats now showing up in Knit menu (tested in Rstudio 0.99.1197 preview)</li>
 </ul>
 </li>
-<li>Isolated the <code>unilur::tutorial</code> option <code>exam</code> and created a new <code>unilur::examen_pdf</code> format</li>
+<li>Isolated the <code>unilur::tutorial</code> option <code>exam</code> and created a new <code><a href="http://www.rdocumentation.org/packages/unilur/topics/examen_pdf">unilur::examen_pdf</a></code> format</li>
 </ul>
 </div>
     </div>
@@ -114,6 +136,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#unilur-0-3-0-9000">0.3.0.9000</a></li>
         <li><a href="#unilur-0-3-0">0.3.0</a></li>
         <li><a href="#unilur-0-2-0">0.2.0</a></li>
       </ul>
@@ -128,7 +151,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
