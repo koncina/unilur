@@ -72,7 +72,9 @@ tutorial_html <- function(solution = FALSE,
     box_content <-  sprintf("\n\n<div class=\"panel-group\"><div %s>%s%s</div></div>\n\n", panel_class, panel_header, panel_body)
   }
   
+  orig_processor <- format$post_processor
   format$post_processor <- function(metadata, input_file, output_file, clean, verbose) {
+    orig_processor(metadata, input_file, output_file, clean, verbose)
     new_name = paste0(gsub("(.*)(\\.[[:alnum:]]+$)", "\\1", output_file), ifelse(solution, solution_suffix, question_suffix), ".html")
     file.rename(output_file, new_name)
     return(new_name)
