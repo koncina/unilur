@@ -10,7 +10,7 @@ merge.list <- function(l1, l2) {
 
 # Returning TRUE if the chunk is a box: custom or solution
 is_box <- function(options) {
-  !all(sapply(c(options$box.colour, options$box.title), is.null)) || isTRUE(options$solution)
+  !all(sapply(c(options[["box.type"]], options[["box.title"]]), is.null)) || isTRUE(options[["solution"]])
 }
 
 # Returning the box colour as a RGB vector

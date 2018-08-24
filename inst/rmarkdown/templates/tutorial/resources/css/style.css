@@ -18,15 +18,6 @@
     content: "\e080";
 }
 
-.credit {
-  text-align: center;
-  color: gray;
-  border-top: 2px solid gray;
-  font-style: italic;
-  padding: 5px;
-}
-
-.credit a {
-  color: gray;
-  font-style: normal;
+.panel-group .panel-heading + .panel-collapse > .panel-body {
+    border-top: none;
 }

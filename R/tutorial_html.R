@@ -12,26 +12,18 @@
 #' 
 #' @param question_suffix Suffix which is added to the filename when \code{solution = FALSE} (default is '_question')
 #' 
-#' @param credit Turn ON or OFF the footer showing a link to the unilur homepage (default is \code{FALSE})
-#' 
 #' @return R Markdown output format to pass to \code{\link{render}}
 #' 
 #' @export
 tutorial_html <- function(solution = FALSE,
                           solution_suffix = "_solution",
                           question_suffix = "_question",
-                          credit = FALSE,                 # Show a link to the unilur homepage
                           includes = NULL,
                           css = NULL,
                           extra_dependencies = NULL,
                           ...
 ) {
-  
-  credit.footer <- system.file("rmarkdown", "templates", "tutorial", "resources", "credit.html",
-                               package = "unilur")
-  
-  if (isTRUE(credit)) includes = list(after_body = credit.footer)
-  
+
   extra_dependencies <- append(extra_dependencies,
                                list(html_dependency_tutorial()))
   
@@ -40,36 +32,52 @@ tutorial_html <- function(solution = FALSE,
                                      extra_dependencies = extra_dependencies,
                                      ...)
   
+  default_box_themes <- list(
+    default = set_box_theme(body = list(fill = "#F2F2F2", colour = "blue"), header = list(fill = "#D3D3D3FF", colour = "black")),
+    solution = set_box_theme(title = "solution", body = list(fill = "#ACFFAF4C", colour = "black"), header = list(fill = "#ACFFAFFF", colour = "#456646FF"), collapse = FALSE)
+    )
+  
+  
+
   hook_chunk <- function(x, options) {
     # If we are NOT rendering the solution html and the chunk is a solution one, we are
     #  returning an empty string to hide the chunk
-    if (isTRUE(options$solution) && !isTRUE(solution)) return("")
-    
+    if (isTRUE(options[["solution"]]) && !isTRUE(solution)) return("")
+
     if (!is_box(options)) return(x) # Not a box: return the chunk without changing it...
+    
+    box_type <- ifelse(is.null(options[["box.type"]]), ifelse(isTRUE(options[["solution"]]), "solution", "default"), options[["box.type"]])
+    
+    box_theme <- options[["box.types.list"]][[box_type]]
+    
+    box_theme[c("body", "header")] <- lapply(box_theme[c("body", "header")], to_css_colour)
+    
+    box_title <- options[["box.title"]]
+    if (is.null(box_title)) box_title <- box_theme[["title"]]
 
-    if (isTRUE(options$solution)) box_title <- "Solution"
-    else box_title <- options$box.title
+    panel_class <- sprintf("class = \"panel\" style = \"background-color:%s; border:2px solid %s;\"", box_theme[["body"]][["fill"]], box_theme[["header"]][["fill"]])
+    
+    panel_body <- sprintf("<div class=\"panel-body\" style = \"color:%s!important;\">%s</div>", box_theme[["body"]][["colour"]], paste0(x, collapse = "\n"))
 
-    colour <- box_colour(options)
+    box_icon <- box_theme[["icon"]]
+
+    box_collapse <- options$box.collapse
     
-    panel_colour <-  do.call(sprintf, as.list(c("rgba(%s, %s, %s, 0.3)", colour)))
-    header_colour <- do.call(sprintf, as.list(c("rgba(%s, %s, %s, 1)", colour)))
-    title_colour <- do.call(sprintf, as.list(c("rgba(%s, %s, %s, 1)", round(colour * 0.4))))
+    if (is.null(box_collapse)) {
+      box_collapse <- box_theme[["collapse"]]
+    }
     
-    panel_class <- sprintf("class = \"panel\" style = \"background-color:%s; border:2px solid %s;\"", panel_colour, header_colour)
-    
-    panel_body <- sprintf("<div class=\"panel-body\">%s</div>", paste0(x, collapse = "\n"))
-    
-    if (!is.null(options$box.collapse)) {
-      panel_body <- sprintf("<div id=\"%s\" class=\"panel-collapse collapse%s\">%s</div>", options$label, ifelse(isTRUE(options$box.collapse), "", " in"), panel_body)
-      box_title = sprintf("<a class = \"%s\" style=\"color: %s;\" data-toggle=\"collapse\" href=\"#%s\">%s</a>", ifelse(isTRUE(options$box.collapse), "collapsed", ""), title_colour, options$label, box_title)
+    if (!is.null(box_collapse)) {
+      panel_body <- sprintf("<div id=\"%s\" class=\"panel-collapse collapse%s\">%s</div>", options$label, ifelse(isTRUE(box_collapse), "", " in"), panel_body)
+      box_title <- sprintf("<a class = \"%s\" style=\"color: %s;\" data-toggle=\"collapse\" href=\"#%s\">%s</a>", ifelse(isTRUE(box_collapse), "collapsed", ""), box_theme[["header"]][["colour"]], options$label, box_title)
     }
     
     if (is.null(box_title)) panel_header <- ""
-    else panel_header <- sprintf("<div class=\"panel-heading\" style=\"background-color:%s; color:%s!important;\"><h4 class=\"panel-title\">%s</h4></div>",
-                                 header_colour, title_colour, box_title)
-    
-    box_content <-  sprintf("\n\n<div class=\"panel-group\"><div %s>%s%s</div></div>\n\n", panel_class, panel_header, panel_body)
+    else panel_header <- sprintf("<div class=\"panel-heading\" style=\"background-color:%s; color:%s!important;\"><h4 class=\"panel-title\">%s%s</h4></div>",
+                                 box_theme[["header"]][["fill"]], box_theme[["header"]][["colour"]], box_icon, box_title)
+
+    sprintf("\n\n<div class=\"panel-group\"><div %s>%s%s</div></div>\n\n", panel_class, panel_header, panel_body)
+
   }
   
   orig_processor <- format$post_processor
@@ -77,12 +85,15 @@ tutorial_html <- function(solution = FALSE,
     orig_processor(metadata, input_file, output_file, clean, verbose)
     new_name = paste0(gsub("(.*)(\\.[[:alnum:]]+$)", "\\1", output_file), ifelse(solution, solution_suffix, question_suffix), ".html")
     file.rename(output_file, new_name)
-    return(new_name)
+    new_name
   }
   
   format$pre_knit <-  function(input, ...) {
+    knitr::opts_chunk$set(box.types.list = default_box_themes)
     knitr::opts_hooks$set(solution = function(options) {
-      if (!isTRUE(solution)) options$eval <- FALSE
+      if (!isTRUE(solution)) {
+        options$eval <- FALSE
+      } 
       options
     })
   }

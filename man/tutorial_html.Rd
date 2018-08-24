@@ -6,8 +6,8 @@
 \title{Convert to a tutorial HTML document}
 \usage{
 tutorial_html(solution = FALSE, solution_suffix = "_solution",
-  question_suffix = "_question", credit = FALSE, includes = NULL,
-  css = NULL, extra_dependencies = NULL, ...)
+  question_suffix = "_question", includes = NULL, css = NULL,
+  extra_dependencies = NULL, ...)
 
 tutorial_html_solution(...)
 }
@@ -17,8 +17,6 @@ tutorial_html_solution(...)
 \item{solution_suffix}{Suffix which is added to the filename when \code{solution = TRUE} (default is '_solution')}
 
 \item{question_suffix}{Suffix which is added to the filename when \code{solution = FALSE} (default is '_question')}
-
-\item{credit}{Turn ON or OFF the footer showing a link to the unilur homepage (default is \code{FALSE})}
 
 \item{includes}{Named list of additional content to include within the
 document (typically created using the \code{\link{includes}} function).}
