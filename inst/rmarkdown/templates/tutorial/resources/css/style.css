@@ -14,6 +14,10 @@
     float: right;
 }
 
+.panel-heading h4 i {
+  margin-right: 10px;
+}
+
 .panel-heading a.collapsed:after {
     content: "\e080";
 }

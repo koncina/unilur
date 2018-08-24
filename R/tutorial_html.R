@@ -40,6 +40,7 @@ tutorial_html <- function(solution = FALSE,
   
 
   hook_chunk <- function(x, options) {
+    
     # If we are NOT rendering the solution html and the chunk is a solution one, we are
     #  returning an empty string to hide the chunk
     if (isTRUE(options[["solution"]]) && !isTRUE(solution)) return("")
@@ -59,8 +60,12 @@ tutorial_html <- function(solution = FALSE,
     
     panel_body <- sprintf("<div class=\"panel-body\" style = \"color:%s!important;\">%s</div>", box_theme[["body"]][["colour"]], paste0(x, collapse = "\n"))
 
-    box_icon <- box_theme[["icon"]]
-
+    # There is probably a better way...
+    # We might use a package to handle icons and to avoid the loss of print method metadata (library dependency)
+    # we add it manually here again
+    box_icon <- knitr::knit_print(box_theme[["icon"]])
+    knitr::knit_meta_add(meta = attr(box_icon, "knit_meta"), label = options$label)
+    
     box_collapse <- options$box.collapse
     
     if (is.null(box_collapse)) {
