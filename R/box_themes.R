@@ -46,13 +46,31 @@ to_css_colour <- function(x) {
   apply(x, 2, function(i) do.call(sprintf, as.list(c("rgba(%s, %s, %s, %s)", i))))
 }
 
+#' Add a new unilur box theme
+#'
+#' Define custom body and/or header colours, collasible status and icons for new box types.
+#' 
+#' @param type_name The name of the type to be used in the `box.type` chunk option
+#' 
+#' @param title The default title of the box. Setting `box.title` chunk option overrides this setting. If `NULL`, no header will be rendered.
+#' 
+#' @param body a `list` to define the colours of the body. The list should contain up to two elements: `fill` and `colour` adjusted to a colour name, hexadecimal string or a positive integer as supported by the `col2rgb()` function.
+#' 
+#' @param header a `list` to define the colours of the header. The list should contain up to two elements: `fill` and `colour` adjusted to a colour name, hexadecimal string or a positive integer as supported by the `col2rgb()` function.
+#' 
+#' @param icon icon appearing in the box header.
+#' 
+#' @param collapse `logical` or `NULL`. If `NULL` a non collapsible box is drawn. If `logical`, the box is collapsible: `TRUE` it is collapsed and `FALSE` uncollapsed.
+#' 
+#' @return Returns `NULL` while adding the definition to your `knitr` options.
+#' 
 #' @export
-add_box_type <- function(type_name, ...) {
+add_box_type <- function(type_name, title = NULL, body = NULL, header = NULL, icon = NULL, collapse = NULL) {
   stopifnot(is.character(type_name))
-  box_style <- set_box_theme(...)
+  box_style <- set_box_theme(title, body, header, icon, collapse)
   stopifnot(class(box_style) == c("box", "box_theme"))
-  box_types <- knitr::opts_chunk$get("box.types.list")
+  box_types <- knitr::opts_knit$get("box.types.list")
   box_types[type_name] <- list(box_style)
-  knitr::opts_chunk$set(box.types.list = box_types)
+  knitr::opts_knit$set(box.types.list = box_types)
 }
 

@@ -49,7 +49,9 @@ tutorial_html <- function(solution = FALSE,
     
     box_type <- ifelse(is.null(options[["box.type"]]), ifelse(isTRUE(options[["solution"]]), "solution", "default"), options[["box.type"]])
     
-    box_theme <- options[["box.types.list"]][[box_type]]
+    box_theme <- knitr::opts_knit$get("box.types.list")[[box_type]]
+    
+    if (is.null(box_theme)) stop(sprintf("the box type %s is not defined!", box_type), call. = FALSE)
     
     box_theme[c("body", "header")] <- lapply(box_theme[c("body", "header")], to_css_colour)
     
@@ -65,6 +67,9 @@ tutorial_html <- function(solution = FALSE,
     # we add it manually here again
     box_icon <- knitr::knit_print(box_theme[["icon"]])
     knitr::knit_meta_add(meta = attr(box_icon, "knit_meta"), label = options$label)
+    
+    # TODO: to be enhanced
+    if (! "knit_asis" %in% class(box_icon)) box_icon <- paste0("<i class=\"icon\">", box_icon, "</i>")
     
     box_collapse <- options$box.collapse
     
@@ -94,11 +99,17 @@ tutorial_html <- function(solution = FALSE,
   }
   
   format$pre_knit <-  function(input, ...) {
-    knitr::opts_chunk$set(box.types.list = default_box_themes)
+    knitr::opts_knit$set(box.types.list = default_box_themes)
     knitr::opts_hooks$set(solution = function(options) {
       if (!isTRUE(solution)) {
         options$eval <- FALSE
       } 
+      options
+    })
+    
+    knitr::opts_hooks$set(box.colour = function(options) {
+      add_box_type(options$label, body = list(fill = options$box.colour))
+      options$box.type <- options$label
       options
     })
   }
