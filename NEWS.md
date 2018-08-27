@@ -1,10 +1,14 @@
-# Unilur 0.3.0.9000
+# Unilur 0.4.0
 
 ## Changes
 
 - All boxes in `tutorial_html` are now collapsible. Adjust the chunk option `box.collapse` to `TRUE` (collapsed), `FALSE` (collapsible but uncollapsed) or `NULL` (non collapsible box).
 - **breaking change:** Removed the collapse setting from the yaml header: The option should be adjusted for each chunk (use `knitr::opts_chunk$set(collapse = TRUE)` to define the default setting).
 - **breaking change:** Changed chunk options to adjust a custom box colour and title: use `box.colour` and `box.title` (instead of `box` and `boxtitle`)
+
+## Bug fixes
+
+- HTML widgets were not rendered
 
 # Unilur 0.3.0
 
