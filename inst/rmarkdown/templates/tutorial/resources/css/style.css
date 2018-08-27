@@ -18,6 +18,12 @@
   margin-right: 10px;
 }
 
+.panel-heading h4 i[class*="pull-right"] {
+  float: right;
+  margin-right: 0px;
+  margin-left: 10px;
+}
+
 .panel-heading a.collapsed:after {
     content: "\e080";
 }
@@ -25,3 +31,4 @@
 .panel-group .panel-heading + .panel-collapse > .panel-body {
     border-top: none;
 }
+

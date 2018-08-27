@@ -21,6 +21,7 @@ tutorial_html <- function(solution = FALSE,
                           includes = NULL,
                           css = NULL,
                           extra_dependencies = NULL,
+                          box_types = NULL,
                           ...
 ) {
 
@@ -31,13 +32,17 @@ tutorial_html <- function(solution = FALSE,
                                      includes = includes,
                                      extra_dependencies = extra_dependencies,
                                      ...)
+
+  if (is.list(box_types)) {
+    box_types <- lapply(box_types, function(x) do.call(set_box_theme, x))
+  }
   
   default_box_themes <- list(
     default = set_box_theme(body = list(fill = "#F2F2F2", colour = "blue"), header = list(fill = "#D3D3D3FF", colour = "black")),
     solution = set_box_theme(title = "solution", body = list(fill = "#ACFFAF4C", colour = "black"), header = list(fill = "#ACFFAFFF", colour = "#456646FF"), collapse = FALSE)
     )
   
-  
+  default_box_themes <- c(default_box_themes[!names(default_box_themes) %in% names(box_types)], box_types)
 
   hook_chunk <- function(x, options) {
     

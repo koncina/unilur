@@ -7,7 +7,7 @@
 \usage{
 tutorial_html(solution = FALSE, solution_suffix = "_solution",
   question_suffix = "_question", includes = NULL, css = NULL,
-  extra_dependencies = NULL, ...)
+  extra_dependencies = NULL, box_types = NULL, ...)
 
 tutorial_html_solution(...)
 }
