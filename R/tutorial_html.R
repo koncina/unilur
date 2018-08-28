@@ -16,8 +16,7 @@
 #' 
 #' @export
 tutorial_html <- function(solution = FALSE,
-                          solution_suffix = "_solution",
-                          question_suffix = "_question",
+                          suffix = "_question",
                           includes = NULL,
                           css = NULL,
                           extra_dependencies = NULL,
@@ -42,12 +41,9 @@ tutorial_html <- function(solution = FALSE,
     box_options <- c("box.title", "box.body", "box.header", "box.icon", "box.collapse")
     
     if (!any(names(options) %in% box_options)) return(x) # Not a box: return the chunk without changing it...
+    
     # Get the box theme
-    
-    box_options <- setNames(options[box_options], gsub("^box\\.", "", box_options))
-    
-    box_theme <- do.call(set_box_theme, box_options)
-    
+    box_theme <- do.call(set_box_theme, setNames(options[box_options], gsub("^box\\.", "", box_options)))
     box_theme[c("body", "header")] <- lapply(box_theme[c("body", "header")], to_css_colour)
     
     # Extract the title of the box: chunk option or default in the theme
@@ -94,14 +90,13 @@ tutorial_html <- function(solution = FALSE,
             panel_class, 
             html_box_header,
             panel_body)
-    
     knitr::asis_output(out)
   }
   
   orig_processor <- format$post_processor
   format$post_processor <- function(metadata, input_file, output_file, clean, verbose) {
     orig_processor(metadata, input_file, output_file, clean, verbose)
-    new_name = paste0(gsub("(.*)(\\.[[:alnum:]]+$)", "\\1", output_file), ifelse(solution, solution_suffix, question_suffix), ".html")
+    new_name = paste0(gsub("(.*)(\\.[[:alnum:]]+$)", "\\1", output_file), suffix, ".html")
     file.rename(output_file, new_name)
     new_name
   }
@@ -131,8 +126,8 @@ tutorial_html <- function(solution = FALSE,
 #' @export
 #' 
 #' @rdname tutorial_html
-tutorial_html_solution <- function(...) {
-  tutorial_html(solution = TRUE, ...)
+tutorial_html_solution <- function(suffix = "_solution", ...) {
+  tutorial_html(solution = TRUE, suffix = suffix, ...)
 }
 
 html_dependency_tutorial <- function() {
