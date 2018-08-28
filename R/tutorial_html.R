@@ -21,7 +21,6 @@ tutorial_html <- function(solution = FALSE,
                           includes = NULL,
                           css = NULL,
                           extra_dependencies = NULL,
-                          box_types = NULL,
                           ...
 ) {
 
@@ -33,66 +32,70 @@ tutorial_html <- function(solution = FALSE,
                                      extra_dependencies = extra_dependencies,
                                      ...)
 
-  if (is.list(box_types)) {
-    box_types <- lapply(box_types, function(x) do.call(set_box_theme, x))
-  }
+  is_solution_format <- isTRUE(solution)
   
-  default_box_themes <- list(
-    default = set_box_theme(body = list(fill = "#F2F2F2", colour = "blue"), header = list(fill = "#D3D3D3FF", colour = "black")),
-    solution = set_box_theme(title = "solution", body = list(fill = "#ACFFAF4C", colour = "black"), header = list(fill = "#ACFFAFFF", colour = "#456646FF"), collapse = FALSE)
-    )
-  
-  default_box_themes <- c(default_box_themes[!names(default_box_themes) %in% names(box_types)], box_types)
-
   hook_chunk <- function(x, options) {
-    
-    # If we are NOT rendering the solution html and the chunk is a solution one, we are
-    #  returning an empty string to hide the chunk
-    if (isTRUE(options[["solution"]]) && !isTRUE(solution)) return("")
+    is_solution_chunk <- isTRUE(options[["solution"]])
 
-    if (!is_box(options)) return(x) # Not a box: return the chunk without changing it...
+    if (is_solution_chunk && !is_solution_format) return("")
+
+    box_options <- c("box.title", "box.body", "box.header", "box.icon", "box.collapse")
     
-    box_type <- ifelse(is.null(options[["box.type"]]), ifelse(isTRUE(options[["solution"]]), "solution", "default"), options[["box.type"]])
+    if (!any(names(options) %in% box_options)) return(x) # Not a box: return the chunk without changing it...
+    # Get the box theme
     
-    box_theme <- knitr::opts_knit$get("box.types.list")[[box_type]]
+    box_options <- setNames(options[box_options], gsub("^box\\.", "", box_options))
     
-    if (is.null(box_theme)) stop(sprintf("the box type %s is not defined!", box_type), call. = FALSE)
+    box_theme <- do.call(set_box_theme, box_options)
     
     box_theme[c("body", "header")] <- lapply(box_theme[c("body", "header")], to_css_colour)
     
-    box_title <- options[["box.title"]]
-    if (is.null(box_title)) box_title <- box_theme[["title"]]
-
-    panel_class <- sprintf("class = \"panel\" style = \"background-color:%s; border:2px solid %s;\"", box_theme[["body"]][["fill"]], box_theme[["header"]][["fill"]])
+    # Extract the title of the box: chunk option or default in the theme
+    box_title <- options[["box.title"]] %n% box_theme[["title"]]
+    is_box_collapsed <- options[["box.collapse"]] %n% box_theme[["collapse"]]
     
-    panel_body <- sprintf("<div class=\"panel-body\" style = \"color:%s!important;\">%s</div>", box_theme[["body"]][["colour"]], paste0(x, collapse = "\n"))
-
-    # There is probably a better way...
-    # We might use a package to handle icons and to avoid the loss of print method metadata (library dependency)
-    # we add it manually here again
-    box_icon <- knitr::knit_print(box_theme[["icon"]])
-    knitr::knit_meta_add(meta = attr(box_icon, "knit_meta"), label = options$label)
-    
-    # TODO: to be enhanced
+    # Extract icon
+    # TODO: this might be enhanced
+    # Use the knitr print method to avoid loosing the library dependencies
+    invisible(capture.output({box_icon <- knitr::knit_print(box_theme[["icon"]])}))
+    knitr::knit_meta_add(meta = attr(box_icon, "knit_meta"), label = options[["label"]])
     if (! "knit_asis" %in% class(box_icon)) box_icon <- paste0("<i class=\"icon\">", box_icon, "</i>")
     
-    box_collapse <- options$box.collapse
+    panel_class <- sprintf("class = \"panel\" style = \"background-color:%s; border:2px solid %s;\"",
+                           box_theme[["body"]][["fill"]],
+                           box_theme[["header"]][["fill"]])
+    panel_body <- sprintf("<div class=\"panel-body\" style = \"color:%s!important;\">%s</div>",
+                          box_theme[["body"]][["colour"]],
+                          paste0(x, collapse = "\n"))
     
-    if (is.null(box_collapse)) {
-      box_collapse <- box_theme[["collapse"]]
+    # If box is collapsed add the bootstrap code
+    if (!is.null(is_box_collapsed)) {
+      panel_body <- sprintf("<div id=\"%s\" class=\"panel-collapse collapse%s\">%s</div>",
+                            options[["label"]],
+                            ifelse(is_box_collapsed, "", " in"),
+                            panel_body)
+      box_title <- sprintf("<a class = \"%s\" style=\"color: %s;\" data-toggle=\"collapse\" href=\"#%s\">%s</a>",
+                           ifelse(is_box_collapsed, "collapsed", ""),
+                           box_theme[["header"]][["colour"]],
+                           options[["label"]],
+                           box_title)
     }
     
-    if (!is.null(box_collapse)) {
-      panel_body <- sprintf("<div id=\"%s\" class=\"panel-collapse collapse%s\">%s</div>", options$label, ifelse(isTRUE(box_collapse), "", " in"), panel_body)
-      box_title <- sprintf("<a class = \"%s\" style=\"color: %s;\" data-toggle=\"collapse\" href=\"#%s\">%s</a>", ifelse(isTRUE(box_collapse), "collapsed", ""), box_theme[["header"]][["colour"]], options$label, box_title)
-    }
+    html_box_header <- {
+      if (is.null(box_title))
+        ""
+      else
+        sprintf("<div class=\"panel-heading\" style=\"background-color:%s; color:%s!important;\"><h4 class=\"panel-title\">%s%s</h4></div>",
+              box_theme[["header"]][["fill"]], box_theme[["header"]][["colour"]], box_icon, box_title)
+      }
+
+    # Return the HTML code
+    out <- sprintf("\n\n<div class=\"panel-group\"><div %s>%s%s</div></div>\n\n",
+            panel_class, 
+            html_box_header,
+            panel_body)
     
-    if (is.null(box_title)) panel_header <- ""
-    else panel_header <- sprintf("<div class=\"panel-heading\" style=\"background-color:%s; color:%s!important;\"><h4 class=\"panel-title\">%s%s</h4></div>",
-                                 box_theme[["header"]][["fill"]], box_theme[["header"]][["colour"]], box_icon, box_title)
-
-    sprintf("\n\n<div class=\"panel-group\"><div %s>%s%s</div></div>\n\n", panel_class, panel_header, panel_body)
-
+    knitr::asis_output(out)
   }
   
   orig_processor <- format$post_processor
@@ -104,22 +107,24 @@ tutorial_html <- function(solution = FALSE,
   }
   
   format$pre_knit <-  function(input, ...) {
-    knitr::opts_knit$set(box.types.list = default_box_themes)
     knitr::opts_hooks$set(solution = function(options) {
+      # Using merge_list: opts.label will not work here
+      options <- knitr:::merge_list(knitr::opts_template$get("solution"), options)
+      # No need to evaluate solutions if we don't show them...
+      # TODO: might cause troubles on dependencies: not showing the solution but using it even for questions...
       if (!isTRUE(solution)) {
         options$eval <- FALSE
       } 
       options
     })
     
-    knitr::opts_hooks$set(box.colour = function(options) {
-      add_box_type(options$label, body = list(fill = options$box.colour))
-      options$box.type <- options$label
-      options
-    })
   }
   
   format$knitr$knit_hooks$chunk  <- hook_chunk
+  
+  format$knitr$opts_template <- list(solution = list(box.title = "solution", box.body = list(fill = "#ACFFAF4C", colour = "black"), box.header = list(fill = "#ACFFAFFF", colour = "#456646FF"), box.collapse = FALSE)
+  )
+  
   format
 }
 
