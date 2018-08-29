@@ -37,8 +37,4 @@ check_box_colours <- function(...) {
   lapply(list(...), function(x) stopifnot(class(x) == c("box", "box_colour")))
 }
 
-to_css_colour <- function(x) {
-  stopifnot(class(x) == c("box", "box_colour"))
-  x["alpha",] <- round(x["alpha",] / 255, 1)
-  apply(x, 2, function(i) do.call(sprintf, as.list(c("rgba(%s, %s, %s, %s)", i))))
-}
+
