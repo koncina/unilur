@@ -1,84 +1,21 @@
 #' @importFrom grDevices col2rgb
 
 tutorial_pdf_base <- function(solution = FALSE,               # Turn ON or OFF the rendering of solution chunks
-                              solution_suffix = "_solution",
-                              question_suffix = "_question",
-                              credit = FALSE,                 # Show a link to the unilur homepage
+                              suffix = "_question",
                               latex_class = "article",
                               pandoc_args = NULL,
                               ...
 ) {
-
+  
   template <- system.file("rmarkdown", "templates", "tutorial", "resources", "template.tex",
                           package = "unilur")
   pandoc_args <- c(pandoc_args, "--variable", "geometry:margin=1in")  # Adjusts the margin
   pandoc_args <- c(pandoc_args, "--variable", "graphics=yes")         # Enables rescaling of too big graphics
   pandoc_args <- c(pandoc_args, "--variable", paste0("documentclass=", latex_class))
-  if (isTRUE(credit)) pandoc_args <- c(pandoc_args, "--variable", "credit=yes")
   
   format <- rmarkdown::pdf_document(pandoc_args = pandoc_args, template = template, ...)
   
-  hook_chunk <- function(x, options) {
-    # If we are NOT rendering the solution pdf and the chunk is a solution one, we are
-    #  returning an empty string to hide the chunk
-    if (isTRUE(options$solution) && !isTRUE(solution)) return("")
-    
-    if (!is_box(options)) return(x) # Not a box: return the chunk without changing it...
-
-    # If the solution pdf is being rendered and the chunk is a solution, we are drawing a green box around it.
-    if (isTRUE(options$solution) && isTRUE(solution)) return(paste0(c("\n\\solutions\n", x, "\n\\solutione\n"), collapse = "\n"))
-    
-    colour_def <- sprintf("\n\\definecolor{color-%s}{RGB}{%s}\n", options$label, paste(box_colour(options), collapse = ", "))
-    
-    box_begin <- sprintf("\n\\cboxs[%s]{color-%s}\n", ifelse(is.null(options$box.title), "", options$box.title), options$label)
-    paste0(c(colour_def, box_begin, x, "\n\\cboxe\n"), collapse = "\n")
-  }
-  
-  hook_input <- function(x, options) {
-    InputBegin <- sprintf("\n\\begin{mdframed}[style = input%s]", ifelse(isTRUE(options$samepage), ", nobreak = true", ""))
-    paste0(c(InputBegin,
-             "\\begin{Verbatim}[commandchars=\\\\\\{\\}]",
-             knitr:::hilight_source(x, "latex", options),
-             "\\end{Verbatim}",
-             "\\end{mdframed}\n"),
-           collapse = "\n")
-  }
-  
-  hook_output <- function(x, options) {
-    # Using trimws to remove the last newline character
-    # which is messing up page breaks in latex...
-    OutputBegin <- sprintf("\n\\begin{Verbatim}[%scommandchars=\\\\\\{\\}]", ifelse(isTRUE(options$samepage), "samepage, ", ""))
-    OutputEnd <- "\\end{Verbatim}\n"
-    x <- paste0(c(OutputBegin, trimws(x, which = "right"), OutputEnd), collapse = "\n")
-    return(x)
-  }
-  
-  hook_plot <- function(x, options) {
-    # determine caption (if any)
-    caption <- ifelse(is.null(options$fig.cap),
-                      "",
-                      paste("\\captionof{figure}{", options$fig.cap, "}\n", sep = ""))
-    # return the latex
-    paste(c("\\begin{center}", sprintf("\\includegraphics[trim=0 0 0 -2mm]{%s}\n%s\n", gsub("\\\\", "/", x), caption), "\\end{center}"), collapse = "\n")
-  }
-  
-  format$post_processor <- function(metadata, input_file, output_file, clean, verbose) {
-    new_name = paste0(gsub("(.*)(\\.[[:alnum:]]+$)", "\\1", output_file), ifelse(isTRUE(solution), solution_suffix, question_suffix), ".pdf")
-    file.rename(output_file, new_name)
-    return(new_name)
-  }
-  
-  format$pre_knit <-  function(input, ...) {
-    knitr::opts_hooks$set(solution = function(options) {
-      if (!isTRUE(solution)) options$eval <- FALSE
-      options
-    })
-  }
-  
-  format$knitr$knit_hooks$source  <- hook_input
-  format$knitr$knit_hooks$output  <- hook_output
-  format$knitr$knit_hooks$plot <- hook_plot
-  format$knitr$knit_hooks$chunk  <- hook_chunk
+  format <- tutorial_base(format, isTRUE(solution), suffix)
   format
 }
 
@@ -107,6 +44,35 @@ tutorial_pdf <- function(...) {
 
 #' @rdname tutorial_pdf
 #' @export
-tutorial_pdf_solution <- function(...) {
-  tutorial_pdf_base(solution = TRUE, ...)
+tutorial_pdf_solution <- function(suffix = "_solution", ...) {
+  tutorial_pdf_base(solution = TRUE, suffix = suffix, ...)
 }
+
+boxify_latex <- function(x, options, box_theme) {
+  colour_names <- c("body.fill", "body.colour", "header.fill", "header.colour")
+  xcolor_def <- rapply(box_theme,
+                       function(i) apply(i, 2, to_latex_rgb),
+                       classes = "box_colour",
+                       how = "unlist")[colour_names]
+  xcolor_def <- paste0("\\definecolor{", options[["label"]], ".", colour_names, "}", xcolor_def)
+  
+  alpha <- round(100 * rapply(box_theme, function(i) i["alpha",], classes = "box_colour", how = "unlist")[colour_names] / 255, 0)
+  colour_names <- paste0(options[["label"]], ".", colour_names, "!", alpha)
+  
+  stopifnot(length(colour_names) == 4)
+  
+  box_begin <- do.call(sprintf, as.list(c("\n\\cboxs[%s]{%s}{%s}{%s}{%s}\n", paste0(box_theme[["title"]], ""), colour_names)))
+  
+  paste0(c("\n", xcolor_def, "\n", box_begin, x, "\n\\cboxe\n"), collapse = "\n")
+}
+
+#' Helper function to construct the colour definition in latex (xcolor)
+#' 
+#' Builds up the string `\{RGB\}\{r, g, b\}` which needs to be completed: `\\definecolor\{name\}\{RGB\}\{r, g, b\}`
+#' 
+#' @param x a vector containing the rgb colour values
+to_latex_rgb <- function(x) {
+  do.call(sprintf, as.list(c("{RGB}{%s, %s, %s}", x)))
+}
+
+

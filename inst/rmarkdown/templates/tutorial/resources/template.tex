@@ -226,21 +226,26 @@ $endif$
 % Defining custom box environment (cbox) with 2 arguments:
 % The first optional (defaults to empty string) is the title of the box
 % The second (mandatory) defines the color of the box (linecolor and background is linecolor!30)
-\newenvironment{cbox}[2][]{
+
+% body: fill (#2), colour (#3)
+% header: fill (#4), colour (#5)
+\newenvironment{cbox}[5][]{
 \def\temp{#1}\ifx\temp\empty
 	\begin{mdframed}[style=bbox,%
-		linecolor = #2,%
+		linecolor = #4,%
+		fontcolor = #3,%
 		innertopmargin = 10pt,%
 		skipabove = 10pt,%
-		backgroundcolor = #2!30]%
+		backgroundcolor = #2]%
 \else
 	\begin{mdframed}[style=bbox,%
-		linecolor = #2,%
-		backgroundcolor = #2!30,%
+		linecolor = #4,%
+		fontcolor = #3,%
+		backgroundcolor = #2,%
 		innertopmargin = 3pt,%
 		skipabove = 10pt,%
 		frametitle={\tikz[baseline = (current bounding box.east), outer sep = 0pt]
-		\node[anchor = east, rounded corners = 3pt, rectangle, fill = #2]{#1};},%
+		\node[anchor = east, rounded corners = 3pt, rectangle, color = #5, fill = #4]{#1};},%
 		frametitleaboveskip = \dimexpr-\ht\strutbox\relax]
 \fi
 
@@ -262,10 +267,8 @@ $endif$
 % Defining the cbox, solution and answer environments to draw a colored block
 % around the content
 
-\newcommand{\cboxs}[2][]{\begin{cbox}[#1]{#2}}
+\newcommand{\cboxs}[5][]{\begin{cbox}[#1]{#2}{#3}{#4}{#5}}
 \newcommand{\cboxe}{\end{cbox}}
-\newcommand{\solutions}{\begin{cbox}[Solution]{celadon}}
-\newcommand{\solutione}{\end{cbox}}
 \newcommand{\answers}{\begin{cbox}[Answer]{Dandelion}}
 \newcommand{\answere}{\end{cbox}}
 
@@ -383,21 +386,6 @@ $endif$
 \makeatother
 
 % End of header.tex
-
-% Credit header
-$if(credit)$
-\usepackage{fancyhdr}
-\pagestyle{fancy}
-\lhead{} % Leaving header empty as mactex does not like \let\runauthor\@author
-\rhead{}
-
-\renewcommand{\headrulewidth}{0pt}
-\renewcommand{\footrulewidth}{0.4pt}
-\fancyfoot[L]{\href{http://eric.koncina.eu/r/unilur/}{\color{gray}unilur Rmarkdown template}\color{gray}\textit{ - E. Koncina}}
-\fancyfoot[R]{\thepage}
-\fancyfoot[C]{}
-$endif$
-% End of Credit header
 
 $for(header-includes)$
 $header-includes$
