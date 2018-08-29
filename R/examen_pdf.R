@@ -8,9 +8,7 @@
 #' 
 #' @param solution Turn ON or OFF the rendering of solution chunks (default is \code{FALSE})
 #' 
-#' @param solution_suffix Suffix which is added to the filename when \code{solution = TRUE} (default is '_solution')
-#' 
-#' @param question_suffix Suffix which is added to the filename when \code{solution = FALSE} (default is '_question')
+#' @param suffix Suffix which is added to the filename (default is '_question' for 'unilur::examen_pdf' and '_solution' for 'unilur::examen_pdf_solution')
 #' 
 #' @param id Draw a student identification box
 #' 
@@ -21,6 +19,7 @@
 #' @export
 examen_pdf <- function(
   solution = FALSE,
+  suffix = "_question",
   id = FALSE,
   mcq = "oneparchoices",
   includes = NULL,
@@ -39,36 +38,21 @@ examen_pdf <- function(
   header_examen <- system.file("rmarkdown", "templates", "tutorial", "resources", "header_examen.tex",
                                package = "unilur")
   
-  format <- tutorial_pdf_base(solution = solution,
-                              credit = FALSE,
-                              pandoc_args = pandoc_args,
-                              latex_class = "exam",
-                              includes = merge.list(list(in_header = header_examen), includes),
-                              ...)
+  format <- tutorial_pdf(solution = solution,
+                         suffix = suffix,
+                         pandoc_args = pandoc_args,
+                         latex_class = "exam",
+                         includes = merge.list(list(in_header = header_examen), includes),
+                         ...)
   
-  hook_chunk <- function(x, options) {
-    # If we are NOT rendering the solution pdf and the chunk is a solution one, we are
-    #  returning an empty string to hide the chunk
-    if (isTRUE(options$solution) && !isTRUE(solution)) {
-      if (is.numeric(options$response.space)) return(paste0("\n\\fillwithdottedlines{", options$response.space, "in}\n"))
-      else return("")
-    }
-    
+  hook_chunk <- format$knitr$knit_hooks$chunk
+  
+  format$knitr$knit_hooks$chunk <- function(x, options) {
     # If the "mcq" option is set we override the itemize environment
-    if (isTRUE(options$mcq)) x <- itemize2mcq(x, mcq.option = mcq, ifelse(is.numeric(options$mcq.n), options$mcq.n, 3))
-    
-    if (!is_box(options)) return(x) # Not a box: return the chunk without changing it...
-
-    # If the solution pdf is being rendered and the chunk is a solution, we are drawing a green box around it.
-    if (isTRUE(options$solution) && isTRUE(solution)) return(paste0(c("\n\\solutions\n", x, "\n\\solutione\n"), collapse = "\n"))
-    
-    colour_def <- sprintf("\n\\definecolor{color-%s}{RGB}{%s}\n", options$label, paste(box_colour(options), collapse = ", "))
-    
-    box_begin <- sprintf("\n\\cboxs[%s]{color-%s}\n", ifelse(is.null(options$box.title), "", options$box.title), options$label)
-    paste0(c(colour_def, box_begin, x, "\n\\cboxe\n"), collapse = "\n")
+    if (isTRUE(options[["mcq"]])) x <- itemize2mcq(x, mcq.option = mcq, ifelse(is.numeric(options$mcq.n), options$mcq.n, 3))
+    hook_chunk(x, options)
   }
   
-  format$knitr$knit_hooks$chunk  <- hook_chunk
   format
 }
 
@@ -97,6 +81,6 @@ itemize2mcq <- function(x, mcq.option = c("oneparchoices", "oneparchoicesalt", "
 #' @rdname examen_pdf
 #' 
 #' @export
-examen_pdf_solution <- function(...) {
-  examen_pdf(solution = TRUE, ...)
+examen_pdf_solution <- function(suffix = "_solution", ...) {
+  examen_pdf(solution = TRUE, suffix = suffix, ...)
 }

@@ -1,24 +1,3 @@
-#' @importFrom grDevices col2rgb
-
-tutorial_pdf_base <- function(solution = FALSE,               # Turn ON or OFF the rendering of solution chunks
-                              suffix = "_question",
-                              latex_class = "article",
-                              pandoc_args = NULL,
-                              ...
-) {
-  
-  template <- system.file("rmarkdown", "templates", "tutorial", "resources", "template.tex",
-                          package = "unilur")
-  pandoc_args <- c(pandoc_args, "--variable", "geometry:margin=1in")  # Adjusts the margin
-  pandoc_args <- c(pandoc_args, "--variable", "graphics=yes")         # Enables rescaling of too big graphics
-  pandoc_args <- c(pandoc_args, "--variable", paste0("documentclass=", latex_class))
-  
-  format <- rmarkdown::pdf_document(pandoc_args = pandoc_args, template = template, ...)
-  
-  format <- tutorial_base(format, isTRUE(solution), suffix)
-  format
-}
-
 #' Convert to a tutorial PDF document
 #'
 #' Format for converting from R Markdown to a tutorial PDF document.
@@ -29,23 +8,35 @@ tutorial_pdf_base <- function(solution = FALSE,               # Turn ON or OFF t
 #' 
 #' @param solution Turn ON or OFF the rendering of solution chunks (default is \code{FALSE})
 #' 
-#' @param solution_suffix Suffix which is added to the filename when \code{solution = TRUE} (default is '_solution')
-#' 
-#' @param question_suffix Suffix which is added to the filename when \code{solution = FALSE} (default is '_question')
-#' 
-#' @param credit Turn ON or OFF the footer showing a link to the unilur homepage (default is \code{FALSE})
+#' @param suffix Suffix which is added to the filename (default is '_question' for 'unilur::tutorial_pdf' and '_solution' for 'unilur::tutorial_pdf_solution')
 #' 
 #' @return R Markdown output format to pass to \code{\link{render}}
 #' 
 #' @export
-tutorial_pdf <- function(...) {
-  tutorial_pdf_base(...)
+tutorial_pdf <- function(solution = FALSE,
+                         suffix = "_question",
+                         latex_class = "article",
+                         pandoc_args = NULL,
+                         ...
+) {
+  
+  template <- system.file("rmarkdown", "templates", "tutorial", "resources", "template.tex",
+                          package = "unilur")
+  pandoc_args <- c(pandoc_args, "--variable", "geometry:margin=1in")  # Adjusts the margin
+  pandoc_args <- c(pandoc_args, "--variable", "graphics=yes")         # Enables rescaling of too big graphics
+  pandoc_args <- c(pandoc_args, "--variable", paste0("documentclass=", latex_class))
+  
+  format <- rmarkdown::pdf_document(pandoc_args = pandoc_args, template = template, ...)
+  
+  format <- unilur_base(format, isTRUE(solution), suffix)
+  format
 }
+
 
 #' @rdname tutorial_pdf
 #' @export
 tutorial_pdf_solution <- function(suffix = "_solution", ...) {
-  tutorial_pdf_base(solution = TRUE, suffix = suffix, ...)
+  tutorial_pdf(solution = TRUE, suffix = suffix, ...)
 }
 
 boxify_latex <- function(x, options, box_theme) {

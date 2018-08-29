@@ -29,7 +29,7 @@ tutorial_html <- function(solution = FALSE,
                                      extra_dependencies = extra_dependencies,
                                      ...)
   
-  format <- tutorial_base(format, isTRUE(solution), suffix)
+  format <- unilur_base(format, isTRUE(solution), suffix)
   
   format
 }
