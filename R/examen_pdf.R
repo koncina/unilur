@@ -4,6 +4,8 @@
 #' 
 #' @inheritParams rmarkdown::pdf_document
 #' 
+#' @inheritParams rmarkdown::latex_document
+#' 
 #' @details See the inherited `rmarkdown::pdf_document` help page for additional arguments.
 #' 
 #' @param solution Turn ON or OFF the rendering of solution chunks (default is \code{FALSE})
@@ -14,7 +16,7 @@
 #' 
 #' @param mcq Theme for the multiple choice questions (\code{oneparchoices}, \code{oneparchoicesalt}, \code{oneparcheckboxesalt} or \code{oneparcheckboxes})
 #' 
-#' @return R Markdown output format to pass to \code{\link{render}}
+#' @return R Markdown output format to pass to \code{\link[rmarkdown]{render}}
 #' 
 #' @export
 examen_pdf <- function(

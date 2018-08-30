@@ -1,8 +1,17 @@
+#' @importFrom htmltools htmlDependency
+#' @import knitr
+#' @importFrom grDevices col2rgb check.options
+#' @importFrom utils capture.output packageVersion
+
+NULL
+
 #' Define common settings for pdf and HTML output format
 #' 
 #' Set the post_processor, pre_knit as well as the solution theme in opts_template (which are common to all unilur formats)
 #'
 #' @param format a format to adapt (rmarkdown::html_document or rmarkdown::pdf_document)
+#' 
+#' @param is_solution_format `logical` should the output format render solution chunks or not
 #' 
 #' @param suffix Suffix which is added to the filename (to generate two separate files from the same source without overwriting)
 #' 

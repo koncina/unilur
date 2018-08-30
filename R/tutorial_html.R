@@ -10,7 +10,7 @@
 #' 
 #' @param suffix Suffix which is added to the filename (default is '_question' for 'unilur::tutorial_html' and '_solution' for 'unilur::tutorial_html_solution')
 #' 
-#' @return R Markdown output format to pass to \code{\link{render}}
+#' @return R Markdown output format to pass to \code{\link[rmarkdown]{render}}
 #' 
 #' @export
 tutorial_html <- function(solution = FALSE,
