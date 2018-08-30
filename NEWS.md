@@ -1,9 +1,10 @@
 # Unilur 0.4.0.9000
 
-## Breaking change
+## Breaking changes
 
 - remove `box.colour` chunk option (replaced by `box.body` and `box.header` which accepts a list to define `fill` and `colour`)
 - The automatic adjustement of header colour changes: `box.colour` was used to define the header colour and the colour of the body was derived from this value. From now, if `box.header` is omitted, the `fill` colour is derived from the `box.body` fill colour.
+- rename chunk option `response.space` to `answer.lines` in `unilur::examen_pdf`.
 
 ## Changes
 
@@ -11,15 +12,17 @@
 - remove output and source hooks in pdf output: might again produce troubles with unexpected page breaks using boxes.
 - redefine box chunk options: `box.title`, `box.body`, `box.header` and `box.collapse`. Colours for background and text can be set for the body and the header using a list (to provide the colours for `fill` and `colour`) 
 - add experimental support for icons in HTML output using the `box.icon` chunk option. Works for example using the output of the [`icon`](https://github.com/ropenscilabs/icon) or [`fontawesome`](https://github.com/rstudio/fontawesome) packages.
-- rename chunk option `response.space` to `answer.lines` in `unilur::examen_pdf`.
 
 # Unilur 0.4.0
 
+## Breaking changes
+
+- removed the collapse setting from the yaml header: The option should be adjusted for each chunk (use `knitr::opts_chunk$set(collapse = TRUE)` to define the default setting).
+- changed chunk options to adjust a custom box colour and title: use `box.colour` and `box.title` (instead of `box` and `boxtitle`)
+
 ## Changes
 
-- All boxes in `tutorial_html` are now collapsible. Adjust the chunk option `box.collapse` to `TRUE` (collapsed), `FALSE` (collapsible but uncollapsed) or `NULL` (non collapsible box).
-- **breaking change:** Removed the collapse setting from the yaml header: The option should be adjusted for each chunk (use `knitr::opts_chunk$set(collapse = TRUE)` to define the default setting).
-- **breaking change:** Changed chunk options to adjust a custom box colour and title: use `box.colour` and `box.title` (instead of `box` and `boxtitle`)
+- all boxes in `tutorial_html` are now collapsible. Adjust the chunk option `box.collapse` to `TRUE` (collapsed), `FALSE` (collapsible but uncollapsed) or `NULL` (non collapsible box).
 
 ## Bug fixes
 
