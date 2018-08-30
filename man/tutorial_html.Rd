@@ -5,18 +5,15 @@
 \alias{tutorial_html_solution}
 \title{Convert to a tutorial HTML document}
 \usage{
-tutorial_html(solution = FALSE, solution_suffix = "_solution",
-  question_suffix = "_question", includes = NULL, css = NULL,
-  extra_dependencies = NULL, box_types = NULL, ...)
+tutorial_html(solution = FALSE, suffix = "_question",
+  includes = NULL, css = NULL, extra_dependencies = NULL, ...)
 
-tutorial_html_solution(...)
+tutorial_html_solution(suffix = "_solution", ...)
 }
 \arguments{
 \item{solution}{Turn ON or OFF the rendering of solution chunks (default is \code{FALSE})}
 
-\item{solution_suffix}{Suffix which is added to the filename when \code{solution = TRUE} (default is '_solution')}
-
-\item{question_suffix}{Suffix which is added to the filename when \code{solution = FALSE} (default is '_question')}
+\item{suffix}{Suffix which is added to the filename (default is '_question' for 'unilur::tutorial_html' and '_solution' for 'unilur::tutorial_html_solution')}
 
 \item{includes}{Named list of additional content to include within the
 document (typically created using the \code{\link{includes}} function).}
@@ -30,7 +27,7 @@ base R Markdown HTML output formatter \code{\link{html_document_base}}}
 base R Markdown HTML output formatter \code{\link{html_document_base}}}
 }
 \value{
-R Markdown output format to pass to \code{\link{render}}
+R Markdown output format to pass to \code{\link[rmarkdown]{render}}
 }
 \description{
 Format for converting from R Markdown to a tutorial HTML document.

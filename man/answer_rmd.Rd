@@ -4,15 +4,15 @@
 \alias{answer_rmd}
 \title{Convert to a tutorial answer Rmarkdown file}
 \usage{
-answer_rmd(yaml = NULL, answer_suffix = "_answer", ...)
+answer_rmd(yaml = NULL, suffix = "_answer")
 }
 \arguments{
 \item{yaml}{a list to override the \code{title}, \code{author} and \code{output} of the answer Rmd file.}
 
-\item{answer_suffix}{Suffix which is added to the filename (default is '_answer')}
+\item{suffix}{Suffix which is added to the filename (default is '_answer')}
 }
 \value{
-R Markdown output format to pass to \code{\link{render}}
+R Markdown output format to pass to \code{\link[rmarkdown]{render}}
 }
 \description{
 Format to generate a Rmd file with solutions chunks being replaced by empty answer chunks.

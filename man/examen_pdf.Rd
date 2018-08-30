@@ -5,13 +5,15 @@
 \alias{examen_pdf_solution}
 \title{Convert to an examen PDF document}
 \usage{
-examen_pdf(solution = FALSE, id = FALSE, mcq = "oneparchoices",
-  includes = NULL, pandoc_args = NULL, ...)
+examen_pdf(solution = FALSE, suffix = "_question", id = FALSE,
+  mcq = "oneparchoices", includes = NULL, pandoc_args = NULL, ...)
 
-examen_pdf_solution(...)
+examen_pdf_solution(suffix = "_solution", ...)
 }
 \arguments{
 \item{solution}{Turn ON or OFF the rendering of solution chunks (default is \code{FALSE})}
+
+\item{suffix}{Suffix which is added to the filename (default is '_question' for 'unilur::examen_pdf' and '_solution' for 'unilur::examen_pdf_solution')}
 
 \item{id}{Draw a student identification box}
 
@@ -23,13 +25,9 @@ document (typically created using the \code{\link{includes}} function).}
 \item{pandoc_args}{Additional command line options to pass to pandoc}
 
 \item{...}{Arguments passed to \code{pdf_document()}.}
-
-\item{solution_suffix}{Suffix which is added to the filename when \code{solution = TRUE} (default is '_solution')}
-
-\item{question_suffix}{Suffix which is added to the filename when \code{solution = FALSE} (default is '_question')}
 }
 \value{
-R Markdown output format to pass to \code{\link{render}}
+R Markdown output format to pass to \code{\link[rmarkdown]{render}}
 }
 \description{
 Format for converting from R Markdown to an examen PDF document.

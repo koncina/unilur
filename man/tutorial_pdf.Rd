@@ -5,23 +5,22 @@
 \alias{tutorial_pdf_solution}
 \title{Convert to a tutorial PDF document}
 \usage{
-tutorial_pdf(...)
+tutorial_pdf(solution = FALSE, suffix = "_question",
+  pandoc_args = NULL, ...)
 
-tutorial_pdf_solution(...)
+tutorial_pdf_solution(suffix = "_solution", ...)
 }
 \arguments{
-\item{...}{Arguments passed to \code{pdf_document()}.}
-
 \item{solution}{Turn ON or OFF the rendering of solution chunks (default is \code{FALSE})}
 
-\item{solution_suffix}{Suffix which is added to the filename when \code{solution = TRUE} (default is '_solution')}
+\item{suffix}{Suffix which is added to the filename (default is '_question' for 'unilur::tutorial_pdf' and '_solution' for 'unilur::tutorial_pdf_solution')}
 
-\item{question_suffix}{Suffix which is added to the filename when \code{solution = FALSE} (default is '_question')}
+\item{pandoc_args}{Additional command line options to pass to pandoc}
 
-\item{credit}{Turn ON or OFF the footer showing a link to the unilur homepage (default is \code{FALSE})}
+\item{...}{Arguments passed to \code{pdf_document()}.}
 }
 \value{
-R Markdown output format to pass to \code{\link{render}}
+R Markdown output format to pass to \code{\link[rmarkdown]{render}}
 }
 \description{
 Format for converting from R Markdown to a tutorial PDF document.
