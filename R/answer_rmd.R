@@ -4,12 +4,12 @@
 #' 
 #' @param yaml a list to override the \code{title}, \code{author} and \code{output} of the answer Rmd file.
 #' 
-#' @param answer_suffix Suffix which is added to the filename (default is '_answer')
+#' @param suffix Suffix which is added to the filename (default is '_answer')
 #' 
-#' @return R Markdown output format to pass to \code{\link{render}}
+#' @return R Markdown output format to pass to \code{\link[rmarkdown]{render}}
 #' 
 #' @export
-answer_rmd <- function(yaml = NULL, answer_suffix = "_answer", ...) {
+answer_rmd <- function(yaml = NULL, suffix = "_answer") {
   # Here we implement a fake knitting: I don't think it's possible to avoid using pandoc
   # We will generate a simple md document (that will be deleted) and use a chunk hook
   # to disable any code evaluation (to speed up the unnecessary knitting)
@@ -48,7 +48,7 @@ answer_rmd <- function(yaml = NULL, answer_suffix = "_answer", ...) {
     
     rmd <- gsub(pattern, header, rmd, perl = TRUE)
     
-    answer_output <<- paste0(tools::file_path_sans_ext(input), answer_suffix, ".Rmd")
+    answer_output <<- paste0(tools::file_path_sans_ext(input), suffix, ".Rmd")
     writeLines(rmd, answer_output)
     
     knitr::opts_hooks$set(eval = function(options) {
