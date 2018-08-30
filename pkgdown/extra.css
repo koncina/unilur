@@ -2,3 +2,14 @@
     padding-top: 0;
     margin-top: 0;
 }
+
+/* workaround to use fa v5 code with the loaded v4.7 library */
+.fas {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+        font-size: 14px;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
