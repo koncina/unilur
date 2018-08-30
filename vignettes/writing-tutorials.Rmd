@@ -1,0 +1,73 @@
+---
+title: "Writing tutorials"
+author: "Eric Koncina"
+date: "`r Sys.Date()`"
+output:
+  unilur::tutorial_html_solution:
+    suffix: ""
+    toc: yes
+pkgdown:
+  as_is: true
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+
+```
+
+## The `unilur` tutorial formats
+
+To start writing your first practical for students, create a new Rmarkdown file using the template provided by `unilur`.
+The yaml header will contain the following output formats:
+
+```
+output:
+  unilur::tutorial_html: default
+  unilur::tutorial_pdf: default
+  unilur::tutorial_html_solution: default
+  unilur::tutorial_pdf_solution: default
+```
+
+Use the Rstudio dropdown knit button to render the desired file. To allow the creation of two distinct files (with and without solutions) from a single Rmarkdown file, the output file will end with a suffix which can be adjusted in the YAML header.
+
+The default values of the `suffix` argument are:
+
+- **`_question`** for `unilur::tutorial_html` and `unilur::tutorial_pdf`
+- **`_solution`** for `unilur::tutorial_html_solution` and `unilur::tutorial_pdf_solution`
+- **`_answer`** for `unilur::answer_rmd`
+
+## Solutions
+
+Answers or solutions are written within a [code chunk](http://rmarkdown.rstudio.com/authoring_rcodechunks.html) with the `solution = TRUE` option. The content of these chunks will be wrapped within a green box (read the custom boxes article to change the appearance).
+
+For example, if you write the following question and supply the `solution = TRUE` option chunk to the answer:
+
+    - What is the mean speed reported in the `cars` dataset?
+    
+    `r ''````{r, solution = TRUE}
+    mean(cars$speed)
+    ```
+
+You will generate the following output using the `unilur::tutorial_html_solution` format:
+
+- What is the mean speed reported in the `cars` dataset?
+
+```{r, solution = TRUE}
+ mean(cars$speed)
+```
+
+If you render the same file using `unilur::tutorial_html`, the green box containing your expected answer will not appear.
+
+```{r, echo = FALSE}
+knitr::opts_template$set(advice = list(box.title = "Advice",
+                                         box.body = list(fill = "pink"),
+                                         box.icon = icon::ii_information()))
+```
+
+```{block, opts.label = "advice"}
+To highlight some content, you can also include it in custom boxes: have a look at the dedicated [article](custom-boxes.html) to learn how to create them.
+```

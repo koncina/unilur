@@ -1,0 +1,107 @@
+---
+title: "Writing examination papers"
+author: "Eric Koncina"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Writing examination papers}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The `unilur::examen_pdf` and `unilur::examen_pdf_solution` formats (relying on the latex [exam class](https://www.ctan.org/pkg/exam)) extend the possibilities of the tutorial format:
+
+- include an **identification box** to be filled in by the candidate
+- insert **placeholders with dotted lines** between questions to write in the answers
+- generate **multiple choice questions**
+
+## Yaml header arguments
+
+| argument | value                                                                           |  description                                   |
+|----------|---------------------------------------------------------------------------------|:-----------------------------------------------|
+|  id      | **`yes`**/`no`                                                                  |  draws a candidate identification form         |
+|  mcq     | `oneparchoices`, `oneparchoicesalt`, `oneparcheckboxesalt`, `oneparcheckboxes`  |  theme for the multiple choice questions       |
+
+## Questions
+
+Use the fifth level of heading to create your questions (`##### question`). It is possible to leave some space with lines in the main pdf file that allow students to write down their answers. Just set the `answer.lines = <s>` chunk option (in inches) together with `solution = TRUE`.
+
+    ---
+    title: "Examen demo"
+    author: "John Doe"
+    date: "19 April, 2016"
+    output:
+      unilur::examen_pdf:
+        id: yes
+      unilur::examen_pdf_solution:
+        id: yes
+    ---
+
+    ##### Write your answer below
+
+    ```r ''``{block, solution = TRUE, answer.lines = 1}
+    This is the hidden answer generating lines in the main pdf file.
+    ```r ''``
+
+    ##### Second question
+
+    ```r ''``{block, solution = TRUE, answer.lines = 0.5}
+    This would be the expected answer to the question
+    ```r ''``
+
+```{r, echo = FALSE}
+knitr::include_graphics("http://eric.koncina.eu/pics/r/unilur/exam_questions.jpg")
+knitr::include_graphics("http://eric.koncina.eu/pics/r/unilur/exam_solution.jpg")
+```
+
+
+## Multiple choice questions
+
+Lists can be rendered as multiple choice questions. Write the list within a `block` chunk and set the option `mcq = TRUE` like in the example below:
+
+    ```r ''``{block, mcq = TRUE}
+    - Item 1
+    - Item 2
+    - Item 3
+    - Item 4
+    - Item 5
+    ```r ''``
+
+The output theme of MCQ can be adjusted in the YAML front-matter as shown below:
+
+```
+output:
+  unilur::examen_pdf:
+    mcq: <mcq theme>
+```
+
+The snapshots below show how the different `<mcq theme>` values look like:
+
+|     mcq theme          |  result                                                               |
+|:----------------------:|:---------------------------------------------------------------------:|
+| `oneparchoices`        | ![](http://eric.koncina.eu/pics/r/unilur/mcq_oneparchoices.jpg)       |
+| `oneparchoicesalt`     | ![](http://eric.koncina.eu/pics/r/unilur/mcq_oneparchoicesalt.jpg)    |
+| `oneparcheckboxes`     | ![](http://eric.koncina.eu/pics/r/unilur/mcq_oneparcheckboxes.jpg)    |
+| `oneparcheckboxesalt`  | ![](http://eric.koncina.eu/pics/r/unilur/mcq_oneparcheckboxesalt.jpg) |
+
+For the `oneparchoicesalt` and `oneparcheckboxesalt` options, it is possible to specify the number of items per line with the `mcq.n` chunk option (default is 3).
+
+## Generate a Rmarkdown file without solution chunks
+
+Use the `unilur::answer_rmd` output format to generate a Rmarkdown document containing all the instructions but without the solution chunks which are replaced by empty ones. The Yaml header is also changed and you can adjust the title, author or output:
+
+```
+output:
+  unilur::answer_rmd:
+    yaml:
+      title: "My answers"
+      author: "My name"
+      output: html_document
+```
