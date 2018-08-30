@@ -15,7 +15,6 @@
 #' @export
 tutorial_pdf <- function(solution = FALSE,
                          suffix = "_question",
-                         latex_class = "article",
                          pandoc_args = NULL,
                          ...
 ) {
@@ -24,8 +23,7 @@ tutorial_pdf <- function(solution = FALSE,
                           package = "unilur")
   pandoc_args <- c(pandoc_args, "--variable", "geometry:margin=1in")  # Adjusts the margin
   pandoc_args <- c(pandoc_args, "--variable", "graphics=yes")         # Enables rescaling of too big graphics
-  pandoc_args <- c(pandoc_args, "--variable", paste0("documentclass=", latex_class))
-  
+
   format <- rmarkdown::pdf_document(pandoc_args = pandoc_args, template = template, ...)
   
   format <- unilur_base(format, isTRUE(solution), suffix)

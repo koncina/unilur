@@ -29,6 +29,8 @@ examen_pdf <- function(
   template <- system.file("rmarkdown", "templates", "tutorial", "resources", "template.tex",
                           package = "unilur")
 
+  pandoc_args <- c(pandoc_args, "--variable", "documentclass=exam")
+  
   # Enables the rendering of the identification box (first and last name)
   if (isTRUE(id)) pandoc_args <- c(pandoc_args, "--variable", "idbox=yes")
   
@@ -41,8 +43,7 @@ examen_pdf <- function(
   format <- tutorial_pdf(solution = solution,
                          suffix = suffix,
                          pandoc_args = pandoc_args,
-                         latex_class = "exam",
-                         includes = merge.list(list(in_header = header_examen), includes),
+                         includes = merge_includes(list(in_header = header_examen), includes),
                          ...)
   
   hook_chunk <- format$knitr$knit_hooks$chunk
