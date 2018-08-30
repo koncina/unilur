@@ -26,17 +26,16 @@ plot(cars)
 
 You can also add some markdown formatted text with the asis engine together with `solution = TRUE`
 
-```{asis, solution = TRUE}
+```{block, solution = TRUE}
 This is the text explaining how to obtain the solution and written in **Rmarkdown**
 ```
 
-To decide which pdf should be generated you can specify the `solution` option in the yaml header:
+Use the knit dropdown menu on the knit button to generate the desired output:
 
--------------------------------------------------------------
-     yaml header Pdf creation
-      `solution`
----------------- --------------------------------------------
-   `yes`         with the solution chunks
+- Using `unilur::tutorial_pdf_solution` or `unilur::tutorial_html_solution` will show the solution boxes.
+- Using `unilur::tutorial_pdf` or `unilur::tutorial_html` will hide them from the output.
 
-   `no`          without the solution chunks
--------------------------------------------------------------
+```{block, box.title = "Tip", box.body = list(fill = "lightblue")}
+You can also include custom boxes to highlight some content. Read the [article](http://koncina.github.io/unilur/articles/custom-boxes.html) to learn more about how to customize the appearance.
+```
+
