@@ -19,7 +19,7 @@ tutorial_pdf <- function(solution = FALSE,
                          ...
 ) {
   
-  template <- system.file("rmarkdown", "templates", "tutorial", "resources", "template.tex",
+  template <- system.file("rmd", "tutorial_pdf", "template.tex",
                           package = "unilur")
   pandoc_args <- c(pandoc_args, "--variable", "geometry:margin=1in")  # Adjusts the margin
   pandoc_args <- c(pandoc_args, "--variable", "graphics=yes")         # Enables rescaling of too big graphics
