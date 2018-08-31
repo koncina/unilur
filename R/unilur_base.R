@@ -1,7 +1,9 @@
 #' @importFrom htmltools htmlDependency
+#' @importFrom rmarkdown html_dependency_ionicons html_dependency_font_awesome
 #' @import knitr
 #' @importFrom grDevices col2rgb check.options
 #' @importFrom utils capture.output packageVersion
+#' @importFrom stringr str_extract
 
 NULL
 

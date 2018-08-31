@@ -14,7 +14,7 @@
     float: right;
 }
 
-.panel-heading h4 i {
+.panel-heading h4 i, .panel-heading h4 svg {
   margin-right: 10px;
 }
 

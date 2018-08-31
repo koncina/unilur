@@ -47,12 +47,8 @@ boxify_html <- function(x, options, box_theme) {
   is_box_collapsed <- options[["box.collapse"]] %n% box_theme[["collapse"]]
   box_title <- box_theme[["title"]]
   
-  # Extract icon
-  # TODO: this might be enhanced
-  # Use the knitr print method to avoid loosing the library dependencies
-  invisible(capture.output({box_icon <- knitr::knit_print(box_theme[["icon"]])}))
+  box_icon <- get_box_icon(box_theme[["icon"]])
   knitr::knit_meta_add(meta = attr(box_icon, "knit_meta"), label = options[["label"]])
-  if (! "knit_asis" %in% class(box_icon)) box_icon <- paste0("<i class=\"icon\">", box_icon, "</i>")
   
   panel_class <- sprintf("class = \"panel\" style = \"background-color:%s; border:2px solid %s;\"",
                          box_theme[["body"]][["fill"]],

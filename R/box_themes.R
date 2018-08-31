@@ -22,8 +22,6 @@ set_box_theme <- function(title = NULL, body = NULL, header = NULL, icon = NULL,
   
   check_box_colours(body, header)
   
-  if (is.null(icon)) icon <- ""
-  
   structure(list(
     body = body,
     header = header,
@@ -37,4 +35,34 @@ check_box_colours <- function(...) {
   lapply(list(...), function(x) stopifnot(class(x) == c("box", "box_colour")))
 }
 
+# Generate code to integrate icons
+icon_fa <- function(icon_name) {
+  knitr::asis_output(paste0("<i class=\"fa fa-", icon_name, "\"></i>"),
+                     meta = list(rmarkdown::html_dependency_font_awesome()))
+}
 
+
+get_box_icon <- function (x, ...) {
+  UseMethod("get_box_icon", x)
+}
+
+get_box_icon.character <- function(x, ...) {
+  x <- switch(stringr::str_extract(x, "^[^-]+-"),
+              `fa-` = list(paste0("<i class=\"fa ", x, "\"></i>"),
+                           meta = list(rmarkdown::html_dependency_font_awesome())),
+              `ion-` = list(paste0("<i class=\"ion ", x, "\"></i>"),
+                            meta = list(rmarkdown::html_dependency_ionicons())),
+              stop("icon name must start with 'fa-' or 'ion-'", call. = FALSE))
+  do.call(knitr::asis_output, x)
+}
+
+# TODO: knit_asis is very permissive while knit_icon might only be relevant for the icon package...
+# Should I support emoji?
+get_box_icon.knit_asis <- function(x, ...) {
+  x
+}
+
+get_box_icon.NULL <- function(x, ...) {
+  ""
+}
+  

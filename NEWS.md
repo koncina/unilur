@@ -11,7 +11,7 @@
 - rewrite the format functions to deduplicate the source code.
 - remove output and source hooks in pdf output: might again produce troubles with unexpected page breaks using boxes.
 - redefine box chunk options: `box.title`, `box.body`, `box.header` and `box.collapse`. Colours for background and text can be set for the body and the header using a list (to provide the colours for `fill` and `colour`) 
-- add experimental support for icons in HTML output using the `box.icon` chunk option. Works for example using the output of the [`icon`](https://github.com/ropenscilabs/icon) or [`fontawesome`](https://github.com/rstudio/fontawesome) packages.
+- add support for icons in HTML output using the `box.icon` chunk option. Use font awesome names ("fa-*") or ionicon names ("ion-*") to specify the desired icon. Alternatively you can use the output of packages like [`icon`](https://github.com/ropenscilabs/icon).
 
 # Unilur 0.4.0
 
