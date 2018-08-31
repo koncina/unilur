@@ -42,7 +42,7 @@ You can render your own boxes using the following chunk options defined in `unil
     + `NULL`: the box is not collapsible
     + `TRUE`: the box is collapsed
     + `FALSE`: the box is not collapsed but collapsible
-- **box.icon**: HTML code which will be prepended to the `box.title` to render an icon. You can use a package like [icon](https://github.com/ropenscilabs/icon) to generate the code and manage the library dependency.
+- **box.icon**: optional [Font Awesome](https://fontawesome.com/) or [Ionicon](https://ionicons.com/v2/cheatsheet.html) name. The character sequence should start with either `fa-` for [Font Awesome](https://fontawesome.com/) icons or `ion-` for [Ionicons](https://ionicons.com/v2/cheatsheet.html). Alternatively you can use a function defined in a package such as [`icon`](https://github.com/ropenscilabs/icon).
 
 Example of a coloured box:
 
@@ -56,11 +56,11 @@ A custom box
 
 Example of a coloured box using an icon:
 
-    `r ''````{block, box.title = "Title and icon", box.body = list(fill = "lightblue"), box.icon = icon::fa_star()}
+    `r ''````{block, box.title = "Title and icon", box.body = list(fill = "lightblue"), box.icon = "fa-star"}
     This box contains an icon in the header...
     ```
 
-```{block, box.title = "Title and icon", box.body = list(fill = "lightblue"), box.icon = icon::fa_star()}
+```{block, box.title = "Title and icon", box.body = list(fill = "lightblue"), box.icon = "fa-star"}
 This box contains an icon in the header...
 ```
 
@@ -72,7 +72,7 @@ This box contains an icon in the header...
 knitr::opts_template$set(alert = list(box.title = "Watch out!",
                                       box.body = list(fill = "#fa5b42", colour = "#fdf6d4"),
                                       box.collapse = TRUE,
-                                      box.icon = icon::fa_exclamation_triangle()))
+                                      box.icon = "fa-exclamation-triangle"))
 ```
 
 Now set the `opts.label` chunk option to the alias you just created:
@@ -120,8 +120,6 @@ This is how the solution box looks like
 ```
 
 ```{r, include = FALSE}
-# Let fa work with pkgdown: boostrap uses fa v4.7 while icon already uses v5
-# Added a .fas css class to extra.css
-# flush fa icon dependency introduced by the icon package: pkgdown already loads fa
+# flush fa icon dependency: pkgdown already loads fa from cdn
 knitr::knit_meta()
 ```

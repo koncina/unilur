@@ -65,9 +65,14 @@ If you render the same file using `unilur::tutorial_html`, the green box contain
 ```{r, echo = FALSE}
 knitr::opts_template$set(advice = list(box.title = "Advice",
                                          box.body = list(fill = "pink"),
-                                         box.icon = icon::ii_information()))
+                                         box.icon = "fa-comment"))
 ```
 
 ```{block, opts.label = "advice"}
 To highlight some content, you can also include it in custom boxes: have a look at the dedicated [article](custom-boxes.html) to learn how to create them.
+```
+
+```{r, include = FALSE}
+# flush fa icon dependency: pkgdown already loads fa from cdn
+knitr::knit_meta()
 ```
