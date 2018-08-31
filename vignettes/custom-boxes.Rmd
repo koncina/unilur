@@ -36,9 +36,9 @@ This is the solution...
 You can render your own boxes using the following chunk options defined in `unilur`:
 
 - **box.title**: The title of the box
-- **box.body**: A list containing `fill` (background) and/or `colour` (text if applicable _e.g._ block chunk) to define the colours of the body. Use the _R_ color specifications (see `grDevices::col2rgb()`).
+- **box.body**: A list containing `fill` (background) and/or `colour` (text if applicable _e.g._ block chunk) to define the colours of the body. Use the _R_ colour specifications (see `grDevices::col2rgb()`).
 - **box.header**: A list containing `fill` and/or `colour` to define the colours of the header.
-- **box.collapse**: The collapsible status of the HTML box.
+- **box.collapse**: The collapsible status of the box (only applicable to `tutorial_html*` formats)`:
     + `NULL`: the box is not collapsible
     + `TRUE`: the box is collapsed
     + `FALSE`: the box is not collapsed but collapsible

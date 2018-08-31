@@ -1,6 +1,6 @@
 Package: unilur
 Type: Package
-Title: rmarkdown template for tutorial pdf files
+Title: rmarkdown template to prepare tutorials, practicals or examination papers
 Version: 0.4.0.9000
 Authors@R: c(person("Eric", "Koncina", , "mail@koncina.eu", c("aut", "cre")))
 Maintainer: Eric Koncina <mail@koncina.eu>
