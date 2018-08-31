@@ -18,13 +18,24 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
+  <link href="../extra.css" rel="stylesheet">
   
-  
+<meta property="og:title" content="Function reference" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +58,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">unilur</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">unilur</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0.9000</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -60,8 +75,26 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/custom-boxes.html">Custom boxes</a>
+    </li>
+    <li>
+      <a href="../articles/writing-examination-papers.html">Writing examination papers</a>
+    </li>
+    <li>
+      <a href="../articles/writing-tutorials.html">Writing tutorials</a>
+    </li>
+  </ul>
+</li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -73,6 +106,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -80,74 +114,70 @@
       
       </header>
 
-      <div class="row">
-  <div class="col-md-9">
+<div class="row">
+  <div class="contents col-md-9">
     <div class="page-header">
-      <h1>
-        Reference
-        <small>version&nbsp;0.3.0.9000</small>
-      </h1>
+      <h1>Reference</h1>
     </div>
 
-    <div class="contents">
-      <table class="ref-index">
+    <table class="ref-index">
 
-      <colgroup>
-        <col class="alias" />
-        <col class="title" />
-      </colgroup>
+    <colgroup>
+      
+      <col class="alias" />
+      <col class="title" />
+    </colgroup>
 
-      <tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-tutorials" class="hasAnchor"><a href="#section-tutorials" class="anchor"></a>Tutorials</h2>
-            <p class="section-desc"><p>Generate tutorial PDF or HTML files.</p></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="tutorial_html.html">tutorial_html</a></code> <code><a href="tutorial_html.html">tutorial_html_solution</a></code> </p>
-          </td>
-          <td><p>Convert to a tutorial HTML document</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="tutorial_pdf.html">tutorial_pdf</a></code> <code><a href="tutorial_pdf.html">tutorial_pdf_solution</a></code> </p>
-          </td>
-          <td><p>Convert to a tutorial PDF document</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-examen" class="hasAnchor"><a href="#section-examen" class="anchor"></a>Examen</h2>
-            <p class="section-desc"><p>PDF template to generate examen files.</p></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="examen_pdf.html">examen_pdf</a></code> <code><a href="examen_pdf.html">examen_pdf_solution</a></code> </p>
-          </td>
-          <td><p>Convert to an examen PDF document</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-answer" class="hasAnchor"><a href="#section-answer" class="anchor"></a>Answer</h2>
-            <p class="section-desc"><p>Generate a Rmarkdown file to fill in answers</p></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="answer_rmd.html">answer_rmd</a></code> </p>
-          </td>
-          <td><p>Convert to a tutorial answer Rmarkdown file</p></td>
-        </tr>
-      </tbody>
-      </table>
-    </div>
+    <tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-tutorials" class="hasAnchor"><a href="#section-tutorials" class="anchor"></a>Tutorials</h2>
+          <p class="section-desc"><p>Generate tutorial PDF or HTML files.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="tutorial_html.html">tutorial_html()</a></code> <code><a href="tutorial_html.html">tutorial_html_solution()</a></code> </p>
+        </td>
+        <td><p>Convert to a tutorial HTML document</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="tutorial_pdf.html">tutorial_pdf()</a></code> <code><a href="tutorial_pdf.html">tutorial_pdf_solution()</a></code> </p>
+        </td>
+        <td><p>Convert to a tutorial PDF document</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-examen" class="hasAnchor"><a href="#section-examen" class="anchor"></a>Examen</h2>
+          <p class="section-desc"><p>PDF template to generate examen files.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="examen_pdf.html">examen_pdf()</a></code> <code><a href="examen_pdf.html">examen_pdf_solution()</a></code> </p>
+        </td>
+        <td><p>Convert to an examen PDF document</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-answer" class="hasAnchor"><a href="#section-answer" class="anchor"></a>Answer</h2>
+          <p class="section-desc"><p>Generate a Rmarkdown file to fill in answers</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="answer_rmd.html">answer_rmd()</a></code> </p>
+        </td>
+        <td><p>Convert to a tutorial answer Rmarkdown file</p></td>
+      </tr>
+    </tbody>
+    </table>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -172,5 +202,8 @@
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

@@ -1,0 +1,8 @@
+pandoc: 2.2.1
+pkgdown: 1.1.0
+pkgdown_sha: ~
+articles:
+  custom-boxes: custom-boxes.html
+  writing-examination-papers: writing-examination-papers.html
+  writing-tutorials: writing-tutorials.html
+

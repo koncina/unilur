@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>All news • unilur</title>
+<title>Changelog • unilur</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -18,13 +18,24 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
+  <link href="../extra.css" rel="stylesheet">
   
-  
+<meta property="og:title" content="Changelog" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +58,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">unilur</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">unilur</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.4.0.9000</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -60,8 +75,26 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/custom-boxes.html">Custom boxes</a>
+    </li>
+    <li>
+      <a href="../articles/writing-examination-papers.html">Writing examination papers</a>
+    </li>
+    <li>
+      <a href="../articles/writing-tutorials.html">Writing tutorials</a>
+    </li>
+  </ul>
+</li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -73,6 +106,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -80,63 +114,96 @@
       
       </header>
 
-      <div class="row">
-
-  <div class="col-md-9">
+<div class="row">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Change log <small>All releases</small></h1>
+      <h1>Changelog <small></small></h1>
+      <small>Source: <a href='https://github.com/koncina/unilur/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div class="contents">
-    <div id="unilur-0-3-0-9000" class="section level1">
-<h1 class="hasAnchor">
-<a href="#unilur-0-3-0-9000" class="anchor"></a>Unilur 0.3.0.9000</h1>
+    <div id="unilur-0-4-0-9000" class="section level1">
+<h1 class="page-header">
+<a href="#unilur-0-4-0-9000" class="anchor"></a>Unilur 0.4.0.9000</h1>
+<div id="breaking-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
+<ul>
+<li>remove <code>box.colour</code> chunk option (replaced by <code>box.body</code> and <code>box.header</code> which accepts a list to define <code>fill</code> and <code>colour</code>)</li>
+<li>The automatic adjustement of header colour changes: <code>box.colour</code> was used to define the header colour and the colour of the body was derived from this value. From now, if <code>box.header</code> is omitted, the <code>fill</code> colour is derived from the <code>box.body</code> fill colour.</li>
+<li>rename chunk option <code>response.space</code> to <code>answer.lines</code> in <code><a href="../reference/examen_pdf.html">unilur::examen_pdf</a></code>.</li>
+</ul>
+</div>
 <div id="changes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#changes" class="anchor"></a>Changes</h2>
 <ul>
-<li>All boxes in <code>tutorial_html</code> are now collapsible. Adjust the chunk option <code>box.collapse</code> to <code>TRUE</code> (collapsed), <code>FALSE</code> (collapsible but uncollapsed) or <code>NULL</code> (non collapsible box).</li>
-<li>
-<strong>breaking change:</strong> Removed the collapse setting from the yaml header: The option should be adjusted for each chunk (use <code>knitr::opts_chunk$set(collapse = TRUE)</code> to define the default setting).</li>
-<li>
-<strong>breaking change:</strong> Changed chunk options to adjust a custom box colour and title: use <code>box.colour</code> and <code>box.title</code> (instead of <code>box</code> and <code>boxtitle</code>)</li>
+<li>rewrite the format functions to deduplicate the source code.</li>
+<li>remove output and source hooks in pdf output: might again produce troubles with unexpected page breaks using boxes.</li>
+<li>redefine box chunk options: <code>box.title</code>, <code>box.body</code>, <code>box.header</code> and <code>box.collapse</code>. Colours for background and text can be set for the body and the header using a list (to provide the colours for <code>fill</code> and <code>colour</code>)</li>
+<li>add support for icons in HTML output using the <code>box.icon</code> chunk option. Use font awesome names (“fa-<em>") or ionicon names ("ion-</em>”) to specify the desired icon. Alternatively you can use the output of packages like <a href="https://github.com/ropenscilabs/icon"><code>icon</code></a>.</li>
+</ul>
+</div>
+</div>
+    <div id="unilur-0-4-0" class="section level1">
+<h1 class="page-header">
+<a href="#unilur-0-4-0" class="anchor"></a>Unilur 0.4.0</h1>
+<div id="breaking-changes-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#breaking-changes-1" class="anchor"></a>Breaking changes</h2>
+<ul>
+<li>removed the collapse setting from the yaml header: The option should be adjusted for each chunk (use <code>knitr::opts_chunk$set(collapse = TRUE)</code> to define the default setting).</li>
+<li>changed chunk options to adjust a custom box colour and title: use <code>box.colour</code> and <code>box.title</code> (instead of <code>box</code> and <code>boxtitle</code>)</li>
+</ul>
+</div>
+<div id="changes-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#changes-1" class="anchor"></a>Changes</h2>
+<ul>
+<li>all boxes in <code>tutorial_html</code> are now collapsible. Adjust the chunk option <code>box.collapse</code> to <code>TRUE</code> (collapsed), <code>FALSE</code> (collapsible but uncollapsed) or <code>NULL</code> (non collapsible box).</li>
+</ul>
+</div>
+<div id="bug-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<ul>
+<li>HTML widgets were not rendered</li>
 </ul>
 </div>
 </div>
     <div id="unilur-0-3-0" class="section level1">
-<h1 class="hasAnchor">
+<h1 class="page-header">
 <a href="#unilur-0-3-0" class="anchor"></a>Unilur 0.3.0</h1>
 <ul>
 <li>
-<code><a href="http://www.rdocumentation.org/packages/unilur/topics/tutorial_html">unilur::tutorial_html</a></code> and <code><a href="http://www.rdocumentation.org/packages/unilur/topics/tutorial_html">unilur::tutorial_html_solution</a></code> now renders solution and coloured boxes as <a href="https://www.w3schools.com/bootstrap/bootstrap_panels.asp">bootstrap panels</a>. In addition, solution boxes can be collapsed and expanded. The initial state can be adjusted using the <code>collapse</code> yaml option.</li>
-<li>Added <code><a href="http://www.rdocumentation.org/packages/unilur/topics/answer_rmd">unilur::answer_rmd</a></code> to create a Rmd file with solutions being removed. This file can be used by students to fill in their answers.</li>
+<code><a href="../reference/tutorial_html.html">unilur::tutorial_html</a></code> and <code><a href="../reference/tutorial_html.html">unilur::tutorial_html_solution</a></code> now renders solution and coloured boxes as <a href="https://www.w3schools.com/bootstrap/bootstrap_panels.asp">bootstrap panels</a>. In addition, solution boxes can be collapsed and expanded. The initial state can be adjusted using the <code>collapse</code> yaml option.</li>
+<li>Added <code><a href="../reference/answer_rmd.html">unilur::answer_rmd</a></code> to create a Rmd file with solutions being removed. This file can be used by students to fill in their answers.</li>
 <li>Improved knitting of files with <code>solution = FALSE</code> by disabling the evaluation of these chunks.</li>
 </ul>
 </div>
     <div id="unilur-0-2-0" class="section level1">
-<h1 class="hasAnchor">
+<h1 class="page-header">
 <a href="#unilur-0-2-0" class="anchor"></a>Unilur 0.2.0</h1>
 <ul>
 <li>
-<code>unilur::tutorial</code> was replaced by <code><a href="http://www.rdocumentation.org/packages/unilur/topics/tutorial_pdf">unilur::tutorial_pdf</a></code> and <code><a href="http://www.rdocumentation.org/packages/unilur/topics/tutorial_html">unilur::tutorial_html</a></code>
+<code>unilur::tutorial</code> was replaced by <code><a href="../reference/tutorial_pdf.html">unilur::tutorial_pdf</a></code> and <code><a href="../reference/tutorial_html.html">unilur::tutorial_html</a></code>
 </li>
 <li>Removed <code>unilur::knit</code>:
 <ul>
-<li>Output filename is defined in the <code><a href="http://www.rdocumentation.org/packages/unilur/topics/tutorial_pdf">unilur::tutorial_pdf</a></code> or <code><a href="http://www.rdocumentation.org/packages/unilur/topics/tutorial_html">unilur::tutorial_html</a></code> format (<code>&lt;basename&gt;_question.&lt;ext&gt;</code> or <code>&lt;basename&gt;_solution.&lt;ext&gt;</code>).</li>
+<li>Output filename is defined in the <code><a href="../reference/tutorial_pdf.html">unilur::tutorial_pdf</a></code> or <code><a href="../reference/tutorial_html.html">unilur::tutorial_html</a></code> format (<code>&lt;basename&gt;_question.&lt;ext&gt;</code> or <code>&lt;basename&gt;_solution.&lt;ext&gt;</code>).</li>
 <li>Allows to use the interactive <code>knit</code> menu in Rstudio in particular with custom formats now showing up in Knit menu (tested in Rstudio 0.99.1197 preview)</li>
 </ul>
 </li>
-<li>Isolated the <code>unilur::tutorial</code> option <code>exam</code> and created a new <code><a href="http://www.rdocumentation.org/packages/unilur/topics/examen_pdf">unilur::examen_pdf</a></code> format</li>
+<li>Isolated the <code>unilur::tutorial</code> option <code>exam</code> and created a new <code><a href="../reference/examen_pdf.html">unilur::examen_pdf</a></code> format</li>
 </ul>
 </div>
-    </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#unilur-0-3-0-9000">0.3.0.9000</a></li>
+        <li><a href="#unilur-0-4-0-9000">0.4.0.9000</a></li>
+        <li><a href="#unilur-0-4-0">0.4.0</a></li>
         <li><a href="#unilur-0-3-0">0.3.0</a></li>
         <li><a href="#unilur-0-2-0">0.2.0</a></li>
       </ul>
@@ -157,5 +224,8 @@
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+
