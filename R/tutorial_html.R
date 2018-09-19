@@ -59,6 +59,7 @@ boxify_html <- function(x, options, box_theme) {
   
   # If box is collapsed add the bootstrap code
   if (!is.null(is_box_collapsed)) {
+    box_title <- box_title %n% "&#8203;"
     panel_body <- sprintf("<div id=\"%s\" class=\"panel-collapse collapse%s\">%s</div>",
                           options[["label"]],
                           ifelse(is_box_collapsed, "", " in"),
