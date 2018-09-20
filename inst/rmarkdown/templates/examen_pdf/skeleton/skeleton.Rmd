@@ -11,7 +11,7 @@ output:
 
 ##### Multiple choice question
 
-```{asis, mcq = TRUE}
+```{block, mcq = TRUE}
 - Item 1
 - Item 2
 - Item 3
@@ -19,7 +19,7 @@ output:
 
 ##### Question
 
-```{asis, solution = TRUE, response.space = 0.5}
+```{block, solution = TRUE, answer.lines = 0.5}
 This is the answer which is replaced by dotted lines in the question file!
 ```
 
