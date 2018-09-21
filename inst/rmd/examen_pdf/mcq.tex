@@ -1,0 +1,115 @@
+% Collection of macros calling the MCQ environments from
+%  the exam class instead of the itemize environment
+
+% Backing up item and the itemize environment.
+\let\origitem\item
+\let\origitemize\itemize
+\let\origenditemize\enditemize
+
+% Macro to restore the original itemize environment
+\newcommand{\restoreitemize}{
+  \let\itemize\origitemize
+  \let\enditemize\origenditemize
+  \let\item\origitem
+}
+
+\newcommand{\opc}[1]{
+  \ifstrequal{#1}{on}{
+    \let\itemize\oneparchoices
+    \let\enditemize\endoneparchoices
+    \def\item{\choice}
+  }{\restoreitemize}
+}
+
+\newcommand{\opcb}[1]{
+  \ifstrequal{#1}{on}{
+    \let\itemize\oneparcheckboxes
+    \let\enditemize\endoneparcheckboxes
+    \def\item{\choice}
+  }{\restoreitemize}
+}
+
+\newcommand{\cb}[1]{
+  \ifstrequal{#1}{on}{
+    \let\itemize\checkboxes
+    \let\enditemize\endcheckboxes
+    \def\item{\choice}
+  }{\restoreitemize}
+}
+
+\newcommand{\ch}[1]{
+  \ifstrequal{#1}{on}{
+    \let\itemize\choices
+    \let\enditemize\endchoices
+    \def\item{\choice}
+  }{\restoreitemize}
+}
+\makeatother
+
+% Alternative oneparchoices and oneparcheckboxes
+% with equally spaced horizontal items.
+% The number of items per line can be adjusted (defaults to 3)
+%
+% Taken and adapted from the following stackexchange post:
+  % http://tex.stackexchange.com/questions/149101/inline-arrangement-using-enumitem
+
+\usepackage{environ, multido, calc}% http://ctan.org/pkg/{environ,multido,calc}
+\makeatletter
+% Taken from http://tex.stackexchange.com/a/128318/5764
+\newcounter{listcount}% Keep track of \item
+\newcounter{q}% Enumerate the different items
+
+\NewEnviron{oneparchoicesalt}[1][\perline]{%
+  \setcounter{listcount}{0}% Start with 0 \items
+  \g@addto@macro{\BODY}{\item\relax\item}% Used to delimit the items; last item identified by \item\relax\item
+  \def\item##1\item{% Redefine \item to capture contents
+  \def\optarg{##1}%
+    \expandafter\ifx\optarg\relax\else% Last item not reached
+    \stepcounter{listcount}% Next item being processed
+    \expandafter\gdef\csname inlineitem@\thelistcount\endcsname{##1}% Store item in control sequence
+    \expandafter\item% Recursively continue processing items
+    \fi
+    }%
+    \BODY% Process environment (save items)
+    \setlength{\@tempdima}{\linewidth/#1}% Set length of each \item \parbox; possibly corrent...
+        \ifnum\value{listcount}<#1\relax\setlength{\@tempdima}{\linewidth/\value{listcount}}\fi%... if needed
+        \par\noindent% Start new non-indented paragraph
+      \multido{\i=1+1}{\value{listcount}}{% Insert all items in a \parbox
+        \parbox[t]{\@tempdima}{\raggedright\hangindent=1.5em\hangafter=1% Paragraph formatting
+        \makebox[1.5em][r]{ \setcounter{q}{\i}
+          \opccounter\space}\strut\csname inlineitem@\i\endcsname\strut}\hspace{0pt}}%
+    }
+    
+    
+    \newcommand{\perline}{3}
+    \newcommand{\opccounter}{\Alph{q})}
+    \newcommand{\opcalt}[2][3]{
+      % Passing variables with the help of macros
+      % and not arguments to homogenize the call.
+      \renewcommand{\perline}{#1}
+        \renewcommand{\opccounter}{\Alph{q})}
+        \ifstrequal{#2}{on}{
+          % Switching itemize to MCQ mode
+          \let\itemize\oneparchoicesalt
+          \let\enditemize\endoneparchoicesalt
+        }{\restoreitemize}
+      }
+      
+      \newcommand{\opcbalt}[2][3]{
+        % Passing variables with the help of macros
+        % and not arguments to homogenize the call.
+        \renewcommand{\perline}{#1}
+          \renewcommand{\opccounter}{\checkbox@char}
+          \ifstrequal{#2}{on}{
+            % Switching itemize to MCQ mode
+            \let\itemize\oneparchoicesalt
+            \let\enditemize\endoneparchoicesalt
+          }{\restoreitemize}
+}
+
+\makeatother
+
+% Including total page numbers in footer
+\lfoot{}
+\cfoot{Page \thepage\ of \numpages}
+\rfoot{}

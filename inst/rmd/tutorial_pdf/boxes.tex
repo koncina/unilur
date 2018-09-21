@@ -1,0 +1,63 @@
+% Using xcolors with dvipsnames before mdframed to avoid option clash
+\usepackage{xcolor}
+\usepackage[framemethod=TikZ]{mdframed}
+
+% Defining the base style of the box as bbox
+\mdfdefinestyle{bbox}{
+  leftmargin = 0cm,%
+  rightmargin = 0cm,%
+  innerleftmargin = 0.5cm,%
+  innerrightmargin = 0.5cm,%
+  roundcorner = 5pt,%
+  linewidth = 2pt,%
+  nobreak=false%,
+  %needspace=1in % Trying to avoid a page break after the title but does not do the trick...
+}
+
+% Defining custom box environment (cbox) with 2 arguments:
+% The first optional (defaults to empty string) is the title of the box
+% The second (mandatory) defines the color of the box (linecolor and background is linecolor!30)
+
+% body: fill (#2), colour (#3)
+% header: fill (#4), colour (#5)
+\newenvironment{cbox}[5][]{
+  \def\temp{#1}\ifx\temp\empty
+    \begin{mdframed}[style=bbox,%
+      linecolor = #4,%
+      fontcolor = #3,%
+      innertopmargin = 10pt,%
+      skipabove = 10pt,%
+      backgroundcolor = #2]%
+  \else
+    \begin{mdframed}[style=bbox,%
+      linecolor = #4,%
+      fontcolor = #3,%
+      backgroundcolor = #2,%
+      innertopmargin = 3pt,%
+      skipabove = 10pt,%
+      frametitle={\tikz[baseline = (current bounding box.east), outer sep = 0pt]
+                  \node[anchor = east, rounded corners = 3pt, rectangle, color = #5, fill = #4]{#1};},%
+                        frametitleaboveskip = \dimexpr-\ht\strutbox\relax]
+  \fi
+}{\end{mdframed}}
+
+\mdfdefinestyle{input}{
+  frametitle = {},%
+  leftmargin = 0cm,%
+  rightmargin = 0cm,%
+  innerleftmargin = 0.2cm,%
+  innerrightmargin = 0.2cm,%
+  innertopmargin=0.5em,%
+  roundcorner = 2pt,%
+  linecolor = lightgray,%
+  linewidth = 1pt,%
+  backgroundcolor = lightgray!30
+}
+
+% Defining cbox macro to draw a coloured block
+% around the content
+
+\newcommand{\cboxs}[5][]{\begin{cbox}[#1]{#2}{#3}{#4}{#5}}
+\newcommand{\cboxe}{\end{cbox}}
+
+\makeatletter

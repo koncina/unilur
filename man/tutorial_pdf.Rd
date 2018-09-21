@@ -6,7 +6,7 @@
 \title{Convert to a tutorial PDF document}
 \usage{
 tutorial_pdf(solution = FALSE, suffix = "_question",
-  pandoc_args = NULL, ...)
+  pandoc_args = NULL, includes = NULL, ...)
 
 tutorial_pdf_solution(suffix = "_solution", ...)
 }
@@ -16,6 +16,9 @@ tutorial_pdf_solution(suffix = "_solution", ...)
 \item{suffix}{Suffix which is added to the filename (default is '_question' for 'unilur::tutorial_pdf' and '_solution' for 'unilur::tutorial_pdf_solution')}
 
 \item{pandoc_args}{Additional command line options to pass to pandoc}
+
+\item{includes}{Named list of additional content to include within the
+document (typically created using the \code{\link{includes}} function).}
 
 \item{...}{Arguments passed to \code{pdf_document()}.}
 }

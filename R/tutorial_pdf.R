@@ -16,15 +16,17 @@
 tutorial_pdf <- function(solution = FALSE,
                          suffix = "_question",
                          pandoc_args = NULL,
+                         includes = NULL,
                          ...
 ) {
   
-  template <- system.file("rmd", "tutorial_pdf", "template.tex",
-                          package = "unilur")
-  pandoc_args <- c(pandoc_args, "--variable", "geometry:margin=1in")  # Adjusts the margin
-  pandoc_args <- c(pandoc_args, "--variable", "graphics=yes")         # Enables rescaling of too big graphics
+  header <- system.file("rmd", "tutorial_pdf", "boxes.tex",
+                               package = "unilur")
 
-  format <- rmarkdown::pdf_document(pandoc_args = pandoc_args, template = template, ...)
+  #pandoc_args <- c(pandoc_args, "--variable", "geometry:margin=1in")  # Adjusts the margin
+  #pandoc_args <- c(pandoc_args, "--variable", "graphics=yes")         # Enables rescaling of too big graphics
+  
+  format <- rmarkdown::pdf_document(pandoc_args = pandoc_args, includes = merge_includes(list(in_header = header), includes), ...)
   
   format <- unilur_base(format, isTRUE(solution), suffix)
   format
