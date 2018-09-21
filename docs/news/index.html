@@ -128,6 +128,7 @@
 <h2 class="hasAnchor">
 <a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
 <ul>
+<li>replace <code>question_suffix</code> and <code>solution_suffix</code> by <code>suffix</code> in <code>unilur::tutorial_*</code> or <code>unilur::tutorial_*_solution</code> to change the suffix appended to the rendered file.</li>
 <li>remove <code>box.colour</code> chunk option (replaced by <code>box.body</code> and <code>box.header</code> which accepts a list to define <code>fill</code> and <code>colour</code>)</li>
 <li>The automatic adjustement of header colour changes: <code>box.colour</code> was used to define the header colour and the colour of the body was derived from this value. From now, if <code>box.header</code> is omitted, the <code>fill</code> colour is derived from the <code>box.body</code> fill colour.</li>
 <li>rename chunk option <code>response.space</code> to <code>answer.lines</code> in <code><a href="../reference/examen_pdf.html">unilur::examen_pdf</a></code>.</li>
@@ -137,6 +138,7 @@
 <h2 class="hasAnchor">
 <a href="#changes" class="anchor"></a>Changes</h2>
 <ul>
+<li>use latex template shipped with rmarkdown and use includes to integrate unilur customisations.</li>
 <li>rewrite the format functions to deduplicate the source code.</li>
 <li>remove output and source hooks in pdf output: might again produce troubles with unexpected page breaks using boxes.</li>
 <li>redefine box chunk options: <code>box.title</code>, <code>box.body</code>, <code>box.header</code> and <code>box.collapse</code>. Colours for background and text can be set for the body and the header using a list (to provide the colours for <code>fill</code> and <code>colour</code>)</li>

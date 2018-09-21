@@ -132,7 +132,7 @@
     </div>
 
     <pre class="usage"><span class='fu'>tutorial_pdf</span>(<span class='kw'>solution</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>suffix</span> <span class='kw'>=</span> <span class='st'>"_question"</span>,
-  <span class='kw'>pandoc_args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+  <span class='kw'>pandoc_args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>includes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
 <span class='fu'>tutorial_pdf_solution</span>(<span class='kw'>suffix</span> <span class='kw'>=</span> <span class='st'>"_solution"</span>, <span class='no'>...</span>)</pre>
     
@@ -150,6 +150,11 @@
     <tr>
       <th>pandoc_args</th>
       <td><p>Additional command line options to pass to pandoc</p></td>
+    </tr>
+    <tr>
+      <th>includes</th>
+      <td><p>Named list of additional content to include within the
+document (typically created using the <code>includes</code> function).</p></td>
     </tr>
     <tr>
       <th>...</th>
