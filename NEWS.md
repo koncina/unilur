@@ -9,6 +9,7 @@
 
 ## Changes
 
+- use latex template shipped with rmarkdown and use includes to integrate unilur customisations.
 - rewrite the format functions to deduplicate the source code.
 - remove output and source hooks in pdf output: might again produce troubles with unexpected page breaks using boxes.
 - redefine box chunk options: `box.title`, `box.body`, `box.header` and `box.collapse`. Colours for background and text can be set for the body and the header using a list (to provide the colours for `fill` and `colour`) 
