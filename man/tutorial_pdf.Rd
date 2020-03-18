@@ -5,8 +5,13 @@
 \alias{tutorial_pdf_solution}
 \title{Convert to a tutorial PDF document}
 \usage{
-tutorial_pdf(solution = FALSE, suffix = "_question",
-  pandoc_args = NULL, includes = NULL, ...)
+tutorial_pdf(
+  solution = FALSE,
+  suffix = "_question",
+  pandoc_args = NULL,
+  includes = NULL,
+  ...
+)
 
 tutorial_pdf_solution(suffix = "_solution", ...)
 }
@@ -18,7 +23,7 @@ tutorial_pdf_solution(suffix = "_solution", ...)
 \item{pandoc_args}{Additional command line options to pass to pandoc}
 
 \item{includes}{Named list of additional content to include within the
-document (typically created using the \code{\link{includes}} function).}
+document (typically created using the \code{\link[rmarkdown]{includes}} function).}
 
 \item{...}{Arguments passed to \code{pdf_document()}.}
 }

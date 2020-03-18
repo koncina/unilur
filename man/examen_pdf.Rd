@@ -5,8 +5,15 @@
 \alias{examen_pdf_solution}
 \title{Convert to an examen PDF document}
 \usage{
-examen_pdf(solution = FALSE, suffix = "_question", id = FALSE,
-  mcq = "oneparchoices", includes = NULL, pandoc_args = NULL, ...)
+examen_pdf(
+  solution = FALSE,
+  suffix = "_question",
+  id = FALSE,
+  mcq = "oneparchoices",
+  includes = NULL,
+  pandoc_args = NULL,
+  ...
+)
 
 examen_pdf_solution(suffix = "_solution", ...)
 }
@@ -20,7 +27,7 @@ examen_pdf_solution(suffix = "_solution", ...)
 \item{mcq}{Theme for the multiple choice questions (\code{oneparchoices}, \code{oneparchoicesalt}, \code{oneparcheckboxesalt} or \code{oneparcheckboxes})}
 
 \item{includes}{Named list of additional content to include within the
-document (typically created using the \code{\link{includes}} function).}
+document (typically created using the \code{\link[rmarkdown]{includes}} function).}
 
 \item{pandoc_args}{Additional command line options to pass to pandoc}
 

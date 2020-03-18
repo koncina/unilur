@@ -5,8 +5,14 @@
 \alias{tutorial_html_solution}
 \title{Convert to a tutorial HTML document}
 \usage{
-tutorial_html(solution = FALSE, suffix = "_question",
-  includes = NULL, css = NULL, extra_dependencies = NULL, ...)
+tutorial_html(
+  solution = FALSE,
+  suffix = "_question",
+  includes = NULL,
+  css = NULL,
+  extra_dependencies = NULL,
+  ...
+)
 
 tutorial_html_solution(suffix = "_solution", ...)
 }
@@ -16,15 +22,15 @@ tutorial_html_solution(suffix = "_solution", ...)
 \item{suffix}{Suffix which is added to the filename (default is '_question' for 'unilur::tutorial_html' and '_solution' for 'unilur::tutorial_html_solution')}
 
 \item{includes}{Named list of additional content to include within the
-document (typically created using the \code{\link{includes}} function).}
+document (typically created using the \code{\link[rmarkdown]{includes}} function).}
 
 \item{css}{One or more css files to include}
 
 \item{extra_dependencies}{Additional function arguments to pass to the
-base R Markdown HTML output formatter \code{\link{html_document_base}}}
+base R Markdown HTML output formatter \code{\link[rmarkdown]{html_document_base}}}
 
 \item{...}{Additional function arguments to pass to the
-base R Markdown HTML output formatter \code{\link{html_document_base}}}
+base R Markdown HTML output formatter \code{\link[rmarkdown]{html_document_base}}}
 }
 \value{
 R Markdown output format to pass to \code{\link[rmarkdown]{render}}
