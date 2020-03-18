@@ -6,10 +6,12 @@
 #' 
 #' @param suffix Suffix which is added to the filename (default is '_answer')
 #' 
+#' @param exclude keyword for specific chunks that need to be excluded in answer templates (default NULL)
+#' 
 #' @return R Markdown output format to pass to \code{\link[rmarkdown]{render}}
 #' 
 #' @export
-answer_rmd <- function(yaml = NULL, suffix = "_answer") {
+answer_rmd <- function(yaml = NULL, suffix = "_answer", exclude = NULL) {
   # Here we implement a fake knitting: I don't think it's possible to avoid using pandoc
   # We will generate a simple md document (that will be deleted) and use a chunk hook
   # to disable any code evaluation (to speed up the unnecessary knitting)
@@ -36,9 +38,11 @@ answer_rmd <- function(yaml = NULL, suffix = "_answer") {
     pattern <- "\\n *``` *{.*(?i)(eval|echo|include)(?-i) *= *(?i)false(?-i).*} *\\n[\\s\\S]*?\\n *``` *"
     replacement <- ""
     rmd <- gsub(pattern, replacement, rmd, perl = TRUE)
-    # Removing the chunk with child as students don't have/need it
-    pattern <- " *``` *{.*(?i)setup_practical(?-i).*} *\\n[\\s\\S]*?``` *"
-    rmd <- gsub(pattern, replacement, rmd, perl = TRUE)
+    if (!is.null(exclude)) {
+      # Removing chunk with specific keyword user provided
+      pattern <- paste0(" *``` *{.*(?i)", as.character(exclude), "(?-i).*} *\\n[\\s\\S]*?``` *")
+      rmd <- gsub(pattern, "", rmd, perl = TRUE)
+    }
     # Replacing the original header by a custom one...
     pattern <- "^--- *\\n[\\s\\S]*?\\n *--- *"
     # header <- "---\ntitle: \"My answers\"\nauthor: \"My name\"\ndate: `r format(Sys.time(), \"%d %B, %Y\")`\noutput:\n\tunilur::tutorial_pdf:\n\t\tanswer: yes\n---"
