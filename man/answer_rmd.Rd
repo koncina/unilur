@@ -11,7 +11,7 @@ answer_rmd(yaml = NULL, suffix = "_answer", exclude = NULL)
 
 \item{suffix}{Suffix which is added to the filename (default is '_answer')}
 
-\item{exclude}{keyword for specific chunks that need to be excluded in answer templates (default NULL)}
+\item{exclude_chunk}{keyword to use for excluding specific chunks in answer templates (default NULL)}
 }
 \value{
 R Markdown output format to pass to \code{\link[rmarkdown]{render}}

@@ -6,7 +6,7 @@
 #' 
 #' @param suffix Suffix which is added to the filename (default is '_answer')
 #' 
-#' @param exclude keyword for specific chunks that need to be excluded in answer templates (default NULL)
+#' @param exclude_chunk keyword to use for excluding specific chunks in answer templates (default NULL)
 #' 
 #' @return R Markdown output format to pass to \code{\link[rmarkdown]{render}}
 #' 
