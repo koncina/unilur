@@ -2,6 +2,7 @@
 
 ## Breaking changes
 
+- remove from `answer_rmd` the chunk child that could be used to specify custom boxes and that students don't need
 - replace `question_suffix` and `solution_suffix` by `suffix` in `unilur::tutorial_*` or `unilur::tutorial_*_solution` to change the suffix appended to the rendered file.
 - remove `box.colour` chunk option (replaced by `box.body` and `box.header` which accepts a list to define `fill` and `colour`)
 - The automatic adjustement of header colour changes: `box.colour` was used to define the header colour and the colour of the body was derived from this value. From now, if `box.header` is omitted, the `fill` colour is derived from the `box.body` fill colour.

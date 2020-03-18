@@ -36,6 +36,9 @@ answer_rmd <- function(yaml = NULL, suffix = "_answer") {
     pattern <- "\\n *``` *{.*(?i)(eval|echo|include)(?-i) *= *(?i)false(?-i).*} *\\n[\\s\\S]*?\\n *``` *"
     replacement <- ""
     rmd <- gsub(pattern, replacement, rmd, perl = TRUE)
+    # Removing the chunk with child as students don't have/need it
+    pattern <- " *``` *{.*(?i)setup_practical(?-i).*} *\\n[\\s\\S]*?``` *"
+    rmd <- gsub(pattern, replacement, rmd, perl = TRUE)
     # Replacing the original header by a custom one...
     pattern <- "^--- *\\n[\\s\\S]*?\\n *--- *"
     # header <- "---\ntitle: \"My answers\"\nauthor: \"My name\"\ndate: `r format(Sys.time(), \"%d %B, %Y\")`\noutput:\n\tunilur::tutorial_pdf:\n\t\tanswer: yes\n---"
