@@ -4,7 +4,7 @@
 \alias{answer_rmd}
 \title{Convert to a tutorial answer Rmarkdown file}
 \usage{
-answer_rmd(yaml = NULL, suffix = "_answer", exclude = NULL)
+answer_rmd(yaml = NULL, suffix = "_answer", exclude_chunk = NULL)
 }
 \arguments{
 \item{yaml}{a list to override the \code{title}, \code{author} and \code{output} of the answer Rmd file.}

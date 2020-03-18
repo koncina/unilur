@@ -11,7 +11,7 @@
 #' @return R Markdown output format to pass to \code{\link[rmarkdown]{render}}
 #' 
 #' @export
-answer_rmd <- function(yaml = NULL, suffix = "_answer", exclude = NULL) {
+answer_rmd <- function(yaml = NULL, suffix = "_answer", exclude_chunk = NULL) {
   # Here we implement a fake knitting: I don't think it's possible to avoid using pandoc
   # We will generate a simple md document (that will be deleted) and use a chunk hook
   # to disable any code evaluation (to speed up the unnecessary knitting)
@@ -38,9 +38,11 @@ answer_rmd <- function(yaml = NULL, suffix = "_answer", exclude = NULL) {
     pattern <- "\\n *``` *{.*(?i)(eval|echo|include)(?-i) *= *(?i)false(?-i).*} *\\n[\\s\\S]*?\\n *``` *"
     replacement <- ""
     rmd <- gsub(pattern, replacement, rmd, perl = TRUE)
-    if (!is.null(exclude)) {
+    if (!is.null(exclude_chunk)) {
       # Removing chunk with specific keyword user provided
-      pattern <- paste0(" *``` *{.*(?i)", as.character(exclude), "(?-i).*} *\\n[\\s\\S]*?``` *")
+      pattern <- paste0(" *``` *{.*(?i)", 
+                        as.character(exclude_chunk),
+                        "(?-i).*} *\\n[\\s\\S]*?``` *")
       rmd <- gsub(pattern, "", rmd, perl = TRUE)
     }
     # Replacing the original header by a custom one...
