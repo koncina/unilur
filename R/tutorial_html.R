@@ -47,6 +47,8 @@ boxify_html <- function(x, options, box_theme) {
   is_box_collapsed <- options[["box.collapse"]] %n% box_theme[["collapse"]]
   box_title <- box_theme[["title"]]
   
+  indent <- options[["indent"]] %n% ""
+  
   box_icon <- get_box_icon(box_theme[["icon"]])
   knitr::knit_meta_add(meta = attr(box_icon, "knit_meta"), label = options[["label"]])
   
@@ -80,7 +82,8 @@ boxify_html <- function(x, options, box_theme) {
   }
   
   # Return the HTML code
-  out <- sprintf("\n\n<div class=\"panel-group\"><div %s>%s%s</div></div>\n\n",
+  out <- sprintf("\n\n%s<div class=\"panel-group\"><div %s>%s%s</div></div>\n\n",
+                 indent,
                  panel_class, 
                  html_box_header,
                  panel_body)

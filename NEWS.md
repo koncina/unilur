@@ -33,6 +33,7 @@
 ## Bug fixes
 
 - HTML widgets were not rendered
+- Keep indentation of code chunks when rendering HTML boxes and avoid breaking nested lists (Thanks to Jarrod Hadfield for reporting this issue)
 
 # Unilur 0.3.0
 
