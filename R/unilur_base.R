@@ -3,7 +3,7 @@
 #' @import knitr
 #' @importFrom grDevices col2rgb check.options
 #' @importFrom utils capture.output packageVersion
-#' @importFrom stringr str_extract
+#' @importFrom stringr str_extract str_replace_all
 
 NULL
 

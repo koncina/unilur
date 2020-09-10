@@ -55,10 +55,14 @@ boxify_html <- function(x, options, box_theme) {
   panel_class <- sprintf("class = \"panel\" style = \"background-color:%s; border:2px solid %s;\"",
                          box_theme[["body"]][["fill"]],
                          box_theme[["header"]][["fill"]])
+  
+  body_content <- paste0(str_replace_all(x, "[\r\n]" , paste0("\n", indent)),
+                         collapse = paste0("\n", indent))
+  
   panel_body <- sprintf("<div class=\"panel-body\" style = \"color:%s!important;\">%s</div>",
                         box_theme[["body"]][["colour"]],
-                        paste0(x, collapse = "\n"))
-  
+                        body_content)
+
   # If box is collapsed add the bootstrap code
   if (!is.null(is_box_collapsed)) {
     box_title <- box_title %n% "&#8203;"
