@@ -3,6 +3,7 @@
 ## Changes
 
 - `answer_rmd` default date in header is in ISO8601 format
+- `answer_rmd` stops accordingly to Rmd input when `knitr::knit_exit()` is found (unnamed R chunk with echo FALSE)
 
 
 # Unilur 0.4.0.9000

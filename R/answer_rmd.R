@@ -35,6 +35,11 @@ answer_rmd <- function(yaml = NULL, suffix = "_answer", exclude_chunk = NULL) {
     pattern <- "\\n *``` *{.*(?i)solution(?-i) *= *(?i)true(?-i).*} *\\n[\\s\\S]*?\\n *``` *"
     replacement <- "\n```{r}\n# Write your answer here\n```\n"
     rmd <- gsub(pattern, replacement, rmd, perl = TRUE)
+
+    # Delete lines after knit_exit(), might be worth checking if not eval = FALSE
+    # Has to be a r unnamed chunk with echo false
+    rmd <- gsub("``` *\\{r,? (?i)echo(?-i) *= *(?i)(false|f)(?-i).*\\} *\\n.*knit_exit.+", "", rmd)
+
     # Removing the chunks with either echo or eval set to FALSE
     pattern <- "\\n *``` *{.*(?i)(eval|echo|include)(?-i) *= *(?i)false(?-i).*} *\\n[\\s\\S]*?\\n *``` *"
     replacement <- ""
@@ -46,6 +51,7 @@ answer_rmd <- function(yaml = NULL, suffix = "_answer", exclude_chunk = NULL) {
                         "(?-i).*} *\\n[\\s\\S]*?``` *")
       rmd <- gsub(pattern, "", rmd, perl = TRUE)
     }
+
     # Replacing the original header by a custom one...
     pattern <- "^--- *\\n[\\s\\S]*?\\n *--- *"
     # header <- "---\ntitle: \"My answers\"\nauthor: \"My name\"\ndate: `r format(Sys.time(), \"%d %B, %Y\")`\noutput:\n\tunilur::tutorial_pdf:\n\t\tanswer: yes\n---"
