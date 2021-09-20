@@ -38,7 +38,7 @@ answer_rmd <- function(yaml = NULL, suffix = "_answer", exclude_chunk = NULL) {
 
     # Delete lines after knit_exit(), might be worth checking if not eval = FALSE
     # Has to be a r unnamed chunk with echo false
-    rmd <- gsub("``` *\\{r,? (?i)echo(?-i) *= *(?i)(false|f)(?-i).*\\} *\\n.*knit_exit.+", "", rmd)
+    rmd <- gsub("\\n *``` *{r,? (?i)echo(?-i) *= *(?i)(false|f)(?-i).*} *\\n.*knit_exit[.\\s\\S]+", "", rmd, perl = TRUE)
 
     # Removing the chunks with either echo or eval set to FALSE
     pattern <- "\\n *``` *{.*(?i)(eval|echo|include)(?-i) *= *(?i)false(?-i).*} *\\n[\\s\\S]*?\\n *``` *"
